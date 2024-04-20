@@ -1,7 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../context/Context';
-import { useNavigate } from "react-router";
-import { Outlet, Link } from 'react-router-dom';
 import Navigation from './../components/MainNavbar.js'; 
 
 import ClienteAdicionar from './../utils/cliente/ClienteAdicionar.js';
@@ -10,8 +8,7 @@ import ClienteTabla from './../utils/cliente/ClienteTabla.js';
 const Cliente = () => {
 	
 	const { setToken, setUser, token } = useContext(Context);
-	const navigate = useNavigate();
-	
+		
 	return (		
 		<div className="container-fluid-md">			
 			<div className="row">				

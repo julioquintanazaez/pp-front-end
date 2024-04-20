@@ -7,13 +7,13 @@ import moment from "moment";
 import Swal from 'sweetalert2';
 import { Table } from 'react-bootstrap';
 import { BiLike } from 'react-icons/bi';
-import { BiBox } from 'react-icons/bi';   //< BiBox />
+import { BiBox } from 'react-icons/bi';   
 
-import ClienteEliminar from './../cliente/clienteEliminar.js';
-import ClienteModificarModal from './../cliente/clienteModificarModal.js';
+import ClienteEliminar from './../cliente/ClienteEliminar.js';
+import ClienteModificarModal from './../cliente/ClienteModificarModal.js';
 
-const ClienteTabla = (props) => {
-	
+export default function ClienteTabla ( props ) {
+
 	const { token, user } = useContext(Context);
 	const { messages, setMessages } = useContext(Context);
 	const { handleLogout } = useContext(Context);
@@ -114,5 +114,5 @@ const ClienteTabla = (props) => {
 	);
 }
 
-export default ClienteTabla;
+
 
