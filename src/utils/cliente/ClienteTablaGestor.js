@@ -6,15 +6,11 @@ import axios from 'axios';
 import moment from "moment";
 import Swal from 'sweetalert2';
 import { Table } from 'react-bootstrap';
-
-import ConcertacionEliminar from './../concertacion/ConcertacionEliminar.js';
-import ConcertacionModificarModal from './../concertacion/ConcertacionModificarModal.js';
-import ConcertacionActoresModificarModal from './../concertacion/ConcertacionActoresModificarModal.js';
-import ConcertacionEvaluarModal from './../concertacion/ConcertacionEvaluarModal.js';
-import ConcertacionActivar from './../concertacion/ConcertacionActivar.js';
+import { BiLike } from 'react-icons/bi';
+import { BiBox } from 'react-icons/bi';   //< BiBox />
 
 
-const ConcertacionTabla = (props) => {
+const ClienteTablaGestor = (props) => {
 	
 	const { token, user } = useContext(Context);
 	const { messages, setMessages } = useContext(Context);
@@ -28,7 +24,7 @@ const ConcertacionTabla = (props) => {
 	const fetchConcertaciones = async () => {
 		await axios({
 			method: 'get',
-			url: '/leer_concertaciones/',
+			url: '/leer_concertaciones_cliente/' + user.email,
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -66,52 +62,7 @@ const ConcertacionTabla = (props) => {
 								</div>
 							</div>								
 						</div>							
-					</td>
-					<td> 
-						<div className="row justify-content-center">	
-							<div className="col">
-								<div className="d-grid gap-2">
-									< ConcertacionActivar concertacion={concertacion} />
-								</div>
-							</div>	
-						</div>							
-					</td>		
-					<td> 
-						<div className="row justify-content-center">	
-							<div className="col">
-								<div className="d-grid gap-2">
-									< ConcertacionModificarModal concertacion={concertacion} />
-								</div>
-							</div>								
-						</div>							
-					</td>
-					<td> 
-						<div className="row justify-content-center">	
-							<div className="col">
-								<div className="d-grid gap-2">
-									< ConcertacionEliminar concertacion={concertacion} />
-								</div>
-							</div>	
-						</div>							
-					</td>		
-					<td> 
-						<div className="row justify-content-center">	
-							<div className="col">
-								<div className="d-grid gap-2">
-									< ConcertacionActoresModificarModal concertacion={concertacion} />
-								</div>
-							</div>	
-						</div>							
-					</td>		
-					<td> 
-						<div className="row justify-content-center">	
-							<div className="col">
-								<div className="d-grid gap-2">
-									< ConcertacionEvaluarModal concertacion={concertacion} />
-								</div>
-							</div>	
-						</div>							
-					</td>		
+					</td>					
 				</tr>
 			));
 		}
@@ -129,11 +80,6 @@ const ConcertacionTabla = (props) => {
 						<th scope="col">Entidad Origen</th>	
 						<th scope="col">Entidad Cliente</th>
 						<th scope="col">Detalles</th>
-						<th scope="col">Estado</th>
-						<th scope="col">Modificar</th>
-						<th scope="col">Eliminar</th>
-						<th scope="col">Actores</th>
-						<th scope="col">Evaluación</th>
 					</tr>
 				</thead>
 				<tbody className="table-group-divider">						
@@ -144,5 +90,5 @@ const ConcertacionTabla = (props) => {
 	);
 }
 
-export default ConcertacionTabla;
+export default ClienteTablaGestor;
 

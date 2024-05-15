@@ -79,7 +79,7 @@ export default function RegisterUserModal( ) {
 			.required("Se requiere el 2do apellido para el usuario"),
 		ci: Yup.string().trim()
 			.required("Se requiere número de identidad del usuario"),
-		email: Yup.string().trim()
+		email: Yup.string().email()
 			.required("Se requiere el correo para el usuario"),
 		role: Yup.string().trim()
 			.required("Se requiere el role para el usuario"),

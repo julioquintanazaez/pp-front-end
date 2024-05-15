@@ -12,6 +12,7 @@ import AsignacionModificarModal from './../asignacion/AsignacionModificarModal.j
 import AsignacionEvaluarModal from './../asignacion/AsignacionEvaluarModal.js';
 import AsignacionModificarTipoTareaModal from './../asignacion/AsignacionModificarTipoTareaModal.js';
 import AsignacionModificarActoresModal from './../asignacion/AsignacionModificarActoresModal.js';
+import AsignacionActivar from './../asignacion/AsignacionActivar.js';
 //
 //
 
@@ -67,6 +68,15 @@ const AsignacionTabla = (props) => {
 							<div className="col">
 								<div className="d-grid gap-2">
 									Detalles
+								</div>
+							</div>								
+						</div>							
+					</td>
+					<td> 
+						<div className="row justify-content-center">	
+							<div className="col">
+								<div className="d-grid gap-2">
+									< AsignacionActivar asignacion={asignacion} />
 								</div>
 							</div>								
 						</div>							
@@ -136,6 +146,7 @@ const AsignacionTabla = (props) => {
 						<th scope="col">Participantes</th>	
 						<th scope="col">Fecha de Inicio</th>
 						<th scope="col">Detalles</th>
+						<th scope="col">Estado</th>
 						<th scope="col">Modificar</th>
 						<th scope="col">Eliminar</th>
 						<th scope="col">Tipo</th>

@@ -30,7 +30,7 @@ export default function ConcertacionEvaluarModal( props ) {
 		
 		await axios({
 			method: 'put',
-			url: "/actualizar_concertacion/" + props.concertacion.id_conc_tema,
+			url: "/evaluar_concertacion/" + props.concertacion.id_conc_tema,
 			data: {
 				conc_evaluacion : formik.values.conc_evaluacion	
 			},
@@ -40,8 +40,8 @@ export default function ConcertacionEvaluarModal( props ) {
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				setMessages("Concertacion actualizado"+ Math.random());
-				Swal.fire("Concertacion actualizado exitosamente", "", "success");
+				setMessages("Concertacion evaluando"+ Math.random());
+				Swal.fire("Concertacion evaluada exitosamente", "", "success");
 			}
 		}).catch((error) => {
 			console.error({"message":error.message, "detail":error.response.data.detail});

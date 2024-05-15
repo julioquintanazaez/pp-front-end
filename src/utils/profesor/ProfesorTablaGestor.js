@@ -6,15 +6,13 @@ import axios from 'axios';
 import moment from "moment";
 import Swal from 'sweetalert2';
 import { Table } from 'react-bootstrap';
+import { BiLike } from 'react-icons/bi';
+import { BiBox } from 'react-icons/bi';   //< BiBox />
 
-import ConcertacionEliminar from './../concertacion/ConcertacionEliminar.js';
 import ConcertacionModificarModal from './../concertacion/ConcertacionModificarModal.js';
-import ConcertacionActoresModificarModal from './../concertacion/ConcertacionActoresModificarModal.js';
 import ConcertacionEvaluarModal from './../concertacion/ConcertacionEvaluarModal.js';
-import ConcertacionActivar from './../concertacion/ConcertacionActivar.js';
 
-
-const ConcertacionTabla = (props) => {
+const ProfesorTablaGestor = (props) => {
 	
 	const { token, user } = useContext(Context);
 	const { messages, setMessages } = useContext(Context);
@@ -28,7 +26,7 @@ const ConcertacionTabla = (props) => {
 	const fetchConcertaciones = async () => {
 		await axios({
 			method: 'get',
-			url: '/leer_concertaciones/',
+			url: '/leer_concertaciones_profesor/' + user.email,
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -71,11 +69,11 @@ const ConcertacionTabla = (props) => {
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									< ConcertacionActivar concertacion={concertacion} />
+								{concertacion.conc_activa ? "NoActiva": "Activa"}
 								</div>
-							</div>	
+							</div>								
 						</div>							
-					</td>		
+					</td>
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
@@ -85,24 +83,6 @@ const ConcertacionTabla = (props) => {
 							</div>								
 						</div>							
 					</td>
-					<td> 
-						<div className="row justify-content-center">	
-							<div className="col">
-								<div className="d-grid gap-2">
-									< ConcertacionEliminar concertacion={concertacion} />
-								</div>
-							</div>	
-						</div>							
-					</td>		
-					<td> 
-						<div className="row justify-content-center">	
-							<div className="col">
-								<div className="d-grid gap-2">
-									< ConcertacionActoresModificarModal concertacion={concertacion} />
-								</div>
-							</div>	
-						</div>							
-					</td>		
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
@@ -131,8 +111,6 @@ const ConcertacionTabla = (props) => {
 						<th scope="col">Detalles</th>
 						<th scope="col">Estado</th>
 						<th scope="col">Modificar</th>
-						<th scope="col">Eliminar</th>
-						<th scope="col">Actores</th>
 						<th scope="col">Evaluación</th>
 					</tr>
 				</thead>
@@ -144,5 +122,5 @@ const ConcertacionTabla = (props) => {
 	);
 }
 
-export default ConcertacionTabla;
+export default ProfesorTablaGestor;
 

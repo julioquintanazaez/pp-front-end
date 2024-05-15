@@ -87,29 +87,29 @@ const Navigation = ( props ) => {
 								</NavDropdown.Item>
 							</NavDropdown>
 							}
-							{authroles.includes('profesor') &&
+							{authroles.includes('profesor') && !isAdmin &&
 							<NavDropdown title="Profesor" id="profesor">									
 								<NavDropdown.Item>
-									<LinkContainer to="">
+									<LinkContainer to="/profesorgestor">
 										<Nav.Link>Cosas profesor</Nav.Link>
 									</LinkContainer>									
 								</NavDropdown.Item>	
 							</NavDropdown >								
 							}
-							{authroles.includes('cliente') &&
+							{authroles.includes('cliente') && !isAdmin  &&
 							<NavDropdown title="Cliente" id="cliente">									
 								<NavDropdown.Item>
-									<LinkContainer to="">
+									<LinkContainer to="/clientegestor">
 										<Nav.Link>Cosas clientes</Nav.Link>
 									</LinkContainer>									
 								</NavDropdown.Item>	
 							</NavDropdown >								
 							}
-							{authroles.includes('estudiante') &&
+							{authroles.includes('estudiante') && !isAdmin  &&
 							<NavDropdown title="Estudiante" id="estudiante">									
 								<NavDropdown.Item>
-									<LinkContainer to="">
-										<Nav.Link>Cosas estudiantes</Nav.Link>
+									<LinkContainer to="/estudiantegestor">
+										<Nav.Link>Cosas estudiante</Nav.Link>
 									</LinkContainer>									
 								</NavDropdown.Item>	
 							</NavDropdown >								

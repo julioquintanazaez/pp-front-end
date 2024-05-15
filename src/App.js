@@ -17,10 +17,15 @@ import TipoTarea from './pages/TipoTarea.js';
 import Asignacion from './pages/Asignacion.js';
 import Actividades from './pages/Actividades.js';
 import ActualizarTarea from './pages/ActualizarTarea.js';
+//Vistas particulares
+import ProfesorGestor from './pages/ProfesorGestor.js';
+import ClienteGestor from './pages/ClienteGestor.js';
+import EstudianteGestor from './pages/EstudianteGestor.js';
+
 
 const App = () => {	
 	
-	const { isLoggedIn, isAdmin } = useContext(Context);
+	const { isLoggedIn, isAdmin, authroles } = useContext(Context);
 	
 	return (
 		<div>							
@@ -40,7 +45,16 @@ const App = () => {
 					<Route path="/asignacion" element={<Asignacion />} />
 					<Route path="/actividades" element={<Actividades />} />	
 					<Route path="/actualizartarea" element={<ActualizarTarea />} />	
-				</Route>				
+				</Route>		
+				<Route element={<ProtectedRoute isAllowed={ isLoggedIn && authroles.includes('profesor')} />}>					
+					<Route path="/profesorgestor" element={<ProfesorGestor />} />	
+				</Route>	
+				<Route element={<ProtectedRoute isAllowed={ isLoggedIn && authroles.includes('cliente')} />}>					
+					<Route path="/clientegestor" element={<ClienteGestor />} />	
+				</Route>	
+				<Route element={<ProtectedRoute isAllowed={ isLoggedIn && authroles.includes('estudiante')} />}>					
+					<Route path="/estudiantegestor" element={<EstudianteGestor />} />	
+				</Route>	
 				<Route path="*" element={<p>There's nothing here: 404!</p>} />
 			</Routes>						
 		</div>

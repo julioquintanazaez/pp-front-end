@@ -112,6 +112,23 @@ export default function ActividadesAdicionar ( ) {
 	return (
 		<>
 			<form className="form-control" onSubmit={formik.handleSubmit}>
+				<div className="form-group mt-3" id="id_asg_act">
+					<label>Seleccione la asignación para la actividad</label>
+					<select
+					  type="text"
+					  name="id_asg_act"
+					  value={formik.values.id_asg_act}
+					  onChange={formik.handleChange}
+					  onBlur={formik.handleBlur}
+					  className={"form-control mt-1" + 
+									(formik.errors.id_asg_act && formik.touched.id_asg_act
+									? "is-invalid" : "" )
+								}>
+						<option value="" label="Seleccione una opcion">Seleccione una opción</option>	
+						{RenderAsignaciones()} 
+					</select>
+					<div>{(formik.errors.id_asg_act) ? <p style={{color: 'red'}}>{formik.errors.id_asg_act}</p> : null}</div>
+				</div>		
 				<div className="form-group mt-3" id="act_nombre">
 					<label>Introduzca el nombre para la actividad</label>
 					<input
@@ -175,23 +192,7 @@ export default function ActividadesAdicionar ( ) {
 					</textarea>
 					<div>{(formik.errors.act_cli_memo) ? <p style={{color: 'red'}}>{formik.errors.act_cli_memo}</p> : null}</div>
 				</div>	
-				<div className="form-group mt-3" id="id_asg_act">
-					<label>Seleccione la asignación para la actividad</label>
-					<select
-					  type="text"
-					  name="id_asg_act"
-					  value={formik.values.id_asg_act}
-					  onChange={formik.handleChange}
-					  onBlur={formik.handleBlur}
-					  className={"form-control mt-1" + 
-									(formik.errors.id_asg_act && formik.touched.id_asg_act
-									? "is-invalid" : "" )
-								}>
-						<option value="" label="Seleccione una opcion">Seleccione una opción</option>	
-						{RenderAsignaciones()} 
-					</select>
-					<div>{(formik.errors.id_asg_act) ? <p style={{color: 'red'}}>{formik.errors.id_asg_act}</p> : null}</div>
-				</div>		
+				
 				<div className="d-grid gap-2 mt-3">
 					<button type="submit" className="btn btn-success">
 							Guardar datos

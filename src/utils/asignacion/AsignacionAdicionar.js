@@ -62,22 +62,22 @@ export default function AsignacionAdicionar ( ) {
 	
 	const validationRules = Yup.object().shape({		
 		asg_descripcion: Yup.string().trim()
-			.required("Se requiere el tema para la concertacion"),
+			.required("Se requiere el tema para la asignación"),
 		asg_fecha_inicio: Yup.date()
-			.required("Se requiere la descripción para la concertacion"),
+			.required("Se requiere la fecha de inicio para la asignación"),
 		asg_fecha_fin: Yup.date()
-			.required("Se requiere la valoración del profesor para la concertacion")
+			.required("Se requiere la fecha de fin para la asignación")
 			.min(Yup.ref("asg_fecha_inicio"), "La fecha de fin debe ser superior a la de inicio"),
 		asg_complejidad_estimada: Yup.string().trim()
-			.required("Se requiere la valoración del cliente para la concertacion"),
-		asg_participantes: Yup.string().trim()
-			.required("Se requiere el nivel de complejidad para la concertacion"),
+			.required("Se requiere lacomplejidad para la asignación"),
+		asg_participantes: Yup.number().positive()
+			.required("Se requiere el numro de participantes para el desarrollo de la asignación"),
 		asg_tipo_tarea_id: Yup.string().trim()
-			.required("Se requiere número de actores externos para la concertacion"),
+			.required("Se requiere el tipo de actividad para la asignación"),
 		asg_estudiante_id: Yup.string().trim()
-			.required("Se requiere el profesor para la concertacion"),
+			.required("Se requiere el estudiante encargado para la asignación"),
 		asg_conc_id: Yup.string().trim()
-			.required("Se requiere el cliente para la concertacion")		
+			.required("Se requiere la concertación madre para la asignación")		
 	});
 	
 	const registerInitialValues = {
@@ -149,7 +149,7 @@ export default function AsignacionAdicionar ( ) {
 		
 		await axios({
 			method: 'get',
-			url: '/leer_estudiante_simple/',			
+			url: '/leer_estudiantes/',			
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -167,8 +167,8 @@ export default function AsignacionAdicionar ( ) {
 	const RenderEstudiantes = () => {
 		return (			
 			estudiantes.map(item => 
-				<option value={item.id_estudiante} label={item.est_nombre}>
-					{item.est_nombre} {item.est_primer_appellido} {item.est_segundo_appellido}
+				<option value={item.id_estudiante} label={item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}>
+					{item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}
 				</option>				
 			) 
 		)
@@ -206,6 +206,57 @@ export default function AsignacionAdicionar ( ) {
 	return (
 		<>
 			<form className="form-control" onSubmit={formik.handleSubmit}>
+				<div className="form-group mt-3" id="asg_estudiante_id">
+					<label>Seleccione el estudiante encargado para la asignación</label>
+					<select
+					  type="text"
+					  name="asg_estudiante_id"
+					  value={formik.values.asg_estudiante_id}
+					  onChange={formik.handleChange}
+					  onBlur={formik.handleBlur}
+					  className={"form-control mt-1" + 
+									(formik.errors.asg_estudiante_id && formik.touched.asg_estudiante_id
+									? "is-invalid" : "" )
+								}>
+						<option value="" label="Seleccione una opcion">Seleccione una opción</option>	
+						{RenderEstudiantes()} 
+					</select>
+					<div>{(formik.errors.asg_estudiante_id) ? <p style={{color: 'red'}}>{formik.errors.asg_estudiante_id}</p> : null}</div>
+				</div>		
+				<div className="form-group mt-3" id="asg_conc_id">
+					<label>Seleccione la concertación para la asignación</label>
+					<select
+					  type="text"
+					  name="asg_conc_id"
+					  value={formik.values.asg_conc_id}
+					  onChange={formik.handleChange}
+					  onBlur={formik.handleBlur}
+					  className={"form-control mt-1" + 
+									(formik.errors.asg_conc_id && formik.touched.asg_conc_id
+									? "is-invalid" : "" )
+								}>
+						<option value="" label="Seleccione una opcion">Seleccione una opción</option>	
+						{RenderConcertaciones()} 
+					</select>
+					<div>{(formik.errors.asg_conc_id) ? <p style={{color: 'red'}}>{formik.errors.asg_conc_id}</p> : null}</div>
+				</div>	
+				<div className="form-group mt-3" id="asg_tipo_tarea_id">
+					<label>Seleccione el tipo de tarea para la asignación</label>
+					<select
+					  type="text"
+					  name="asg_tipo_tarea_id"
+					  value={formik.values.asg_tipo_tarea_id}
+					  onChange={formik.handleChange}
+					  onBlur={formik.handleBlur}
+					  className={"form-control mt-1" + 
+									(formik.errors.asg_tipo_tarea_id && formik.touched.asg_tipo_tarea_id
+									? "is-invalid" : "" )
+								}>
+						<option value="" label="Seleccione una opcion">Seleccione una opciçon</option>	
+						{RenderTipoTareas()} 
+					</select>
+					<div>{(formik.errors.asg_tipo_tarea_id) ? <p style={{color: 'red'}}>{formik.errors.asg_tipo_tarea_id}</p> : null}</div>
+				</div>	
 				<div className="form-group mt-3" id="asg_tema">
 					<label>Introduzca la descripción para la asignación</label>
 					<textarea
@@ -253,21 +304,6 @@ export default function AsignacionAdicionar ( ) {
 					  placeholder="Selecciona una fecha para la asignación"
 					/>							
 					<div>{(formik.errors.asg_fecha_fin) ? <p style={{color: 'red'}}>{formik.errors.asg_fecha_fin}</p> : null}</div>
-				</div>		
-				<div className="form-group mt-3" id="asg_valoracion_cliente">
-					<label>Introduzca valoración del cliente para la concertacion</label>
-					<input
-					  type="text"
-					  name="asg_valoracion_cliente"
-					  value={formik.values.asg_valoracion_cliente}
-					  onChange={formik.handleChange}
-					  onBlur={formik.handleBlur}
-					  className={"form-control mt-1" + 
-									(formik.errors.asg_valoracion_cliente && formik.touched.asg_valoracion_cliente
-									? "is-invalid" : "" )}
-					  placeholder="Valoración del cliente para la concertacion"
-					/>					
-					<div>{(formik.errors.asg_valoracion_cliente) ? <p style={{color: 'red'}}>{formik.errors.asg_valoracion_cliente}</p> : null}</div>
 				</div>					
 				<div className="form-group mt-3" id="asg_complejidad_estimada">
 					<label>Seleccione el nivel del complejidad para la asignación</label>
@@ -299,58 +335,8 @@ export default function AsignacionAdicionar ( ) {
 					  placeholder="Número de participantes"
 					/>					
 					<div>{(formik.errors.asg_participantes) ? <p style={{color: 'red'}}>{formik.errors.asg_participantes}</p> : null}</div>
-				</div>
-				<div className="form-group mt-3" id="asg_tipo_tarea_id">
-					<label>Seleccione el tipo de tarea para la asignación</label>
-					<select
-					  type="text"
-					  name="asg_tipo_tarea_id"
-					  value={formik.values.asg_tipo_tarea_id}
-					  onChange={formik.handleChange}
-					  onBlur={formik.handleBlur}
-					  className={"form-control mt-1" + 
-									(formik.errors.asg_tipo_tarea_id && formik.touched.asg_tipo_tarea_id
-									? "is-invalid" : "" )
-								}>
-						<option value="" label="Seleccione una opcion">Seleccione una opciçon</option>	
-						{RenderTipoTareas()} 
-					</select>
-					<div>{(formik.errors.asg_tipo_tarea_id) ? <p style={{color: 'red'}}>{formik.errors.asg_tipo_tarea_id}</p> : null}</div>
-				</div>		
-				<div className="form-group mt-3" id="asg_estudiante_id">
-					<label>Seleccione el estudiante encargado para la asignación</label>
-					<select
-					  type="text"
-					  name="asg_estudiante_id"
-					  value={formik.values.asg_estudiante_id}
-					  onChange={formik.handleChange}
-					  onBlur={formik.handleBlur}
-					  className={"form-control mt-1" + 
-									(formik.errors.asg_estudiante_id && formik.touched.asg_estudiante_id
-									? "is-invalid" : "" )
-								}>
-						<option value="" label="Seleccione una opcion">Seleccione una opción</option>	
-						{RenderEstudiantes()} 
-					</select>
-					<div>{(formik.errors.asg_estudiante_id) ? <p style={{color: 'red'}}>{formik.errors.asg_estudiante_id}</p> : null}</div>
-				</div>		
-				<div className="form-group mt-3" id="asg_conc_id">
-					<label>Seleccione la concertación para la asignación</label>
-					<select
-					  type="text"
-					  name="asg_conc_id"
-					  value={formik.values.asg_conc_id}
-					  onChange={formik.handleChange}
-					  onBlur={formik.handleBlur}
-					  className={"form-control mt-1" + 
-									(formik.errors.asg_conc_id && formik.touched.asg_conc_id
-									? "is-invalid" : "" )
-								}>
-						<option value="" label="Seleccione una opcion">Seleccione una opción</option>	
-						{RenderConcertaciones()} 
-					</select>
-					<div>{(formik.errors.asg_conc_id) ? <p style={{color: 'red'}}>{formik.errors.asg_conc_id}</p> : null}</div>
-				</div>		
+				</div>					
+					
 				<div className="d-grid gap-2 mt-3">
 					<button type="submit" className="btn btn-success">
 							Guardar datos

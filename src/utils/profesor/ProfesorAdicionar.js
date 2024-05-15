@@ -50,7 +50,6 @@ export default function ProfesorAdicionar ( ) {
 								{ value: "Doctor", label: "Doctor" }
 							];	
 	
-	//date.toISOString().split('T')[0],
 	const adicionarProfesor = async () => {
 		
 		await axios({
@@ -98,9 +97,9 @@ export default function ProfesorAdicionar ( ) {
 		prf_numero_empleos: Yup.number().positive()
 			.min(1)
 			.required("Se requiere el número de empleos del profesor"),
-		prf_hijos: Yup.number().positive()
-			.min(0)
-			.required("Se requiere el número de hijos del profesor"),
+		prf_hijos: Yup.boolean()
+			.oneOf([true, false], "Por favor seleccione ona opción")
+			.required("Se requiere marque una opción"),	
 		prf_pos_tecnica_trabajo: Yup.string().trim()
 			.required("Se requiere la posibilidad técnica del trabajo del profesor"),
 		prf_pos_tecnica_hogar: Yup.string().trim()
@@ -115,10 +114,9 @@ export default function ProfesorAdicionar ( ) {
 			.required("Se requiere la caegoría docente del profesor"),
 		prf_categoria_cientifica: Yup.string().trim()
 			.required("Se requiere la caegoría científica del profesor"),
-		prf_experiencia_practicas: Yup.string().trim()
-			.required("Se requiere la experiencia en prácticas profesionales del profesor"),
-		prf_experiencia_practicas: Yup.string().trim()
-			.required("Se requiere la experiencia en prácticas profesionales del profesor"),
+		prf_experiencia_practicas: Yup.boolean()
+			.oneOf([true, false], "Por favor seleccione ona opción")
+			.required("Se requiere marque una opción"),
 		prf_numero_est_atendidos: Yup.number().positive()
 			.min(1)
 			.required("Se requiere el número de estudiantes atendidos por el profesor"),
@@ -219,7 +217,9 @@ export default function ProfesorAdicionar ( ) {
 	const RenderUsuarios = () => {
 		return (			
 			usuarios.map(item => 
-				<option value={item.id} label={item.nombre}>{item.nombre}</option>				
+				<option value={item.id} label={item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}>
+					{item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}
+				</option>				
 			) 
 		)
 	};	
@@ -239,8 +239,8 @@ export default function ProfesorAdicionar ( ) {
 									(formik.errors.user_profesor_id && formik.touched.user_profesor_id
 									? "is-invalid" : "" )
 								}>
-						{RenderUsuarios()}
-					<option value="" label="Seleccione un profesor">Seleccione una opcion</option>	
+						<option value="" label="Seleccione un profesor">Seleccione una opcion</option>	
+						{RenderUsuarios()}					
 					</select>
 					<div>{(formik.errors.user_profesor_id) ? <p style={{color: 'red'}}>{formik.errors.user_profesor_id}</p> : null}</div>
 				</div>		

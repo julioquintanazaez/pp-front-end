@@ -129,8 +129,8 @@ export default function ConcertacionAdicionar ( ) {
 	const RenderProfesores = () => {
 		return (			
 			profesores.map(item => 
-				<option value={item.id_profesor} label={item.prf_nombre}>
-					{item.prf_nombre} {item.prf_primer_appellido}
+				<option value={item.id_profesor} label={item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}>
+					{item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}
 				</option>				
 			) 
 		)
@@ -158,8 +158,8 @@ export default function ConcertacionAdicionar ( ) {
 	const RenderClientes = () => {
 		return (			
 			clientes.map(item => 
-				<option value={item.id_cliente} label={item.cli_nombre}>
-					{item.cli_nombre} {item.cli_primer_appellido}
+				<option value={item.id_cliente} label={item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}>
+					{item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}
 				</option>				
 			) 
 		)

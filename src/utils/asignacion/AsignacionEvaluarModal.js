@@ -59,6 +59,7 @@ export default function AsignacionEvaluarModal( props ) {
 	
 	const handleShow = () => {
 		if (props.asignacion.id_asignacion != null){	
+			console.log({"desde asignacion evaluar profesor" : props.asignacion.id_asignacion});
 			setShow(true);  
 		}else{
 			Swal.fire("No se ha seleccionado la Asignación de tema", props.asignacion.id_asignacion, "error");

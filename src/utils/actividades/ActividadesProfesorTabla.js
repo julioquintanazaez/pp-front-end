@@ -7,62 +7,60 @@ import moment from "moment";
 import Swal from 'sweetalert2';
 import { Table } from 'react-bootstrap';
 
-import ConcertacionEliminar from './../concertacion/ConcertacionEliminar.js';
-import ConcertacionModificarModal from './../concertacion/ConcertacionModificarModal.js';
-import ConcertacionActoresModificarModal from './../concertacion/ConcertacionActoresModificarModal.js';
-import ConcertacionEvaluarModal from './../concertacion/ConcertacionEvaluarModal.js';
-import ConcertacionActivar from './../concertacion/ConcertacionActivar.js';
+import ActividadesEliminar from './../actividades/ActividadesEliminar.js';
+import ActividadesNombreModificarModal from './../actividades/ActividadesNombreModificarModal.js';
+import ActividadesEvaluarModal from './../actividades/ActividadesEvaluarModal.js';
+import ActividadesEstudianteOpinionModal from './../actividades/ActividadesEstudianteOpinionModal.js';
+import ActividadesClienteOpinionModal from './../actividades/ActividadesClienteOpinionModal.js';
+import ActividadesProfesorOpinionModal from './../actividades/ActividadesProfesorOpinionModal.js';
 
-
-const ConcertacionTabla = (props) => {
+const ActividadesEstudianteTabla = ( props ) => {
 	
-	const { token, user } = useContext(Context);
+	const { token, user, authroles } = useContext(Context);
 	const { messages, setMessages } = useContext(Context);
 	const { handleLogout } = useContext(Context);
-	const [concertaciones, setConcertaciones] = useState([]);	
+	const [actividades, setActividades] = useState([]);	
 	
 	useEffect(()=> {
-        fetchConcertaciones();
+        fetchActividades(props.asignacion.id_asignación);
     }, [messages]);	
 	
-	const fetchConcertaciones = async () => {
+	const fetchActividades = async ( id_asg ) => {
 		await axios({
 			method: 'get',
-			url: '/leer_concertaciones/',
+			url: '/leer_actividades_tareas_por_asignacion/' + id_asg,
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				setConcertaciones(response.data);			
-				console.log("Se leyeron correctamente los concertaciones desde la base de datos");
+				setActividades(response.data);			
+				console.log("Se leyeron correctamente las actividades para la asignacion desde la base de datos");
 			}
 			else{
 				console.log({"Error en response ":response.data});	
 			}
 		}).catch((error) => {
 			console.error({"message":error.message, "detail":error.response.data.detail});
-			Swal.fire("Problemas para leer concertaciones desde la base de datos", "", "error");
+			Swal.fire("Problemas para leer actividades de la asignacion desde la base de datos", "", "error");
 			handleLogout();
 		});			  
 	}
 	
 	const renderTableData = () => {
-		return concertaciones?.map((concertacion, index) => (
-				<tr className="row-md" key={concertacion.id_conc_tema}>
+		return actividades?.map((actividad, index) => (
+				<tr className="row-md" key={actividad.id_actividad_tarea}>
 					<th scope="row">{index + 1}</th>					
-					<td>{concertacion.conc_tema}</td>
-					<td>{concertacion.conc_complejidad}</td>	
-					<td>{concertacion.prf_nombre}</td>
-					<td>{concertacion.cli_nombre}</td>
-					<td>{concertacion.org_siglas}</td>
-					<td>{concertacion.dest_siglas}</td>
+					<td>{actividad.act_nombre}</td>
+					<td>{actividad.act_est_memo}</td>	
+					<td>{actividad.act_prof_memo}</td>
+					<td>{actividad.act_cli_memo}</td>
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									Detalles
+									< ActividadesNombreModificarModal actividad={actividad} />
 								</div>
 							</div>								
 						</div>							
@@ -71,16 +69,16 @@ const ConcertacionTabla = (props) => {
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									< ConcertacionActivar concertacion={concertacion} />
+									< ActividadesEliminar actividad={actividad} />
 								</div>
 							</div>	
 						</div>							
-					</td>		
+					</td>	
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									< ConcertacionModificarModal concertacion={concertacion} />
+									< ActividadesProfesorOpinionModal actividad={actividad} />
 								</div>
 							</div>								
 						</div>							
@@ -89,29 +87,29 @@ const ConcertacionTabla = (props) => {
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									< ConcertacionEliminar concertacion={concertacion} />
+									< ActividadesClienteOpinionModal actividad={actividad} />
 								</div>
 							</div>	
 						</div>							
-					</td>		
+					</td>	
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									< ConcertacionActoresModificarModal concertacion={concertacion} />
+									< ActividadesEstudianteOpinionModal actividad={actividad} />
 								</div>
-							</div>	
+							</div>								
 						</div>							
-					</td>		
+					</td>
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									< ConcertacionEvaluarModal concertacion={concertacion} />
+									< ActividadesEvaluarModal actividad={actividad} />
 								</div>
 							</div>	
 						</div>							
-					</td>		
+					</td>	
 				</tr>
 			));
 		}
@@ -122,18 +120,16 @@ const ConcertacionTabla = (props) => {
 				<thead className="table-dark">
 					<tr>
 						<th scope="col">#</th>	
-						<th scope="col">Tema</th>	
-						<th scope="col">Compljidad</th>										
-						<th scope="col">Profesor</th>	
-						<th scope="col">Cliente</th>	
-						<th scope="col">Entidad Origen</th>	
-						<th scope="col">Entidad Cliente</th>
-						<th scope="col">Detalles</th>
-						<th scope="col">Estado</th>
+						<th scope="col">Nombre</th>	
+						<th scope="col">Estudiante Memo</th>	
+						<th scope="col">Profesor Mmo</th>	
+						<th scope="col">Cliente Memo</th>	
 						<th scope="col">Modificar</th>
 						<th scope="col">Eliminar</th>
-						<th scope="col">Actores</th>
-						<th scope="col">Evaluación</th>
+						<th scope="col">Profesor</th>
+						<th scope="col">Cliente</th>
+						<th scope="col">Estudiante</th>
+						<th scope="col">Evaluar</th>
 					</tr>
 				</thead>
 				<tbody className="table-group-divider">						
@@ -144,5 +140,5 @@ const ConcertacionTabla = (props) => {
 	);
 }
 
-export default ConcertacionTabla;
+export default ActividadesEstudianteTabla;
 

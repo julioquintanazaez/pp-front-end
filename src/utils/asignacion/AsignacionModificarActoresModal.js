@@ -22,7 +22,6 @@ export default function AsignacionModificarActoresModal( props ) {
 	const [show, setShow] = useState(false);
 	const [validated, setValidated] = useState(false);
 	const [estudiantes, setEstudiantes] = useState([]);
-	const [concertaciones, setConcertaciones] = useState([]);
 	
 	const modificarActoresAsignacion = async () => {
 		
@@ -30,8 +29,7 @@ export default function AsignacionModificarActoresModal( props ) {
 			method: 'put',
 			url: "/actualizar_asignacion_tarea_gestor/" + props.asignacion.id_asignacion,
 			data: {
-				asg_estudiante_id : formik.values.asg_estudiante_id,  
-				asg_conc_id : formik.values.asg_conc_id									
+				asg_estudiante_id : formik.values.asg_estudiante_id					
 			},
 			headers: {
 				'accept': 'application/json',
@@ -66,16 +64,13 @@ export default function AsignacionModificarActoresModal( props ) {
 	
 	const validationRules = Yup.object().shape({		
 		asg_estudiante_id: Yup.string().trim()
-			.required("Se requiere el profesor para la concertacion"),
-		asg_conc_id: Yup.string().trim()
-			.required("Se requiere el cliente para la concertacion")			
+			.required("Se requiere el profesor para la concertacion")		
 	});
 	
 	//console.log(props.asignacion.asg_fecha_inicio)
 	
 	const registerInitialValues = {
-		asg_estudiante_id : "",  
-		asg_conc_id : ""			
+		asg_estudiante_id : ""	
 	};
 	
 	const formik = useFormik({
@@ -99,14 +94,13 @@ export default function AsignacionModificarActoresModal( props ) {
 	
 	useEffect(()=> {
         leerEstudiantes();
-		leerConcertaciones();
     }, []);	
 	
 	const leerEstudiantes = async () => {
 		
 		await axios({
 			method: 'get',
-			url: '/leer_estudiante_simple/',			
+			url: '/leer_estudiantes/',			
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -124,41 +118,14 @@ export default function AsignacionModificarActoresModal( props ) {
 	const RenderEstudiantes = () => {
 		return (			
 			estudiantes.map(item => 
-				<option value={item.id_estudiante} label={item.est_nombre}>
-					{item.est_nombre} {item.est_primer_appellido} {item.est_segundo_appellido}
+				<option value={item.id_estudiante} label={item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}>
+					{item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}
 				</option>				
 			) 
 		)
 	};	
 	
-	const leerConcertaciones = async () => {
-		
-		await axios({
-			method: 'get',
-			url: '/leer_concertacion_simple/',			
-			headers: {
-				'accept': 'application/json',
-				'Authorization': "Bearer " + token,
-			},
-		}).then(response => {
-			if (response.status === 201) {	
-				setConcertaciones(response.data);
-			}
-		}).catch((error) => {
-			console.error({"message":error.message, "detail":error.response.data.detail});
-			handleLogout();
-		});				  
-	};
 	
-	const RenderConcertaciones = () => {
-		return (			
-			concertaciones.map(item => 
-				<option value={item.id_conc_tema} label={item.conc_tema}>
-					{item.conc_tema} 
-				</option>				
-			) 
-		)
-	};	
 			
 	return (
 		<>
@@ -190,24 +157,7 @@ export default function AsignacionModificarActoresModal( props ) {
 							{RenderEstudiantes()} 
 						</select>
 						<div>{(formik.errors.asg_estudiante_id) ? <p style={{color: 'red'}}>{formik.errors.asg_estudiante_id}</p> : null}</div>
-					</div>		
-					<div className="form-group mt-3" id="asg_conc_id">
-						<label>Seleccione la concertación para la asignación</label>
-						<select
-						  type="text"
-						  name="asg_conc_id"
-						  value={formik.values.asg_conc_id}
-						  onChange={formik.handleChange}
-						  onBlur={formik.handleBlur}
-						  className={"form-control mt-1" + 
-										(formik.errors.asg_conc_id && formik.touched.asg_conc_id
-										? "is-invalid" : "" )
-									}>
-							<option value="" label="Seleccione una opcion">Seleccione una opción</option>	
-							{RenderConcertaciones()} 
-						</select>
-						<div>{(formik.errors.asg_conc_id) ? <p style={{color: 'red'}}>{formik.errors.asg_conc_id}</p> : null}</div>
-					</div>		
+					</div>							
 					<div className="d-grid gap-2 mt-3">
 						<button type="submit" className="btn btn-success">
 								Guardar datos

@@ -112,10 +112,9 @@ export default function ClienteAdicionar ( ) {
 			.required("Se requiere la caegoría docente del cliente"),
 		cli_categoria_cientifica: Yup.string().trim()
 			.required("Se requiere la caegoría científica del cliente"),
-		cli_experiencia_practicas: Yup.string().trim()
-			.required("Se requiere la experiencia en prácticas profesionales del cliente"),
-		cli_experiencia_practicas: Yup.string().trim()
-			.required("Se requiere la experiencia en prácticas profesionales del cliente"),
+		cli_experiencia_practicas: Yup.boolean()
+			.oneOf([true, false], "Por favor seleccione ona opción")
+			.required("Se requiere marque una opción"),	
 		cli_numero_est_atendidos: Yup.number().positive()
 			.min(1)
 			.required("Se requiere el número de estudiantes atendidos por el cliente"),
@@ -217,7 +216,9 @@ export default function ClienteAdicionar ( ) {
 	const RenderUsuarios = () => {
 		return (			
 			usuarios.map(item => 
-				<option value={item.id} label={item.nombre}>{item.nombre}</option>				
+				<option value={item.id} label={item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}>
+					{item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}
+				</option>	
 			) 
 		)
 	};	

@@ -193,7 +193,9 @@ export default function EstudianteAdicionar ( ) {
 	const RenderUsuarios = () => {
 		return (			
 			usuarios.map(item => 
-				<option value={item.id} label={item.nombre}>{item.nombre}</option>				
+				<option value={item.id} label={item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}>
+					{item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}
+				</option>				
 			) 
 		)
 	};	

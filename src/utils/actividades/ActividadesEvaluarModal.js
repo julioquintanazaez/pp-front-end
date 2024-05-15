@@ -101,7 +101,7 @@ export default function ActividadesEvaluarModal( props ) {
 	return (
 		<>
 		<button className="btn btn-sm btn-success" onClick={handleShow}>
-			Modificar 
+			Evaluar 
 		</button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
