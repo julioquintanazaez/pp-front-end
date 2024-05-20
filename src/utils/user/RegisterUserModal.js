@@ -83,8 +83,10 @@ export default function RegisterUserModal( ) {
 			.required("Se requiere el correo para el usuario"),
 		role: Yup.string().trim()
 			.required("Se requiere el role para el usuario"),
-		hashed_password: Yup.string().trim()
-			.required("Se requiere introduzca una contraseña para el usuario"),						
+		hashed_password: Yup.string()
+			.min(5, "Password debe contener al menos 3 caracteres")
+			.required("Se requiere el password").matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*[\]{}()?"\\,><':;|_~`=+-])[a-zA-Z\d!@#$%^&*[\]{}()?"\\,><':;|_~`=+-]{12,99}$/,
+					'Debe contener al menos 5 caracteres, 1 mayúscula, 1 minúscila, 1 caracter especial, y 1 número'),					
 	});
 	
 	const registerInitialValues = {

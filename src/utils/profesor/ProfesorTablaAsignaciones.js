@@ -12,6 +12,9 @@ import { BiBox } from 'react-icons/bi';   //< BiBox />
 import ConcertacionModificarModal from './../concertacion/ConcertacionModificarModal.js';
 import ConcertacionEvaluarModal from './../concertacion/ConcertacionEvaluarModal.js';
 import AsignacionEvaluarModal from './../asignacion/AsignacionEvaluarModal.js';
+import ActividadesTablaModal from './../actividades/ActividadesTablaModal.js';
+import ActividadesProfesorCrearActividadModal from './../actividades/ActividadesProfesorCrearActividadModal.js';
+import AsignacionDetalleModal from './../asignacion/AsignacionDetalleModal.js';
 
 const ProfesorTablaAsignaciones = ( props ) => {
 	
@@ -63,7 +66,25 @@ const ProfesorTablaAsignaciones = ( props ) => {
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									Detalles
+									< AsignacionDetalleModal asignacion={asignacion} />
+								</div>
+							</div>								
+						</div>							
+					</td>
+					<td> 
+						<div className="row justify-content-center">	
+							<div className="col">
+								<div className="d-grid gap-2">
+									< ActividadesProfesorCrearActividadModal asignacion={asignacion} />
+								</div>
+							</div>								
+						</div>							
+					</td>
+					<td> 
+						<div className="row justify-content-center">	
+							<div className="col">
+								<div className="d-grid gap-2">
+									< ActividadesTablaModal email={asignacion.est_email} />
 								</div>
 							</div>								
 						</div>							
@@ -96,6 +117,8 @@ const ProfesorTablaAsignaciones = ( props ) => {
 						<th>Evaluacion</th>
 						<th>Fecha</th>
 						<th>Detalles</th>
+						<th>Tarea(+)</th>
+						<th>Tareas</th>
 						<th>Evaluar</th>
 					</tr>
 				</thead>

@@ -24,10 +24,8 @@ export default function ActividadesEvaluarModal( props ) {
 	const [asignaciones, setAsignaciones] = useState([]);	
 	
 	//Options configurations
-	const evaluar_options = [ //Aceptada, Atrazada, Rechazada, Iniciada
-								{ value: "Iniciada", label: "Iniciada" },
+	const evaluar_options = [ //Aceptada, Atrazada
 								{ value: "Atrazada", label: "Atrazada" },
-								{ value: "Rechazada", label: "Rechazada" },
 								{ value: "Aceptada", label: "Aceptada" }
 							];		
 	

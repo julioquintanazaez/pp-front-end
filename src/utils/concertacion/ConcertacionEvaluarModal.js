@@ -22,7 +22,6 @@ export default function ConcertacionEvaluarModal( props ) {
 	
 	const complejidad_options = [
 								{ value: "Positiva", label: "Positiva" },
-								{ value: "Negativa", label: "Negativa" },
 								{ value: "Mejorable", label: "Mejorable" }
 							];			
 	

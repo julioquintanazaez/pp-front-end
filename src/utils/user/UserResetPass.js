@@ -38,8 +38,10 @@ const UserResetPass = (props) => {
 	}
 	
 	const validationRules = Yup.object().shape({	
-		hashed_password: Yup.string().trim()
-			.required("Se requiere introduzca una contraseña para el usuario"),
+		hashed_password: Yup.string()
+			.min(5, "Password debe contener al menos 3 caracteres")
+			.required("Se requiere el password").matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*[\]{}()?"\\,><':;|_~`=+-])[a-zA-Z\d!@#$%^&*[\]{}()?"\\,><':;|_~`=+-]{12,99}$/,
+					'Debe contener al menos 5 caracteres, 1 mayúscula, 1 minúscila, 1 caracter especial, y 1 número'),
 		hashed_password_confirm: Yup.string().trim()
 			.oneOf([Yup.ref("hashed_password")])
 			.required("Confirme su contraseña para el usuario")	

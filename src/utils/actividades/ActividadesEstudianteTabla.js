@@ -19,13 +19,13 @@ const ActividadesEstudianteTabla = ( props ) => {
 	const [actividades, setActividades] = useState([]);	
 	
 	useEffect(()=> {		
-		fetchActividades(props.id_asignacion);			
+		fetchActividades(user.email);			
     }, []);	
 	
-	const fetchActividades = async ( id ) => {
+	const fetchActividades = async (email) => {
 		await axios({
 			method: 'get',
-			url: '/leer_actividades_tareas_asignacion/' + id,
+			url: '/leer_tareas_estudiante/' + email,
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -53,6 +53,7 @@ const ActividadesEstudianteTabla = ( props ) => {
 					<td>{actividad.act_est_memo}</td>	
 					<td>{actividad.act_prof_memo}</td>
 					<td>{actividad.act_cli_memo}</td>
+					<td>{actividad.act_resultado}</td>
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
@@ -85,6 +86,7 @@ const ActividadesEstudianteTabla = ( props ) => {
 						<th scope="col">Estudiante Memo</th>	
 						<th scope="col">Profesor Mmo</th>	
 						<th scope="col">Cliente Memo</th>	
+						<th scope="col">Resultado</th>	
 						<th scope="col">Modificar</th>
 						<th scope="col">Comentar</th>
 					</tr>

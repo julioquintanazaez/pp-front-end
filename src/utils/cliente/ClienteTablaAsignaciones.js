@@ -9,6 +9,8 @@ import { Table } from 'react-bootstrap';
 import { BiLike } from 'react-icons/bi';
 import { BiBox } from 'react-icons/bi';   //< BiBox />
 
+import AsignacionDetalleModal from './../asignacion/AsignacionDetalleModal.js';
+
 const ClienteTablaAsignaciones = ( props ) => {
 	
 	const { token } = useContext(Context);
@@ -59,7 +61,7 @@ const ClienteTablaAsignaciones = ( props ) => {
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									Detalles
+									< AsignacionDetalleModal asignacion={asignacion} />
 								</div>
 							</div>								
 						</div>							

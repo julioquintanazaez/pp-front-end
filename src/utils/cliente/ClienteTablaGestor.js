@@ -9,6 +9,8 @@ import { Table } from 'react-bootstrap';
 import { BiLike } from 'react-icons/bi';
 import { BiBox } from 'react-icons/bi';   //< BiBox />
 
+import AsignacionDetalleModal from './../asignacion/AsignacionDetalleModal.js';
+import ConcertacionDetalleModal from './../concertacion/ConcertacionDetalleModal.js';
 
 const ClienteTablaGestor = (props) => {
 	
@@ -58,7 +60,7 @@ const ClienteTablaGestor = (props) => {
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									Detalles
+									< ConcertacionDetalleModal concertacion={concertacion} />
 								</div>
 							</div>								
 						</div>							

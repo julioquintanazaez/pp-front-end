@@ -5,7 +5,6 @@ import { Context } from './context/Context';
 import { ProtectedRoute } from './context/ProtectedRoute';
 
 import Home from './pages/Home.js';
-import Login from './pages/Login.js';
 import Admin from './pages/Admin.js';
 import Entidad_Origen from './pages/Entidad_Origen.js';
 import Entidad_Destino from './pages/Entidad_Destino.js';
@@ -22,42 +21,49 @@ import ProfesorGestor from './pages/ProfesorGestor.js';
 import ClienteGestor from './pages/ClienteGestor.js';
 import EstudianteGestor from './pages/EstudianteGestor.js';
 
+import MainLogin from "./components/MainLogin";
+import MainNavbar from "./components/MainNavbar";
 
 const App = () => {	
 	
-	const { isLoggedIn, isAdmin, authroles } = useContext(Context);
+	const { isLoggedIn, authroles, token, currentuser } = useContext(Context);
 	
 	return (
-		<div>							
-			<Routes>
-				<Route index element={<Home />} />
-				<Route path="/" element={<Home />} />					
-				<Route path="/login" element={<Login />} />	
-				<Route element={<ProtectedRoute isAllowed={ isLoggedIn && isAdmin } />}>
-					<Route path="/admin" element={<Admin />} />
-					<Route path="/entidadorigen" element={<Entidad_Origen />} />	
-					<Route path="/entidaddestino" element={<Entidad_Destino />} />
-					<Route path="/profesor" element={<Profesor />} />	
-					<Route path="/cliente" element={<Cliente />} />	
-					<Route path="/estudiante" element={<Estudiante />} />
-					<Route path="/concertacion" element={<Concertacion />} />
-					<Route path="/tipotarea" element={<TipoTarea />} />
-					<Route path="/asignacion" element={<Asignacion />} />
-					<Route path="/actividades" element={<Actividades />} />	
-					<Route path="/actualizartarea" element={<ActualizarTarea />} />	
-				</Route>		
-				<Route element={<ProtectedRoute isAllowed={ isLoggedIn && authroles.includes('profesor')} />}>					
-					<Route path="/profesorgestor" element={<ProfesorGestor />} />	
-				</Route>	
-				<Route element={<ProtectedRoute isAllowed={ isLoggedIn && authroles.includes('cliente')} />}>					
-					<Route path="/clientegestor" element={<ClienteGestor />} />	
-				</Route>	
-				<Route element={<ProtectedRoute isAllowed={ isLoggedIn && authroles.includes('estudiante')} />}>					
-					<Route path="/estudiantegestor" element={<EstudianteGestor />} />	
-				</Route>	
-				<Route path="*" element={<p>There's nothing here: 404!</p>} />
-			</Routes>						
-		</div>
+		<>
+			<MainNavbar />
+			<MainLogin />
+			{token && (		
+				<div className="columns">							
+					<Routes>
+						<Route index element={<Home />} />
+						<Route path="/" element={<Home />} />					
+						<Route element={<ProtectedRoute isAllowed={ isLoggedIn && authroles.includes('admin') } />}>
+							<Route path="/admin" element={<Admin />} />
+							<Route path="/entidadorigen" element={<Entidad_Origen />} />	
+							<Route path="/entidaddestino" element={<Entidad_Destino />} />
+							<Route path="/profesor" element={<Profesor />} />	
+							<Route path="/cliente" element={<Cliente />} />	
+							<Route path="/estudiante" element={<Estudiante />} />
+							<Route path="/concertacion" element={<Concertacion />} />
+							<Route path="/tipotarea" element={<TipoTarea />} />
+							<Route path="/asignacion" element={<Asignacion />} />
+							<Route path="/actividades" element={<Actividades />} />	
+							<Route path="/actualizartarea" element={<ActualizarTarea />} />	
+						</Route>		
+						<Route element={<ProtectedRoute isAllowed={ isLoggedIn && authroles.includes('profesor')} />}>					
+							<Route path="/profesorgestor" element={<ProfesorGestor />} />	
+						</Route>	
+						<Route element={<ProtectedRoute isAllowed={ isLoggedIn && authroles.includes('cliente')} />}>					
+							<Route path="/clientegestor" element={<ClienteGestor />} />	
+						</Route>	
+						<Route element={<ProtectedRoute isAllowed={ isLoggedIn && authroles.includes('estudiante')} />}>					
+							<Route path="/estudiantegestor" element={<EstudianteGestor />} />	
+						</Route>	
+						<Route path="*" element={<p>There's nothing here: 404!</p>} />
+					</Routes>						
+				</div>
+			)}
+		</>
 	);
 }
 

@@ -13,8 +13,8 @@ import AsignacionEvaluarModal from './../asignacion/AsignacionEvaluarModal.js';
 import AsignacionModificarTipoTareaModal from './../asignacion/AsignacionModificarTipoTareaModal.js';
 import AsignacionModificarActoresModal from './../asignacion/AsignacionModificarActoresModal.js';
 import AsignacionActivar from './../asignacion/AsignacionActivar.js';
-//
-//
+import AsignacionDetalleModal from './../asignacion/AsignacionDetalleModal.js';
+
 
 const AsignacionTabla = (props) => {
 	
@@ -67,7 +67,7 @@ const AsignacionTabla = (props) => {
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									Detalles
+									< AsignacionDetalleModal asignacion={asignacion} />
 								</div>
 							</div>								
 						</div>							
@@ -112,15 +112,6 @@ const AsignacionTabla = (props) => {
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									< AsignacionModificarActoresModal asignacion={asignacion} />
-								</div>
-							</div>	
-						</div>							
-					</td>		
-					<td> 
-						<div className="row justify-content-center">	
-							<div className="col">
-								<div className="d-grid gap-2">
 									< AsignacionEvaluarModal asignacion={asignacion} />
 								</div>
 							</div>	
@@ -150,7 +141,6 @@ const AsignacionTabla = (props) => {
 						<th scope="col">Modificar</th>
 						<th scope="col">Eliminar</th>
 						<th scope="col">Tipo</th>
-						<th scope="col">Actores</th>
 						<th scope="col">Evaluar</th>
 					</tr>
 				</thead>

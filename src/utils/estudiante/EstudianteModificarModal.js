@@ -19,16 +19,16 @@ export default function estudianteModificarModal( props ) {
 	
 	//Options configurations
 	const nivel_tecno_options = [
-								{ value: "Ninguno", label: "Ninguno" },
-								{ value: "Basico", label: "Basico" },
-								{ value: "Medio", label: "Medio" },
-								{ value: "Alto", label: "Alto" }
+								{ value: "Ninguna", label: "Ninguna" },
+								{ value: "Basica", label: "Basica" },
+								{ value: "Media", label: "Media" },
+								{ value: "Alta", label: "Alta" }
 							];	
-
+							
 	const por_econom_options = [
-								{ value: "Bajo", label: "Bajo" },
-								{ value: "Medio", label: "Medio" },
-								{ value: "Alto", label: "Alto" }
+								{ value: "Baja", label: "Baja" },
+								{ value: "Media", label: "Media" },
+								{ value: "Alta", label: "Alta" }
 							];	
 							
 	const genero = [
@@ -39,8 +39,7 @@ export default function estudianteModificarModal( props ) {
 	const estado_civil_opt = [
 								{ value: "Soltero", label: "Soltero" },
 								{ value: "Casado", label: "Casado" },
-								{ value: "Divorciado", label: "Divorciado" },
-								{ value: "Viudo", label: "Viudo" }
+								{ value: "Divorciado", label: "Divorciado" }
 							];	
 		
 	

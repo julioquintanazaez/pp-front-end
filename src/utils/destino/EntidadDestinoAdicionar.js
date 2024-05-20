@@ -13,10 +13,10 @@ export default function EntidadDestinoAdicionar ( ) {
 	
 	//Options configurations
 	const nivel_tecno_options = [
-								{ value: "Ninguno", label: "Ninguno" },
-								{ value: "Basico", label: "Basico" },
-								{ value: "Medio", label: "Medio" },
-								{ value: "Alto", label: "Alto" }
+								{ value: "Ninguna", label: "Ninguna" },
+								{ value: "Basica", label: "Basica" },
+								{ value: "Media", label: "Media" },
+								{ value: "Alta", label: "Alta" }
 							];	
 	
 	//date.toISOString().split('T')[0],

@@ -18,55 +18,51 @@ export const ContextProvider = ({ children }) => {
 	const [messages, setMessages] = useState("");	
 	
 	
+	useEffect(()=> {
+		
+		const fetchGetCurrentUser = async () => {
+		
+			await axios({
+				method: 'get',
+				url: '/users/me/',                         
+				headers: {
+					'accept': 'application/json',
+					'Authorization': "Bearer " + token,  
+				},
+			}).then(response => {
+				if (response.status === 200) {			
+					console.log("Acceso al sistema exitoso");
+					setUser(response.data);	
+					setIsLoggedIn(true);
+					setAuthRoles(response.data.role);
+					handleRole(response.data.role);		
+					window.localStorage.setItem("PP_APP_TOKEN_2024", token);	
+				}else {	
+					console.log("No existe el token");
+					setToken(null); 
+					window.localStorage.removeItem("PP_APP_TOKEN_2024");								
+					handleLogout();		
+				}
+			}).catch((error) => {
+				console.error({"message":error.message, "detail":error.response.data.detail});
+				handleLogout();
+			});			
+		}
+		
+		fetchGetCurrentUser();
+		
+	}, [token]);	
+	
 	const handleLogout = () => {
-		setToken("");
+		setToken(null);
 		setUser({});
 		setIsLoggedIn(false);
 		setIsAdmin(false);
 		setAuthRoles([])
 		window.localStorage.removeItem("PP_APP_TOKEN_2024");
-		navigate('/');
+		//navigate('/');
 	}
 	
-	useEffect(()=> {
-		if (token){	
-			try {
-				window.localStorage.setItem("PP_APP_TOKEN_2024", token);	
-				handleGetCurrentUser();
-			}catch(err){}
-		}else{
-			try {
-				window.localStorage.removeItem("PP_APP_TOKEN_2024");
-			}catch(err){}
-		}
-	}, [token]);	
-	
-	const handleGetCurrentUser = async () => {
-		
-		await axios({
-			method: 'get',
-			url: '/get_user_status/',                         
-			headers: {
-				'accept': 'application/json',
-				'Authorization': "Bearer " + token,  
-			},
-		}).then(response => {
-			if (response.status === 200) {				
-				setUser(response.data);	
-				setIsLoggedIn(true);
-				setAuthRoles(response.data.role);
-				handleRole(response.data.role);
-				console.log("Update data from current user");
-				setMessages("User logged-in successfully" + Math.random());				
-			}else {	
-				console.log("Registration Failed from context, please try again");				
-				handleLogout();		
-			}
-		}).catch((error) => {
-			handleLogout();
-		});			
-	}
-	 
 	const handleRole = (role) => {	
 		if (role.includes('admin')){
 			setIsAdmin(true);				

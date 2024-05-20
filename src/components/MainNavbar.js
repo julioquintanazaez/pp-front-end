@@ -13,7 +13,7 @@ import { LinkContainer } from "react-router-bootstrap";
 const Navigation = ( props ) => {
 	
 	const { handleLogout } = useContext(Context);
-	const { user, isAdmin, isLoggedIn, authroles } = useContext(Context);
+	const { user, isLoggedIn, authroles } = useContext(Context);
 	
 	const logoutUser = () => {
 		handleLogout();
@@ -29,7 +29,7 @@ const Navigation = ( props ) => {
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse className="justify-content-end">
 						<Nav className="me-auto" activeKey={window.location.pathname}>							
-							{isAdmin && 
+							{authroles.includes('admin') && 
 							<NavDropdown title="Gestión de Recursos" id="recursos">	
 								<NavDropdown.Item>
 									<LinkContainer to="/entidadorigen">
@@ -58,7 +58,7 @@ const Navigation = ( props ) => {
 								</NavDropdown.Item>
 							</NavDropdown>
 							}
-							{isAdmin && 
+							{authroles.includes('admin') && 
 							<NavDropdown title="Gestión de Actividades" id="gestion">	
 								<NavDropdown.Item>
 									<LinkContainer to="/concertacion">
@@ -87,7 +87,7 @@ const Navigation = ( props ) => {
 								</NavDropdown.Item>
 							</NavDropdown>
 							}
-							{authroles.includes('profesor') && !isAdmin &&
+							{authroles.includes('profesor') && !authroles.includes('admin') &&
 							<NavDropdown title="Profesor" id="profesor">									
 								<NavDropdown.Item>
 									<LinkContainer to="/profesorgestor">
@@ -96,7 +96,7 @@ const Navigation = ( props ) => {
 								</NavDropdown.Item>	
 							</NavDropdown >								
 							}
-							{authroles.includes('cliente') && !isAdmin  &&
+							{authroles.includes('cliente') && !authroles.includes('admin')  &&
 							<NavDropdown title="Cliente" id="cliente">									
 								<NavDropdown.Item>
 									<LinkContainer to="/clientegestor">
@@ -105,7 +105,7 @@ const Navigation = ( props ) => {
 								</NavDropdown.Item>	
 							</NavDropdown >								
 							}
-							{authroles.includes('estudiante') && !isAdmin  &&
+							{authroles.includes('estudiante') && !authroles.includes('admin')  &&
 							<NavDropdown title="Estudiante" id="estudiante">									
 								<NavDropdown.Item>
 									<LinkContainer to="/estudiantegestor">
@@ -114,7 +114,7 @@ const Navigation = ( props ) => {
 								</NavDropdown.Item>	
 							</NavDropdown >								
 							}
-							{isAdmin && 
+							{authroles.includes('admin') && 
 							<NavDropdown title="Panel Administrador" id="adminstrador">									
 								<NavDropdown.Item>
 									<LinkContainer to="/admin">
@@ -125,22 +125,14 @@ const Navigation = ( props ) => {
 							}												
 						</Nav>	
 						<Nav className="justify-content-end">
-							<NavDropdown title="Sistema" id="basic-nav-dropdown">
-							{!isLoggedIn
-								?
-								<NavDropdown.Item as="button">
-									<LinkContainer to="/login">
-										<Nav.Link>Autenticarse</Nav.Link>
-									</LinkContainer>
-								</NavDropdown.Item>
-								:								
+						{isLoggedIn && (
+							<NavDropdown title={user.email} id="basic-nav-dropdown">	
 								<NavDropdown.Item as="button" onClick={logoutUser}>
 									Salir
-								</NavDropdown.Item>								
-							}
+								</NavDropdown.Item>	
 							</NavDropdown>
-						</Nav>
-						
+						)}
+						</Nav>						
 					</Navbar.Collapse>
 				</Container>
 			</Navbar>

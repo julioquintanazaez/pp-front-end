@@ -12,6 +12,7 @@ import ConcertacionModificarModal from './../concertacion/ConcertacionModificarM
 import ConcertacionActoresModificarModal from './../concertacion/ConcertacionActoresModificarModal.js';
 import ConcertacionEvaluarModal from './../concertacion/ConcertacionEvaluarModal.js';
 import ConcertacionActivar from './../concertacion/ConcertacionActivar.js';
+import ConcertacionDetalleModal from './../concertacion/ConcertacionDetalleModal.js';
 
 
 const ConcertacionTabla = (props) => {
@@ -62,7 +63,7 @@ const ConcertacionTabla = (props) => {
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									Detalles
+									< ConcertacionDetalleModal concertacion={concertacion} />
 								</div>
 							</div>								
 						</div>							

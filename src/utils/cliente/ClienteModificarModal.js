@@ -18,10 +18,10 @@ export default function ClienteModificarModal( props ) {
 	
 	//Options configurations
 	const nivel_tecno_options = [
-								{ value: "Ninguno", label: "Ninguno" },
-								{ value: "Basico", label: "Basico" },
-								{ value: "Medio", label: "Medio" },
-								{ value: "Alto", label: "Alto" }
+								{ value: "Ninguna", label: "Ninguna" },
+								{ value: "Basica", label: "Basica" },
+								{ value: "Media", label: "Media" },
+								{ value: "Alta", label: "Alta" }
 							];	
 							
 	const genero = [
@@ -33,7 +33,6 @@ export default function ClienteModificarModal( props ) {
 								{ value: "Soltero", label: "Soltero" },
 								{ value: "Casado", label: "Casado" },
 								{ value: "Divorciado", label: "Divorciado" },
-								{ value: "Viudo", label: "Viudo" }
 							];	
 		
 	const categoria_doc_opt = [

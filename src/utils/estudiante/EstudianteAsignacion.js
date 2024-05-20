@@ -41,25 +41,33 @@ const EstudianteAsignacion = ( props ) => {
 	}
 
 	return (
-		<>			
-			<h1> Cosas del estudiante </h1>
-			<h4> {estudianteasignacion.est_nombre + " " + estudianteasignacion.est_primer_appellido + " " + estudianteasignacion.est_segundo_appellido}</h4>
-			<br/>
-			<h5>Asignación</h5>
-			<p1>Tema: {estudianteasignacion.asg_descripcion}</p1>
-			<br/>
-			<p1>Tipo de actividad: {estudianteasignacion.tarea_tipo_nombre}</p1>
-			<br/>
-			<p1>Complejidad de la actividad: {estudianteasignacion.asg_complejidad_estimada}</p1>
-			<br/>
-			<br/>
-			<h4>Tutor</h4>
-			<p1>{estudianteasignacion.prf_nombre + " " + estudianteasignacion.prf_primer_appellido + " " + estudianteasignacion.prf_segundo_appellido}</p1>		
-			<br/>	
-			<br/>
-			<h4>Assesor de empresa</h4>
-			<p1>{estudianteasignacion.cli_nombre + " " + estudianteasignacion.cli_primer_appellido + " " + estudianteasignacion.cli_segundo_appellido}</p1>
-			
+		<>	
+			{estudianteasignacion != null ? (
+				<div className="estudiante-panel">
+					<h1> Cosas del estudiante </h1>
+					<h4> {estudianteasignacion.est_nombre + " " + estudianteasignacion.est_primer_appellido + " " + estudianteasignacion.est_segundo_appellido}</h4>
+					<br/>
+					<h5>Asignación</h5>
+					<p1>Tema: {estudianteasignacion.asg_descripcion}</p1>
+					<br/>
+					<p1>Tipo de actividad: {estudianteasignacion.tarea_tipo_nombre}</p1>
+					<br/>
+					<p1>Complejidad de la actividad: {estudianteasignacion.asg_complejidad_estimada}</p1>
+					<br/>
+					<br/>
+					<h4>Tutor</h4>
+					<p1>{estudianteasignacion.prf_nombre + " " + estudianteasignacion.prf_primer_appellido + " " + estudianteasignacion.prf_segundo_appellido}</p1>		
+					<br/>	
+					<br/>
+					<h4>Assesor de empresa</h4>
+					<p1>{estudianteasignacion.cli_nombre + " " + estudianteasignacion.cli_primer_appellido + " " + estudianteasignacion.cli_segundo_appellido}</p1>
+				</div>
+				) : (
+				<div className="estudiante-panel">
+					<span className="badge bg-danger">  No existen datos para mostrar </span>
+				</div>
+				)
+			}
 		</>
 	);
 }

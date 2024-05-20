@@ -16,20 +16,23 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 
 
-export default function ActividadesEstudianteOpinionModal( props ) {
+export default function ActividadesProfesorCrearActividadModal( props ) {
 	
 	const { token, setMessages, handleLogout } = useContext(Context);
 	const [show, setShow] = useState(false);
 	const [validated, setValidated] = useState(false);
 	const [asignaciones, setAsignaciones] = useState([]);	
 	
-	const estudianteOpinionActividades = async () => {
+	console.log(props.asignacion);
+	
+	const profesorCrearActividad = async (id) => {
 		
 		await axios({
-			method: 'put',
-			url: "/actualizar_actividad_tarea_estudiante/" + props.actividad.id_actividad_tarea,
+			method: 'post',
+			url: '/crear_actividad_tarea_profesor/' + id,
 			data: {
-				act_est_memo: formik.values.act_est_memo						
+				act_nombre: formik.values.act_nombre,
+				act_prof_memo: formik.values.act_prof_memo			
 			},
 			headers: {
 				'accept': 'application/json',
@@ -37,8 +40,8 @@ export default function ActividadesEstudianteOpinionModal( props ) {
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				setMessages("Opinion estudiante actividad actualizado"+ Math.random());
-				Swal.fire("Opinión del estudiante actividad actualizado exitosamente", "", "success");
+				setMessages("Actividad creada por profesor"+ Math.random());
+				Swal.fire("Actividad creada por profesor exitosamente", "", "success");
 			}
 		}).catch((error) => {
 			console.error({"message":error.message, "detail":error.response.data.detail});
@@ -51,10 +54,10 @@ export default function ActividadesEstudianteOpinionModal( props ) {
 	}
 	
 	const handleShow = () => {
-		if (props.actividad.id_actividad_tarea != null){	
+		if (props.asignacion.id_asignacion != null){	
 			setShow(true);  
 		}else{
-			Swal.fire("No se ha seleccionado la Actividad de tema", props.actividad.id_actividad_tarea, "error");
+			Swal.fire("No se ha seleccionado la asignación de tema", props.asignacion.id_asignacion, "error");
 		}
 	}
 	
@@ -62,13 +65,16 @@ export default function ActividadesEstudianteOpinionModal( props ) {
 	const siglasOnly = (value) => /[^A-Z]|[^0-9]d+$/.test(value) 
 	const isNameOnly = (value) => /[^A-Za-z]$/.test(value) 
 	
-	const validationRules = Yup.object().shape({		
-		act_est_memo: Yup.string().trim()
-			.required("Se requiere la estrategia del estudiante para la actividad")	
+	const validationRules = Yup.object().shape({
+		act_nombre: Yup.string().trim()
+			.required("Se requiere el nombre para la actividad"),
+		act_prof_memo: Yup.string().trim()
+			.required("Se requiere el nombre para la actividad")			
 	});
 	
 	const registerInitialValues = {
-		act_est_memo: props.actividad.act_est_memo
+		act_nombre: "",
+		act_prof_memo: ""	
 	};
 	
 	const formik = useFormik({
@@ -76,7 +82,7 @@ export default function ActividadesEstudianteOpinionModal( props ) {
 		onSubmit: (values) => {
 			console.log("Modificando data...")
 			console.log(values)
-			estudianteOpinionActividades();
+			profesorCrearActividad(props.asignacion.id_asignacion);
 			formik.resetForm();
 		},
 		validationSchema: validationRules
@@ -85,39 +91,54 @@ export default function ActividadesEstudianteOpinionModal( props ) {
 	return (
 		<>
 		<button className="btn btn-sm btn-warning" onClick={handleShow}>
-			Comentar 
+			(+) 
 		</button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Modificar {props.actividad.act_nombre} 
+					<h2>Nueva tarea</h2>  
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-			
+				
 				<form className="form-control" onSubmit={formik.handleSubmit}>
-					<div className="form-group mt-3" id="act_est_memo">
-						<label>Introduzca la estrategia del estudiante para desarrollar la actividad</label>
-						<textarea
-						  rows="2"
-						  name="act_est_memo"
-						  value={formik.values.act_est_memo}
+					<div className="form-group mt-3" id="act_nombre">
+						<label>Introduzca el nombre para la actividad</label>
+						<input
+						  type="text"
+						  name="act_nombre"
+						  value={formik.values.act_nombre}
 						  onChange={formik.handleChange}
 						  onBlur={formik.handleBlur}
 						  className={"form-control mt-1" + 
-										(formik.errors.act_est_memo && formik.touched.act_est_memo
+										(formik.errors.act_nombre && formik.touched.act_nombre
 										? "is-invalid" : "" )}
-						  placeholder="Estrategia del estudiante"
+						  placeholder="Nombre para la actividad"
+						/>					
+						<div>{(formik.errors.act_nombre) ? <p style={{color: 'red'}}>{formik.errors.act_nombre}</p> : null}</div>
+					</div>		
+					<div className="form-group mt-3" id="act_prof_memo">
+						<label>Introduzca la estrategia del profesor para desarrollar la actividad</label>
+						<textarea
+						  rows="2"
+						  name="act_prof_memo"
+						  value={formik.values.act_prof_memo}
+						  onChange={formik.handleChange}
+						  onBlur={formik.handleBlur}
+						  className={"form-control mt-1" + 
+										(formik.errors.act_prof_memo && formik.touched.act_prof_memo
+										? "is-invalid" : "" )}
+						  placeholder="Estrategia para el profesor"
 						>
 						</textarea>
-						<div>{(formik.errors.act_est_memo) ? <p style={{color: 'red'}}>{formik.errors.act_est_memo}</p> : null}</div>
-					</div>	
+						<div>{(formik.errors.act_prof_memo) ? <p style={{color: 'red'}}>{formik.errors.act_prof_memo}</p> : null}</div>
+					</div>						
 					<div className="d-grid gap-2 mt-3">
 						<button type="submit" className="btn btn-success">
 								Guardar datos
 						</button>					
 					</div>		
-				</form>
+				</form>				
 			
 			</Modal.Body>
 			<Modal.Footer>		

@@ -11,6 +11,7 @@ import { BiBox } from 'react-icons/bi';   //< BiBox />
 
 import ConcertacionModificarModal from './../concertacion/ConcertacionModificarModal.js';
 import ConcertacionEvaluarModal from './../concertacion/ConcertacionEvaluarModal.js';
+import ConcertacionDetalleModal from './../concertacion/ConcertacionDetalleModal.js';
 
 const ProfesorTablaGestor = (props) => {
 	
@@ -60,7 +61,7 @@ const ProfesorTablaGestor = (props) => {
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									Detalles
+									< ConcertacionDetalleModal concertacion={concertacion} />
 								</div>
 							</div>								
 						</div>							

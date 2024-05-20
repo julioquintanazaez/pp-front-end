@@ -24,9 +24,7 @@ export default function AsignacionEvaluarModal( props ) {
 	
 	//Options configurations
 	const evaluacion_options = [
-								{ value: "NoEvaluada", label: "NoEvaluada" },
 								{ value: "Mejorable", label: "Mejorable" },
-								{ value: "Negativa", label: "Negativa" },
 								{ value: "Positiva", label: "Positiva" }
 							];	
 	
