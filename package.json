@@ -6,8 +6,9 @@
   "description": "Aplicación para apoyo a la toma de decisiones de la Prácticas Profesionales de los estudiantes en la universidad",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server .",
-    "build": "webpack ."
+    "build": "webpack --mode production",
+    "start": "webpack serve --mode development",
+    "dev": "webpack --mode development"
   },
   "keywords": [],
   "author": "",
