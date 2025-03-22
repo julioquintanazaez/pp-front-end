@@ -39,13 +39,13 @@ const MainLogin = () =>{
 	
 	const validationRules = Yup.object().shape({
 		username: Yup.string().trim()	
-			.min(5, "Nombre de usuario debe contener al menos 3 caracteres")
-			.max(15, "Nombre de usuario debe contener a lo m�ximo 15 caracteres")
+			.min(4, "Nombre de usuario debe contener al más de 3 caracteres")
+			.max(15, "Nombre de usuario debe contener a lo máximo 15 caracteres")
 			.required("Se requiere el nombre de usuario"),
 		password: Yup.string()
 			.min(5, "Password debe contener al menos 3 caracteres")
 			.required("Se requiere el password").matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*[\]{}()?"\\,><':;|_~`=+-])[a-zA-Z\d!@#$%^&*[\]{}()?"\\,><':;|_~`=+-]{12,99}$/,
-					'Debe contener al menos 5 caracteres, 1 may�scula, 1 min�scila, 1 caracter especial, y 1 n�mero'),
+					'Debe contener al menos 5 caracteres, 1 mayúscula, 1 minúscila, 1 caracter especial, y 1 número'),
 	});
 	
 	const registerInitialValues = {

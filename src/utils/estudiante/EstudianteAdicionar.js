@@ -53,7 +53,7 @@ export default function EstudianteAdicionar ( ) {
 				est_pos_tecnica_escuela : formik.values.est_pos_tecnica_escuela,
 				est_pos_tecnica_hogar : formik.values.est_pos_tecnica_hogar,
 				est_trab_remoto : formik.values.est_trab_remoto,
-				est_entidad_id : formik.values.est_entidad_id,	
+				est_universidad_id : formik.values.est_universidad_id,	
 				user_estudiante_id : formik.values.user_estudiante_id
 			},
 			headers: {
@@ -76,27 +76,27 @@ export default function EstudianteAdicionar ( ) {
 	
 	const validationRules = Yup.object().shape({		
 		est_genero: Yup.string().trim()
-			.required("Se requiere el género del estudiante"),
+			.required("Se requiere el gï¿½nero del estudiante"),
 		est_estado_civil: Yup.string().trim()
 			.required("Se requiere el estado civil del estudiante"),
 		est_trabajo: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione ona opción")
-			.required("Se requiere marque una opción"),	
+			.oneOf([true, false], "Por favor seleccione ona opciï¿½n")
+			.required("Se requiere marque una opciï¿½n"),	
 		est_becado: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione ona opción")
-			.required("Se requiere marque una opción"),	
+			.oneOf([true, false], "Por favor seleccione ona opciï¿½n")
+			.required("Se requiere marque una opciï¿½n"),	
 		est_hijos: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione ona opción")
-			.required("Se requiere seleccione la opción de hijos del estudiante"),
+			.oneOf([true, false], "Por favor seleccione ona opciï¿½n")
+			.required("Se requiere seleccione la opciï¿½n de hijos del estudiante"),
 		est_posibilidad_economica: Yup.string().trim()
-			.required("Se requiere la posibilidad econñomica del del estudiante"),
+			.required("Se requiere la posibilidad econï¿½omica del del estudiante"),
 		est_pos_tecnica_escuela: Yup.string().trim()
-			.required("Se requiere la posibilidad técnica del trabajo del estudiante"),
+			.required("Se requiere la posibilidad tï¿½cnica del trabajo del estudiante"),
 		est_pos_tecnica_hogar: Yup.string().trim()
-			.required("Se requiere la posibilidad técnica del hogar del estudiante"),
+			.required("Se requiere la posibilidad tï¿½cnica del hogar del estudiante"),
 		est_trab_remoto: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione ona opción")
-			.required("Se requiere marque una opción"),	
+			.oneOf([true, false], "Por favor seleccione ona opciï¿½n")
+			.required("Se requiere marque una opciï¿½n"),	
 		est_entidad_id: Yup.string().trim()
 			.required("Se requiere el centro de pertenencia del estudiante"),
 		user_estudiante_id: Yup.string().trim()
@@ -203,7 +203,7 @@ export default function EstudianteAdicionar ( ) {
 		<>
 			<form className="form-control" onSubmit={formik.handleSubmit}>
 				<div className="form-group mt-3" id="user_estudiante_id">
-					<label>Seleccione un estudiante para trabajar en las prácticas laborales</label>
+					<label>Seleccione un estudiante para trabajar en las prï¿½cticas laborales</label>
 					<select
 					  type="text"
 					  name="user_estudiante_id"
@@ -220,7 +220,7 @@ export default function EstudianteAdicionar ( ) {
 					<div>{(formik.errors.user_estudiante_id) ? <p style={{color: 'red'}}>{formik.errors.user_estudiante_id}</p> : null}</div>
 				</div>		
 				<div className="form-group mt-3" id="est_genero">
-					<label>Seleccione el género para el estudiante</label>
+					<label>Seleccione el gï¿½nero para el estudiante</label>
 					<select
 					  type="text"
 					  name="est_genero"
@@ -252,7 +252,7 @@ export default function EstudianteAdicionar ( ) {
 					<div>{(formik.errors.est_estado_civil) ? <p style={{color: 'red'}}>{formik.errors.est_estado_civil}</p> : null}</div>
 				</div>	
 				<div className="form-group mt-3" id="est_becado">			
-					<label>Marque la opción correcta para la beca del estudiante</label>
+					<label>Marque la opciï¿½n correcta para la beca del estudiante</label>
 					<br/>
 					<label>Es becado (Si): </label>
 					<input
@@ -271,7 +271,7 @@ export default function EstudianteAdicionar ( ) {
 					/>			
 				</div>	
 				<div className="form-group mt-3" id="est_trabajo">			
-					<label>Marque la opción correcta para el trabajo del estudiante</label>
+					<label>Marque la opciï¿½n correcta para el trabajo del estudiante</label>
 					<br/>
 					<label>Trabaja (Si): </label>
 					<input
@@ -290,7 +290,7 @@ export default function EstudianteAdicionar ( ) {
 					/>			
 				</div>	
 				<div className="form-group mt-3" id="est_hijos">			
-					<label>Marque la opción correcta para hijos del estudiante</label>
+					<label>Marque la opciï¿½n correcta para hijos del estudiante</label>
 					<br/>
 					<label>Tiene hijos (Si): </label>
 					<input
@@ -309,7 +309,7 @@ export default function EstudianteAdicionar ( ) {
 					/>			
 				</div>	
 				<div className="form-group mt-3" id="est_posibilidad_economica">
-					<label>Seleccione el nivel tecnológico para el trabajo del estudiante</label>
+					<label>Seleccione el nivel tecnolï¿½gico para el trabajo del estudiante</label>
 					<select
 					  type="text"
 					  name="est_posibilidad_economica"
@@ -325,7 +325,7 @@ export default function EstudianteAdicionar ( ) {
 					<div>{(formik.errors.est_posibilidad_economica) ? <p style={{color: 'red'}}>{formik.errors.est_posibilidad_economica}</p> : null}</div>
 				</div>	
 				<div className="form-group mt-3" id="est_pos_tecnica_escuela">
-					<label>Seleccione el nivel tecnológico para el centro de estudios del estudiante</label>
+					<label>Seleccione el nivel tecnolï¿½gico para el centro de estudios del estudiante</label>
 					<select
 					  type="text"
 					  name="est_pos_tecnica_escuela"
@@ -341,7 +341,7 @@ export default function EstudianteAdicionar ( ) {
 					<div>{(formik.errors.est_pos_tecnica_escuela) ? <p style={{color: 'red'}}>{formik.errors.est_pos_tecnica_escuela}</p> : null}</div>
 				</div>		
 				<div className="form-group mt-3" id="est_pos_tecnica_hogar">
-					<label>Seleccione el nivel tecnológico para el hogar del estudiante</label>
+					<label>Seleccione el nivel tecnolï¿½gico para el hogar del estudiante</label>
 					<select
 					  type="text"
 					  name="est_pos_tecnica_hogar"
@@ -357,7 +357,7 @@ export default function EstudianteAdicionar ( ) {
 					<div>{(formik.errors.est_pos_tecnica_hogar) ? <p style={{color: 'red'}}>{formik.errors.est_pos_tecnica_hogar}</p> : null}</div>
 				</div>					
 				<div className="form-group mt-3" id="est_trab_remoto">			
-					<label>Marque la opción correcta para la posibilidad de trabajo remoto del estudiante</label>
+					<label>Marque la opciï¿½n correcta para la posibilidad de trabajo remoto del estudiante</label>
 					<br/>
 					<label>Puede trabajar remoto (Si): </label>
 					<input

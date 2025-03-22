@@ -14,11 +14,13 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 
 
-export default function ConcertacionModificarModal( props ) {
+export default function ConcertacionAdicionarModal( ) {
 	
-	const { token, setMessages, handleLogout } = useContext(Context);
+	const { token, setMessages, messages, handleLogout } = useContext(Context);
 	const [show, setShow] = useState(false);
 	const [validated, setValidated] = useState(false);
+    const [profesores, setProfesores] = useState([]);
+	const [clientes, setClientes] = useState([]);
 	
 	//Options configurations
 	const complejidad_options = [
@@ -27,18 +29,19 @@ export default function ConcertacionModificarModal( props ) {
 								{ value: "Alta", label: "Alta" }
 							];	
 							
-	const modificarConcertacion = async () => {
-		
+	const adicionarConcertacion = async () => {
 		await axios({
-			method: 'put',
-			url: "/concertacion/actualizar_concertacion/" + props.concertacion.id_conc_tema,
+			method: 'post',
+			url: "/concertacion/crear_concertacion/",
 			data: {
 				conc_tema : formik.values.conc_tema,
 				conc_descripcion : formik.values.conc_descripcion,
 				conc_valoracion_prof : formik.values.conc_valoracion_prof,
 				conc_valoracion_cliente : formik.values.conc_valoracion_cliente,
 				conc_complejidad : formik.values.conc_complejidad,
-				conc_actores_externos : formik.values.conc_actores_externos				
+				conc_actores_externos : formik.values.conc_actores_externos,
+                conc_profesor_id : formik.values.conc_profesor_id,  
+				conc_cliente_id : formik.values.conc_cliente_id			
 			},
 			headers: {
 				'accept': 'application/json',
@@ -46,8 +49,8 @@ export default function ConcertacionModificarModal( props ) {
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				setMessages("Concertacion actualizado"+ Math.random());
-				Swal.fire("Concertacion actualizado exitosamente", "", "success");
+				setMessages("Concertacion creada"+ Math.random());
+				Swal.fire("Concertacion creada exitosamente", "", "success");
 			}
 		}).catch((error) => {
 			console.error({"message":error.message, "detail":error.response.data.detail});
@@ -60,11 +63,7 @@ export default function ConcertacionModificarModal( props ) {
 	}
 	
 	const handleShow = () => {
-		if (props.concertacion.id_conc_tema != null){	
-			setShow(true);  
-		}else{
-			Swal.fire("No se ha seleccionado Concertacion", props.concertacion.id_conc_tema, "error");
-		}
+        setShow(true);  
 	}
 	
 	const digitsOnly = (value) => /^\d+$/.test(value) //--:/^[0-9]d+$/
@@ -83,24 +82,30 @@ export default function ConcertacionModificarModal( props ) {
 		conc_complejidad: Yup.string().trim()
 			.required("Se requiere el nivel de complejidad para la concertación"),
 		conc_actores_externos: Yup.string().trim()
-			.required("Se requiere número de actores externos para la concertación")
+			.required("Se requiere número de actores externos para la concertación"),
+        conc_profesor_id: Yup.string().trim()
+            .required("Se requiere el profesor para la concertación"),
+        conc_cliente_id: Yup.string().trim()
+            .required("Se requiere el cliente para la concertación")	
 	});
 	
 	const registerInitialValues = {
-		conc_tema : props.concertacion.conc_tema,
-		conc_descripcion : props.concertacion.conc_descripcion,
-		conc_valoracion_prof : props.concertacion.conc_valoracion_prof,
-		conc_valoracion_cliente : props.concertacion.conc_valoracion_cliente,
-		conc_complejidad : props.concertacion.conc_complejidad,
-		conc_actores_externos : props.concertacion.conc_actores_externos
+		conc_tema : "",
+		conc_descripcion : "",
+		conc_valoracion_prof : "",
+		conc_valoracion_cliente : "",
+		conc_complejidad : complejidad_options[0]["value"],
+		conc_actores_externos : 0,
+		conc_profesor_id : "",  
+		conc_cliente_id : ""	
 	};
 	
 	const formik = useFormik({
 		initialValues: registerInitialValues,
 		onSubmit: (values) => {
-			console.log("Modificando data...")
+			console.log("Guardando...")
 			console.log(values)
-			modificarConcertacion();
+			adicionarConcertacion();
 			formik.resetForm();
 			handleClose();
 		},
@@ -114,21 +119,118 @@ export default function ConcertacionModificarModal( props ) {
 			) 
 		)
 	};
+
+    useEffect(()=> {
+        leerProfesores();
+		leerClientes();
+    }, [messages]);	
+	
+	const leerProfesores = async () => {
+		
+		await axios({
+			method: 'get',
+			url: 'profesor/leer_profesores',			
+			headers: {
+				'accept': 'application/json',
+				'Authorization': "Bearer " + token,
+			},
+		}).then(response => {
+			if (response.status === 201) {	
+				setProfesores(response.data);
+			}
+		}).catch((error) => {
+			console.error({"message":error.message, "detail":error.response.data.detail});
+			handleLogout();
+		});				  
+	};
+	
+	const RenderProfesores = () => {
+		return (			
+			profesores.map(item => 
+				<option value={item.id_profesor} label={item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}>
+					{item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}
+				</option>			
+			) 
+		)
+	};	
+	
+	const leerClientes = async () => {
+		
+		await axios({
+			method: 'get',
+			url: 'cliente/leer_clientes/',			
+			headers: {
+				'accept': 'application/json',
+				'Authorization': "Bearer " + token,
+			},
+		}).then(response => {
+			if (response.status === 201) {	
+				setClientes(response.data);
+			}
+		}).catch((error) => {
+			console.error({"message":error.message, "detail":error.response.data.detail});
+			handleLogout();
+		});				  
+	};
+	
+	const RenderClientes = () => {
+		return (			
+			clientes.map(item => 
+				<option value={item.id_cliente} label={item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}>
+					{item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}
+				</option>				
+			) 
+		)
+	};	
 	
 	return (
 		<>
-		<button className="btn btn-sm btn-warning" onClick={handleShow}>
-			Modificar 
+		<button className="btn btn-sm btn-success" onClick={handleShow}>
+			Adicionar 
 		</button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Tema: {props.concertacion.conc_tema} 
+                    Adicionar   
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 			
 				<form className="form-control" onSubmit={formik.handleSubmit}>
+                    <div className="form-group mt-3" id="conc_profesor_id">
+                        <label>Seleccione el profesor encargado para la concertación</label>
+                        <select
+                        type="text"
+                        name="conc_profesor_id"
+                        value={formik.values.conc_profesor_id}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={"form-control mt-1" + 
+                                        (formik.errors.conc_profesor_id && formik.touched.conc_profesor_id
+                                        ? "is-invalid" : "" )
+                                    }>
+                            <option value="" label="Seleccione una opcion">Seleccione una opción</option>	
+                            {RenderProfesores()} 
+                        </select>
+                        <div>{(formik.errors.conc_profesor_id) ? <p style={{color: 'red'}}>{formik.errors.conc_profesor_id}</p> : null}</div>
+                    </div>		
+                    <div className="form-group mt-3" id="conc_cliente_id">
+                        <label>Seleccione el cliente encargado para la concertación</label>
+                        <select
+                        type="text"
+                        name="conc_cliente_id"
+                        value={formik.values.conc_cliente_id}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={"form-control mt-1" + 
+                                        (formik.errors.conc_cliente_id && formik.touched.conc_cliente_id
+                                        ? "is-invalid" : "" )
+                                    }>
+                            <option value="" label="Seleccione una opcion">Seleccione una opción</option>	
+                            {RenderClientes()} 
+                        </select>
+                        <div>{(formik.errors.conc_cliente_id) ? <p style={{color: 'red'}}>{formik.errors.conc_cliente_id}</p> : null}</div>
+                    </div>	
 					<div className="form-group mt-3" id="conc_tema">
 						<label>Introduzca el tema para la concertación</label>
 						<input

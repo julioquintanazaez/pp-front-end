@@ -5,6 +5,7 @@ import { Outlet, Link } from 'react-router-dom';
 import Navigation from './../components/MainNavbar.js'; 
 
 import EntidadDestinoAdicionar from './../utils/destino/EntidadDestinoAdicionar.js';
+import EntidadDestinoAdicionarModal from './../utils/destino/EntidadDestinoAdicionarModal.js';
 import EntidadDestinoTabla from './../utils/destino/EntidadDestinoTabla.js';
 
 const Entidad_Destino = () => {
@@ -25,14 +26,14 @@ const Entidad_Destino = () => {
 				<div className="row gx-5">
 					<div className="col">
 						<div className="p-3 border bg-light">					
-							< EntidadDestinoAdicionar />
+							< EntidadDestinoTabla />
 						</div>
 					</div>
 				</div><br/>
 				<div className="row gx-5">
 					<div className="col">
-						<div className="p-3 border bg-light">					
-							< EntidadDestinoTabla />
+						<div className="p-3 border bg-light">									
+							< EntidadDestinoAdicionarModal />
 						</div>
 					</div>
 				</div>

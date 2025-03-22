@@ -9,12 +9,9 @@ import { Table } from 'react-bootstrap';
 import { BiLike } from 'react-icons/bi';
 import { BiBox } from 'react-icons/bi';   //< BiBox />
 
-import ConcertacionModificarModal from './../concertacion/ConcertacionModificarModal.js';
-import ConcertacionEvaluarModal from './../concertacion/ConcertacionEvaluarModal.js';
+import AsignacionModificarModal from './../asignacion/AsignacionModificarModal.js';
 import AsignacionEvaluarModal from './../asignacion/AsignacionEvaluarModal.js';
-import ActividadesTablaModal from './../actividades/ActividadesTablaModal.js';
-import ActividadesProfesorCrearActividadModal from './../actividades/ActividadesProfesorCrearActividadModal.js';
-import AsignacionDetalleModal from './../asignacion/AsignacionDetalleModal.js';
+import AsignacionPrediccionModal from '../asignacion/AsignacionPrediccionModal.js';
 
 const ProfesorTablaAsignaciones = ( props ) => {
 	
@@ -24,13 +21,13 @@ const ProfesorTablaAsignaciones = ( props ) => {
 	const [profesorasignaciones, setProfesorAsignaciones] = useState([]);	
 	
 	useEffect(()=> {
-        fetchProfesorAsignciones(props.usuario.email);
+        fetchProfesorAsignciones();
     }, [messages]);	
 	
-	const fetchProfesorAsignciones = async (email) => {
+	const fetchProfesorAsignciones = async () => {
 		await axios({
 			method: 'get',
-			url: '/leer_profesor_asgignaciones/' + email,
+			url: '/tarea/leer_tareas_profesor/',
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -52,21 +49,23 @@ const ProfesorTablaAsignaciones = ( props ) => {
 	
 	const renderTableData = () => {
 		return profesorasignaciones?.map((asignacion, index) => (
-				<tr className="row-md" key={asignacion.id_asignacion}>
+				<tr className="row-md" key={asignacion.id_tarea}>
 					<th scope="row">{index + 1}</th>					
+					<td>{asignacion.tarea_tipo}</td>
+					<td>{asignacion.tarea_descripcion}</td>	
+					<td>{asignacion.tarea_activa == true ? "SI" : "NO"}</td>
+					<td>{asignacion.est_nombre +" "+ asignacion.est_primer_appellido +" "+asignacion.est_segundo_appellido}</td>
 					<td>{asignacion.conc_tema}</td>
-					<td>{asignacion.conc_complejidad}</td>	
-					<td>{asignacion.tarea_tipo_nombre}</td>
-					<td>{asignacion.est_nombre + " " + asignacion.est_primer_appellido + " " + asignacion.est_segundo_appellido}</td>
-					<td>{asignacion.cli_nombre + " " + asignacion.cli_primer_appellido + " " + asignacion.cli_segundo_appellido}</td>
-					<td>{asignacion.asg_participantes}</td>					
-					<td>{asignacion.asg_evaluacion}</td>
-					<td>{moment(asignacion.asg_fecha_inicio).format("MMM Do YY")}</td>
+					<td>{asignacion.tarea_complejidad_estimada}</td>
+					<td>{asignacion.tarea_participantes}</td>	
+					<td>{asignacion.tarea_evaluacion}</td>
+					<td>{moment(asignacion.tarea_fecha_inicio).format("MMM Do YY")}</td>
+					<td>{moment(asignacion.tarea_fecha_fin).format("MMM Do YY")}</td>
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									< AsignacionDetalleModal asignacion={asignacion} />
+									< AsignacionModificarModal asignacion={asignacion} />
 								</div>
 							</div>								
 						</div>							
@@ -75,16 +74,7 @@ const ProfesorTablaAsignaciones = ( props ) => {
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									< ActividadesProfesorCrearActividadModal asignacion={asignacion} />
-								</div>
-							</div>								
-						</div>							
-					</td>
-					<td> 
-						<div className="row justify-content-center">	
-							<div className="col">
-								<div className="d-grid gap-2">
-									< ActividadesTablaModal email={asignacion.est_email} />
+									< AsignacionEvaluarModal asignacion={asignacion} />
 								</div>
 							</div>								
 						</div>							
@@ -93,7 +83,7 @@ const ProfesorTablaAsignaciones = ( props ) => {
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									<  AsignacionEvaluarModal asignacion={asignacion}/>
+									< AsignacionPrediccionModal asignacion={asignacion} />
 								</div>
 							</div>								
 						</div>
@@ -108,18 +98,19 @@ const ProfesorTablaAsignaciones = ( props ) => {
 				<thead className="table-dark">
 					<tr>
 						<th scope="col">#</th>	
-						<th>Tema</th>	
-						<th>Compljidad</th>										
-						<th>Tarea</th>	
-						<th>Estudiante</th>	
-						<th>Cliente</th>	
-						<th>Apoyo</th>							
-						<th>Evaluacion</th>
-						<th>Fecha</th>
-						<th>Detalles</th>
-						<th>Tarea(+)</th>
-						<th>Tareas</th>
+						<th>Tipo</th>	
+						<th>Descripción</th>	
+						<th>Estado</th>	
+						<th>Estudiante</th>
+						<th>Concertación</th>	
+						<th>Complajidad</th>							
+						<th>Participantes</th>
+						<th>Evaluación</th>
+						<th>Inicio</th>
+						<th>Fin</th>
+						<th>Modificar</th>
 						<th>Evaluar</th>
+						<th>Predición</th>
 					</tr>
 				</thead>
 				<tbody className="table-group-divider">						

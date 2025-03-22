@@ -5,6 +5,7 @@ import { Outlet, Link } from 'react-router-dom';
 import Navigation from './../components/MainNavbar.js'; 
 
 import ProfesorAdicionar from './../utils/profesor/ProfesorAdicionar.js';
+import ProfesorAdicionarModal from './../utils/profesor/ProfesorAdicionarModal.js';
 import ProfesorTabla from './../utils/profesor/ProfesorTabla.js';
 
 const Profesor = () => {
@@ -24,14 +25,14 @@ const Profesor = () => {
 				<div className="row gx-5">
 					<div className="col">
 						<div className="p-3 border bg-light">					
-							< ProfesorAdicionar />
+							< ProfesorTabla />
 						</div>
 					</div>
 				</div><br/>
 				<div className="row gx-5">
 					<div className="col">
 						<div className="p-3 border bg-light">					
-							< ProfesorTabla />
+							< ProfesorAdicionarModal />
 						</div>
 					</div>
 				</div>

@@ -26,7 +26,7 @@ const ProfesorTabla = (props) => {
 	const fetchProfesores = async () => {
 		await axios({
 			method: 'get',
-			url: '/leer_profesores/',
+			url: '/profesor/leer_profesores/',
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -50,22 +50,14 @@ const ProfesorTabla = (props) => {
 		return profesores?.map((profesor, index) => (
 				<tr className="row-md" key={profesor.id_profesor}>
 					<th scope="row">{index + 1}</th>					
-					<td>{profesor.nombre} {profesor.primer_appellido} {profesor.segundo_appellido}</td>
-					<td>{profesor.email}</td>					
 					<td>{profesor.prf_categoria_docente}</td>
 					<td>{profesor.prf_categoria_cientifica}</td>
+					<td>{profesor.prf_pos_tecnica_hogar}</td>
+					<td>{profesor.prf_pos_tecnica_trabajo}</td>	
+					<td>{profesor.prf_cargo == true ? "SI" : "NO" }</td>
+					<td>{profesor.prf_trab_remoto == true ? "SI" : "NO" }</td>
 					<td>{profesor.prf_experiencia_practicas == true ? "SI" : "NO"}</td>
 					<td>{profesor.prf_numero_est_atendidos}</td>
-					<td>{profesor.org_siglas}</td>
-					<td> 
-						<div className="row justify-content-center">	
-							<div className="col">
-								<div className="d-grid gap-2">
-									Detalles
-								</div>
-							</div>								
-						</div>							
-					</td>
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
@@ -94,14 +86,14 @@ const ProfesorTabla = (props) => {
 				<thead className="table-dark">
 					<tr>
 						<th scope="col">#</th>	
-						<th scope="col">Nombre</th>	
-						<th scope="col">Correo</th>										
-						<th scope="col">Categoría Docente</th>	
-						<th scope="col">Categoría Científica</th>	
-						<th scope="col">Expriencia en Prácticas Profesionales</th>	
+						<th scope="col">CategorÃ­a Docente</th>	
+						<th scope="col">CategorÃ­a CientÃ­fica</th>
+						<th scope="col">Tec. Hogar</th>
+						<th scope="col">Tec. Trabajo</th>
+						<th scope="col">Cargo</th>		
+						<th scope="col">Remoto</th>		
+						<th scope="col">Expriencia</th>	
 						<th scope="col"># Estudiantes</th>	
-						<th scope="col">Entidad</th>
-						<th scope="col">Detalles</th>
 						<th scope="col">Modificar</th>
 						<th scope="col">Eliminar</th>
 					</tr>

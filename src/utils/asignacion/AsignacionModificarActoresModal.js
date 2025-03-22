@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Context } from './../../context/Context';
+import { Context } from '../../context/Context';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import * as Yup from "yup";
@@ -54,7 +54,7 @@ export default function AsignacionModificarActoresModal( props ) {
 		if (props.asignacion.id_asignacion != null){	
 			setShow(true);  
 		}else{
-			Swal.fire("No se ha seleccionado la Asignación de tema", props.asignacion.id_asignacion, "error");
+			Swal.fire("No se ha seleccionado la Asignaciï¿½n de tema", props.asignacion.id_asignacion, "error");
 		}
 	}
 	
@@ -142,7 +142,7 @@ export default function AsignacionModificarActoresModal( props ) {
 			
 				<form className="form-control" onSubmit={formik.handleSubmit}>
 					<div className="form-group mt-3" id="asg_estudiante_id">
-						<label>Seleccione el estudiante encargado para la asignación</label>
+						<label>Seleccione el estudiante encargado para la asignaciï¿½n</label>
 						<select
 						  type="text"
 						  name="asg_estudiante_id"
@@ -153,7 +153,7 @@ export default function AsignacionModificarActoresModal( props ) {
 										(formik.errors.asg_estudiante_id && formik.touched.asg_estudiante_id
 										? "is-invalid" : "" )
 									}>
-							<option value="" label="Seleccione una opcion">Seleccione una opción</option>	
+							<option value="" label="Seleccione una opcion">Seleccione una opciï¿½n</option>	
 							{RenderEstudiantes()} 
 						</select>
 						<div>{(formik.errors.asg_estudiante_id) ? <p style={{color: 'red'}}>{formik.errors.asg_estudiante_id}</p> : null}</div>

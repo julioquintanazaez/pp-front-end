@@ -32,14 +32,14 @@ export default function EntidadDestinoModificarModal( props ) {
 		
 		await axios({
 			method: 'put',
-			url: "/actualizar_entidad_destino/" + props.entidad.id_entidad_destino,
+			url: "/centro/actualizar_centropracticas/" + props.entidad.id_centro,
 			data: {
-				dest_nombre: formik.values.dest_nombre,
-				dest_siglas: formik.values.dest_siglas,
-				dest_nivel_tecnologico: formik.values.dest_nivel_tecnologico,
-				dest_transporte: formik.values.dest_transporte,
-				dest_trab_remoto: formik.values.dest_trab_remoto,
-				dest_experiencia: formik.values.dest_experiencia
+				centro_nombre: formik.values.centro_nombre,
+				centro_siglas: formik.values.centro_siglas,
+				centro_tec: formik.values.centro_tec,
+				centro_transp: formik.values.centro_transp,
+				centro_experiencia: formik.values.centro_experiencia,
+				centro_teletrab: formik.values.centro_teletrab
 			},
 			headers: {
 				'accept': 'application/json',
@@ -47,8 +47,8 @@ export default function EntidadDestinoModificarModal( props ) {
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				setMessages("Entidad Destino actualizada"+ Math.random());
-				Swal.fire("Entidad Destino actualizada exitosamente", "", "success");
+				setMessages("Centro de pr谩cticas actualizada"+ Math.random());
+				Swal.fire("Centro de pr谩cticas actualizada exitosamente", "", "success");
 			}
 		}).catch((error) => {
 			console.error({"message":error.message, "detail":error.response.data.detail});
@@ -61,10 +61,10 @@ export default function EntidadDestinoModificarModal( props ) {
 	}
 	
 	const handleShow = () => {
-		if (props.entidad.id_entidad_Destino != null){	
+		if (props.entidad.id_centro != null){	
 			setShow(true);  
 		}else{
-			Swal.fire("No se ha seleccionado Entidad Destino", "", "error");
+			Swal.fire("No se ha seleccionado Centro de pr谩cticas", "", "error");
 		}
 	}
 	
@@ -73,34 +73,34 @@ export default function EntidadDestinoModificarModal( props ) {
 	const isNameOnly = (value) => /[^A-Za-z]$/.test(value) 
 	
 	const validationRules = Yup.object().shape({
-		dest_nombre: Yup.string().trim()
-			.required("Se requiere el nombre de la entidad"),
+		centro_nombre: Yup.string().trim()
+			.required("Se requiere el nombre del centro"),
 			//.test("Solo letras", "Introduzca letras", isNameOnly),
-		dest_siglas: Yup.string().trim()	
-			.min(2, "Las siglas deben contener m醩 de 3 letras")
+		centro_siglas: Yup.string().trim()	
+			.min(2, "Las siglas deben contener m谩s de 3 letras")
 			.max(25, "Las siglas no exceder las 25 letras")
-			.required("Se requiere introduzca las siglas de la de la entidad"),
-			//.test("Solo letras may鷖culas y n鷐eros", "Introduzca letras may鷖culas y num閞icos", siglasOnly),
-		dest_nivel_tecnologico: Yup.string().trim()	
-			.required("Se requiere seleccione una opci髇"),
-		dest_transporte: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione una opci髇")
-			.required("Se requiere marque una opci髇"),
-		dest_trab_remoto: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione una opci髇")
-			.required("Se requiere marque una opci髇"),	
-		dest_experiencia: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione una opci髇")
-			.required("Se requiere marque una opci髇"),	
+			.required("Se requiere introduzca las siglas del centro"),
+			//.test("Solo letras may锟絪culas y n锟絤eros", "Introduzca letras may锟絪culas y num锟絩icos", siglasOnly),
+		centro_tec: Yup.string().trim()	
+			.required("Se requiere seleccione una opci贸n"),
+		centro_transp: Yup.boolean()
+			.oneOf([true, false], "Por favor seleccione una opci贸n")
+			.required("Se requiere marque una opci贸n"),
+		centro_experiencia: Yup.boolean()
+			.oneOf([true, false], "Por favor seleccione una opci贸n")
+			.required("Se requiere marque una opci贸n"),	
+		centro_teletrab: Yup.boolean()
+			.oneOf([true, false], "Por favor seleccione una opci贸n")
+			.required("Se requiere marque una opci贸n"),	
 	});
 	
 	const registerInitialValues = {
-		dest_nombre: props.entidad.dest_nombre,
-		dest_siglas: props.entidad.dest_siglas,
-		dest_nivel_tecnologico: props.entidad.dest_nivel_tecnologico,
-		dest_transporte: props.entidad.dest_transporte,
-		dest_trab_remoto: props.entidad.dest_trab_remoto,
-		dest_experiencia: props.entidad.dest_experiencia
+		centro_nombre: props.entidad.centro_nombre,
+		centro_siglas: props.entidad.centro_siglas,
+		centro_tec: props.entidad.centro_tec,
+		centro_transp: props.entidad.centro_transp,
+		centro_experiencia: props.entidad.centro_experiencia,
+		centro_teletrab: props.entidad.centro_teletrab
 	};
 	
 	const formik = useFormik({
@@ -110,6 +110,7 @@ export default function EntidadDestinoModificarModal( props ) {
 			console.log(values)
 			modificarEntidad();
 			formik.resetForm();
+			handleClose();
 		},
 		validationSchema: validationRules
 	});
@@ -130,114 +131,114 @@ export default function EntidadDestinoModificarModal( props ) {
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Modificar {props.entidad.dest_siglas}
+					Modificar {props.entidad.centro_siglas}
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 			
 				<form className="form-control" onSubmit={formik.handleSubmit}>
-					<div className="form-group mt-3" id="dest_nombre">
-						<label>Introduzca el nombre de la entidad Destino</label>
+					<div className="form-group mt-3" id="centro_nombre">
+						<label>Introduzca el nombre del centro de pr谩cticas</label>
 						<input
 						  type="text"
-						  name="dest_nombre"
-						  value={formik.values.dest_nombre}
+						  name="centro_nombre"
+						  value={formik.values.centro_nombre}
 						  onChange={formik.handleChange}
 						  onBlur={formik.handleBlur}
 						  className={"form-control mt-1" + 
-										(formik.errors.dest_nombre && formik.touched.dest_nombre
+										(formik.errors.centro_nombre && formik.touched.centro_nombre
 										? "is-invalid" : "" )}
-						  placeholder="Nombre de entidad (ej. Universidad de Ciego de 羦ila M醲imo G髆ez B醗z)"
+						  placeholder="Nombre de entidad (ej. Laboratorio Ingenier铆a)"
 						/>					
-						<div>{(formik.errors.dest_nombre) ? <p style={{color: 'red'}}>{formik.errors.dest_nombre}</p> : null}</div>
+						<div>{(formik.errors.centro_nombre) ? <p style={{color: 'red'}}>{formik.errors.centro_nombre}</p> : null}</div>
 					</div>
-					<div className="form-group mt-3">
-						<label>Introduzca las siglas para la entidad Destino</label>
+					<div className="form-group mt-3" id="centro_siglas">
+						<label>Introduzca las siglas para el centro de pr谩cticas</label>
 						<input
 						  type="text"
-						  name="dest_siglas"
-						  value={formik.values.dest_siglas}
+						  name="centro_siglas"
+						  value={formik.values.centro_siglas}
 						  onChange={formik.handleChange}
 						  onBlur={formik.handleBlur}
 						  className={"form-control mt-1" + 
-										(formik.errors.dest_siglas && formik.touched.dest_siglas
+										(formik.errors.centro_siglas && formik.touched.centro_siglas
 										? "is-invalid" : "" )}
-						  placeholder="Siglas para la entidad Destino (ej.UNICA)"
+						  placeholder="Siglas para el centro (ej.UNICA)"
 						/>					
-						<div>{(formik.errors.dest_siglas) ? <p style={{color: 'red'}}>{formik.errors.dest_siglas}</p> : null}</div>
+						<div>{(formik.errors.centro_siglas) ? <p style={{color: 'red'}}>{formik.errors.centro_siglas}</p> : null}</div>
 					</div>				
-					<div className="form-group mt-3">
-						<label>Seleccione el nivel educativo de la madre</label>
+					<div className="form-group mt-3" id="centro_tec">
+						<label>Seleccione el nivel de tecnolog铆a en el centro</label>
 						<select
 						  type="text"
-						  name="dest_nivel_tecnologico"
-						  value={formik.values.dest_nivel_tecnologico}
+						  name="centro_tec"
+						  value={formik.values.centro_tec}
 						  onChange={formik.handleChange}
 						  onBlur={formik.handleBlur}
 						  className={"form-control mt-1" + 
-										(formik.errors.dest_nivel_tecnologico && formik.touched.dest_nivel_tecnologico
+										(formik.errors.centro_tec && formik.touched.centro_tec
 										? "is-invalid" : "" )
 									}					  
 						>
 							{RenderOptions(nivel_tecno_options)} 
 						</select>
-						<div>{(formik.errors.dest_nivel_tecnologico) ? <p style={{color: 'red'}}>{formik.errors.dest_nivel_tecnologico}</p> : null}</div>
+						<div>{(formik.errors.centro_tec) ? <p style={{color: 'red'}}>{formik.errors.centro_tec}</p> : null}</div>
 					</div>				
-					<div className="form-group mt-3">			
-						<label>Marque la opci髇 correcta para el transporte en la entidad</label>
+					<div className="form-group mt-3" id="centro_transp">			
+						<label>Marque la opci贸n correcta para el transporte</label>
 						<br/>
 						<label>Tiene transporte (Si): </label>
 						<input
 						  type="radio"
-						  name="dest_transporte"
+						  name="centro_transp"
 						  value={true}
-						  onChange={formik.getFieldProps("dest_transporte").onChange}	  
+						  onChange={formik.getFieldProps("centro_transp").onChange}	  
 						/>	
 						<br/>
 						<label>Tiene transporte (No): </label>
 						<input
 						  type="radio"
-						  name="dest_transporte"
+						  name="centro_transp"
 						  value={false}
-						  onChange={formik.getFieldProps("dest_transporte").onChange}	  
+						  onChange={formik.getFieldProps("centro_transp").onChange}	  
 						/>			
 					</div>			
-					<div className="form-group mt-3">			
-						<label>Marque la opci髇 correcta para la posibilidad de trabajo remoto en la entidad</label>
-						<br/>
-						<label>Puede trabajar remoto (Si): </label>
-						<input
-						  type="radio"
-						  name="dest_trab_remoto"
-						  value={true}
-						  onChange={formik.getFieldProps("dest_trab_remoto").onChange}		  
-						/>	
-						<br/>
-						<label>Puede trabajar remoto (No): </label>
-						<input
-						  type="radio"
-						  name="dest_trab_remoto"
-						  value={false}
-						  onChange={formik.getFieldProps("dest_trab_remoto").onChange}	  
-						/>			
-					</div>		
-					<div className="form-group mt-3">			
-						<label>Marque la opci髇 correcta para experience en la entidad destino</label>
+					<div className="form-group mt-3" id="centro_experiencia">			
+						<label>Marque la opci贸n para la experiencia en pr谩cticas profesionales</label>
 						<br/>
 						<label>Tiene experiencia (Si): </label>
 						<input
 						  type="radio"
-						  name="dest_experiencia"
+						  name="centro_experiencia"
 						  value={true}
-						  onChange={formik.getFieldProps("dest_experiencia").onChange}		  
+						  onChange={formik.getFieldProps("centro_experiencia").onChange}		  
 						/>	
 						<br/>
-						<label>No tiene experiencia (No): </label>
+						<label>Tiene experiencia (No): </label>
 						<input
 						  type="radio"
-						  name="dest_experiencia"
+						  name="centro_experiencia"
 						  value={false}
-						  onChange={formik.getFieldProps("dest_experiencia").onChange}	  
+						  onChange={formik.getFieldProps("centro_experiencia").onChange}	  
+						/>			
+					</div>		
+					<div className="form-group mt-3" id="centro_teletrab">			
+						<label>Marque la opci贸n correcta para el trabajo remoto</label>
+						<br/>
+						<label>Trabajo remoto (Si): </label>
+						<input
+						  type="radio"
+						  name="centro_teletrab"
+						  value={true}
+						  onChange={formik.getFieldProps("centro_teletrab").onChange}		  
+						/>	
+						<br/>
+						<label>Trabajo remoto (No): </label>
+						<input
+						  type="radio"
+						  name="centro_teletrab"
+						  value={false}
+						  onChange={formik.getFieldProps("centro_teletrab").onChange}	  
 						/>			
 					</div>		
 					<div className="d-grid gap-2 mt-3">

@@ -12,7 +12,8 @@ import ConcertacionModificarModal from './../concertacion/ConcertacionModificarM
 import ConcertacionActoresModificarModal from './../concertacion/ConcertacionActoresModificarModal.js';
 import ConcertacionEvaluarModal from './../concertacion/ConcertacionEvaluarModal.js';
 import ConcertacionActivar from './../concertacion/ConcertacionActivar.js';
-import ConcertacionDetalleModal from './../concertacion/ConcertacionDetalleModal.js';
+import ConcertacionDetallesModal from './ConcertacionDetallesModal.js';
+import ConcertacionPrediccionModal from './ConcertacionPrediccionModal.js';
 
 
 const ConcertacionTabla = (props) => {
@@ -29,7 +30,7 @@ const ConcertacionTabla = (props) => {
 	const fetchConcertaciones = async () => {
 		await axios({
 			method: 'get',
-			url: '/leer_concertaciones/',
+			url: '/concertacion/leer_concertaciones/',
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -52,18 +53,19 @@ const ConcertacionTabla = (props) => {
 	const renderTableData = () => {
 		return concertaciones?.map((concertacion, index) => (
 				<tr className="row-md" key={concertacion.id_conc_tema}>
-					<th scope="row">{index + 1}</th>					
+					<th scope="row">{index + 1}</th>	
+					<td>{concertacion.conc_evaluacion}</td>				
 					<td>{concertacion.conc_tema}</td>
 					<td>{concertacion.conc_complejidad}</td>	
-					<td>{concertacion.prf_nombre}</td>
-					<td>{concertacion.cli_nombre}</td>
-					<td>{concertacion.org_siglas}</td>
-					<td>{concertacion.dest_siglas}</td>
+					<td>{concertacion.conc_actores_externos}</td>
+					<td>{concertacion.conc_activa == true ? "SI" : "NO"}</td>
+					<td>{concertacion.prf_nombre + " " + concertacion.prf_primer_appellido + " " + concertacion.prf_segundo_appellido}</td>
+					<td>{concertacion.cli_nombre + " " + concertacion.cli_primer_appellido + " " + concertacion.cli_segundo_appellido}</td>
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									< ConcertacionDetalleModal concertacion={concertacion} />
+									< ConcertacionDetallesModal concertacion={concertacion} />
 								</div>
 							</div>								
 						</div>							
@@ -112,6 +114,15 @@ const ConcertacionTabla = (props) => {
 								</div>
 							</div>	
 						</div>							
+					</td>
+					<td> 
+						<div className="row justify-content-center">	
+							<div className="col">
+								<div className="d-grid gap-2">
+									< ConcertacionPrediccionModal concertacion={concertacion} />
+								</div>
+							</div>	
+						</div>							
 					</td>		
 				</tr>
 			));
@@ -123,18 +134,20 @@ const ConcertacionTabla = (props) => {
 				<thead className="table-dark">
 					<tr>
 						<th scope="col">#</th>	
+						<th scope="col">Evaluación</th>
 						<th scope="col">Tema</th>	
-						<th scope="col">Compljidad</th>										
+						<th scope="col">Compljidad</th>		
+						<th scope="col">Equipo</th>		
+						<th scope="col">Activa</th>							
 						<th scope="col">Profesor</th>	
 						<th scope="col">Cliente</th>	
-						<th scope="col">Entidad Origen</th>	
-						<th scope="col">Entidad Cliente</th>
 						<th scope="col">Detalles</th>
 						<th scope="col">Estado</th>
 						<th scope="col">Modificar</th>
 						<th scope="col">Eliminar</th>
 						<th scope="col">Actores</th>
-						<th scope="col">Evaluaci�n</th>
+						<th scope="col">Evaluar</th>
+						<th scope="col">Predicción</th>
 					</tr>
 				</thead>
 				<tbody className="table-group-divider">						

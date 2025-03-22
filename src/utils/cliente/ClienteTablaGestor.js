@@ -9,10 +9,10 @@ import { Table } from 'react-bootstrap';
 import { BiLike } from 'react-icons/bi';
 import { BiBox } from 'react-icons/bi';   //< BiBox />
 
-import AsignacionDetalleModal from './../asignacion/AsignacionDetalleModal.js';
-import ConcertacionDetalleModal from './../concertacion/ConcertacionDetalleModal.js';
+import AsignacionDetalleModal from '../asignacion/AsignacionPrediccionModal.js';
+import ConcertacionDetalleModal from '../concertacion/ConcertacionPrediccionModal.js';
 
-const ClienteTablaGestor = (props) => {
+const ClienteTablaGestor = () => {
 	
 	const { token, user } = useContext(Context);
 	const { messages, setMessages } = useContext(Context);
@@ -26,7 +26,7 @@ const ClienteTablaGestor = (props) => {
 	const fetchConcertaciones = async () => {
 		await axios({
 			method: 'get',
-			url: '/leer_concertaciones_cliente/' + user.email,
+			url: '/concertacion/leer_concertaciones_cliente/',
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -50,21 +50,17 @@ const ClienteTablaGestor = (props) => {
 		return concertaciones?.map((concertacion, index) => (
 				<tr className="row-md" key={concertacion.id_conc_tema}>
 					<th scope="row">{index + 1}</th>					
+					<td>{concertacion.conc_evaluacion}</td>				
 					<td>{concertacion.conc_tema}</td>
 					<td>{concertacion.conc_complejidad}</td>	
-					<td>{concertacion.prf_nombre}</td>
-					<td>{concertacion.cli_nombre}</td>
-					<td>{concertacion.org_siglas}</td>
-					<td>{concertacion.dest_siglas}</td>
-					<td> 
-						<div className="row justify-content-center">	
-							<div className="col">
-								<div className="d-grid gap-2">
-									< ConcertacionDetalleModal concertacion={concertacion} />
-								</div>
-							</div>								
-						</div>							
-					</td>					
+					<td>{concertacion.conc_actores_externos}</td>
+					<td>{concertacion.conc_activa == true ? "SI" : "NO"}</td>
+					<td>{concertacion.prf_nombre + " " + concertacion.prf_primer_appellido + " " + concertacion.prf_segundo_appellido}</td>
+					<td>{concertacion.conc_evaluacion_pred == null ? (
+						<span className="bg-danger">Sin Predicción</span>
+					) : (
+						<span className="bg-success">{concertacion.conc_evaluacion_pred}</span>
+					)}</td>	
 				</tr>
 			));
 		}
@@ -75,13 +71,13 @@ const ClienteTablaGestor = (props) => {
 				<thead className="table-dark">
 					<tr>
 						<th scope="col">#</th>	
+						<th scope="col">Evaluación</th>
 						<th scope="col">Tema</th>	
-						<th scope="col">Compljidad</th>										
+						<th scope="col">Compljidad</th>		
+						<th scope="col">Equipo</th>		
+						<th scope="col">Activa</th>							
 						<th scope="col">Profesor</th>	
-						<th scope="col">Cliente</th>	
-						<th scope="col">Entidad Origen</th>	
-						<th scope="col">Entidad Cliente</th>
-						<th scope="col">Detalles</th>
+						<th scope="col">Predicción</th>
 					</tr>
 				</thead>
 				<tbody className="table-group-divider">						

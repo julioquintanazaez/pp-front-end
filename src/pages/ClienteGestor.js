@@ -23,7 +23,8 @@ const ClienteGestor = () => {
 			<div className="container overflow-hidden"><br/>				
 				<div className="row gx-5">
 					<div className="col">
-						<div className="p-3 border bg-light">					
+						<div className="p-3 border bg-light">	
+							<h1>Mis concertaciones</h1>				
 							< ClienteTablaGestor />
 						</div>
 					</div>
@@ -31,7 +32,8 @@ const ClienteGestor = () => {
 				<br/>
 				<div className="row gx-5">
 					<div className="col">
-						<div className="p-3 border bg-light">					
+						<div className="p-3 border bg-light">
+							<h1>Mis tareas</h1>					
 							< ClienteTablaAsignaciones usuario={user} />
 						</div>
 					</div>

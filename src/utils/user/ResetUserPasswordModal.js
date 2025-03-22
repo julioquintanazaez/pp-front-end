@@ -17,12 +17,12 @@ export default function ResetUserPasswordModal( props ) {
 	const { token, setMessages, handleLogout } = useContext(Context);	
 	
 	const actualizarContrasenna = async () => {
-		
-		await axios({
+		console.log(props.selecteduser.usuario),
+		await axios({			
 			method: 'put',
-			url: "/reset_password/" + props.selecteduser.username,
+			url: "/usuario/actualizar_contrasenna/" + props.selecteduser.usuario,
 			data:{
-				hashed_password: formik.values.hashed_password
+				newpassword: formik.values.newpassword
 			},
 			headers: {
 				'accept': 'application/json',
@@ -32,7 +32,7 @@ export default function ResetUserPasswordModal( props ) {
 			if (response.status === 201) {
 				console.log({"Response ": response.data});
 				setMessages("User password updated successfully" + Math.random());
-				Swal.fire("Contrase�a actualizada satisfatoriamente", "", "success");
+				Swal.fire("Contraseña actualizada satisfatoriamente", "", "success");
 			}
 		}).catch((error) => {
 			console.error({"message":error.message, "detail":error.response.data.detail});
@@ -45,7 +45,7 @@ export default function ResetUserPasswordModal( props ) {
 	}
 	
 	const handleShow = () => {
-		if (props.selecteduser.username != null){		
+		if (props.selecteduser.usuario != null){		
 			setShow(true);  
 		}else{
 			Swal.fire("Por favor seleccione un usuario", "", "error");
@@ -53,12 +53,12 @@ export default function ResetUserPasswordModal( props ) {
 	}
 	
 	const validationRules = Yup.object().shape({	
-		hashed_password: Yup.string().trim()
-			.required("Se requiere introduzca una contrase�a para el usuario")
-			.min(8, "Su contrase�a es muy corta"),
-		hashed_password_confirm: Yup.string().trim()
-			.oneOf([Yup.ref("hashed_password"), null], "La contrase�a debe coincidir")
-			.required("Confirme su contrase�a para el usuario")	
+		newpassword: Yup.string().trim()
+			.required("Se requiere introduzca una contraseña para el usuario")
+			.min(8, "Su contraseña es muy corta"),
+		newpassword_confirm: Yup.string().trim()
+			.oneOf([Yup.ref("newpassword"), null], "La contraseña debe coincidir")
+			.required("Confirme su contraseña para el usuario")	
 	});
 	
 	const registerInitialValues = {
@@ -69,9 +69,10 @@ export default function ResetUserPasswordModal( props ) {
 	const formik = useFormik({
 		initialValues: registerInitialValues,
 		onSubmit: (values) => {
-			console.log("Actualizando cotrasenna de usuario...")
+			console.log("Actualizando cotraseña de usuario...")
 			actualizarContrasenna();
 			formik.resetForm();
+			handleClose();
 		},
 		validationSchema: validationRules
 	});
@@ -85,45 +86,45 @@ export default function ResetUserPasswordModal( props ) {
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Actualizar contrase�a
+					Actualizar contraseña
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 				
 				<form className="form-control" onSubmit={formik.handleSubmit}>							
-					<div className="form-group mt-3" id="hashed_password">
-						<label>Introduzca una contrase�a para el usuario</label>
+					<div className="form-group mt-3" id="newpassword">
+						<label>Introduzca una contrasña para el usuario</label>
 						<input
 						  type="password"
-						  name="hashed_password"
-						  value={formik.values.hashed_password}
+						  name="newpassword"
+						  value={formik.values.newpassword}
 						  onChange={formik.handleChange}
 						  onBlur={formik.handleBlur}
 						  className={"form-control mt-1" + 
-										(formik.errors.hashed_password && formik.touched.hashed_password
+										(formik.errors.newpassword && formik.touched.newpassword
 										? "is-invalid" : "" )}
-						  placeholder="Contrase�a del usuario"
+						  placeholder="Contrasña del usuario"
 						/>					
-						<div>{(formik.errors.hashed_password) ? <p style={{color: 'red'}}>{formik.errors.hashed_password}</p> : null}</div>
+						<div>{(formik.errors.newpassword) ? <p style={{color: 'red'}}>{formik.errors.newpassword}</p> : null}</div>
 					</div>		
-					<div className="form-group mt-3" id="hashed_password_confirm">
-						<label>Confirme su contrase�a para el usuario</label>
+					<div className="form-group mt-3" id="newpassword_confirm">
+						<label>Confirme su contraseña para el usuario</label>
 						<input
 						  type="password"
-						  name="hashed_password_confirm"
-						  value={formik.values.hashed_password_confirm}
+						  name="newpassword_confirm"
+						  value={formik.values.newpassword_confirm}
 						  onChange={formik.handleChange}
 						  onBlur={formik.handleBlur}
 						  className={"form-control mt-1" + 
-										(formik.errors.hashed_password_confirm && formik.touched.hashed_password_confirm
+										(formik.errors.newpassword_confirm && formik.touched.newpassword_confirm
 										? "is-invalid" : "" )}
-						  placeholder="Re introdizca su contrase�a de usuario"
+						  placeholder="Re introdizca su contraseña de usuario"
 						/>					
-						<div>{(formik.errors.hashed_password_confirm) ? <p style={{color: 'red'}}>{formik.errors.hashed_password_confirm}</p> : null}</div>
+						<div>{(formik.errors.newpassword_confirm) ? <p style={{color: 'red'}}>{formik.errors.newpassword_confirm}</p> : null}</div>
 					</div>		
 					<div className="d-grid gap-2 mt-3">
 						<button type="submit" className="btn btn-success">
-								Modificar datos
+								Modificar
 						</button>					
 					</div>		
 				</form>	
@@ -132,7 +133,7 @@ export default function ResetUserPasswordModal( props ) {
 			</Modal.Body>
 			<Modal.Footer>		
 				<Button className="btn-sm" variant="secondary" onClick={handleClose}>
-					Close
+					Cerrar
 				</Button>	  
 			</Modal.Footer>
 			</Modal>

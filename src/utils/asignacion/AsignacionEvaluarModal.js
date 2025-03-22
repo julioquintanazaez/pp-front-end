@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Context } from './../../context/Context';
+import { Context } from '../../context/Context';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import * as Yup from "yup";
@@ -32,9 +32,9 @@ export default function AsignacionEvaluarModal( props ) {
 		
 		await axios({
 			method: 'put',
-			url: "/evaluar_asignacion_tarea/" + props.asignacion.id_asignacion,
+			url: "/tarea/evaluar_tarea/" + props.asignacion.id_tarea,
 			data: {
-				asg_evaluacion : formik.values.asg_evaluacion						
+				tarea_evaluacion : formik.values.tarea_evaluacion						
 			},
 			headers: {
 				'accept': 'application/json',
@@ -42,8 +42,8 @@ export default function AsignacionEvaluarModal( props ) {
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				setMessages("Asignacion evaluada exitosamente"+ Math.random());
-				Swal.fire("Asignacion evaluada exitosamente", "", "success");
+				setMessages("Tarea evaluada exitosamente"+ Math.random());
+				Swal.fire("Tarea evaluada exitosamente", "", "success");
 			}
 		}).catch((error) => {
 			console.error({"message":error.message, "detail":error.response.data.detail});
@@ -56,11 +56,10 @@ export default function AsignacionEvaluarModal( props ) {
 	}
 	
 	const handleShow = () => {
-		if (props.asignacion.id_asignacion != null){	
-			console.log({"desde asignacion evaluar profesor" : props.asignacion.id_asignacion});
+		if (props.asignacion.id_tarea != null){	
 			setShow(true);  
 		}else{
-			Swal.fire("No se ha seleccionado la AsignaciÛn de tema", props.asignacion.id_asignacion, "error");
+			Swal.fire("No se ha seleccionado una tarea", props.asignacion.id_tarea, "error");
 		}
 	}
 	
@@ -69,14 +68,14 @@ export default function AsignacionEvaluarModal( props ) {
 	const isNameOnly = (value) => /[^A-Za-z]$/.test(value) 
 	
 	const validationRules = Yup.object().shape({		
-		asg_evaluacion: Yup.string().trim()
-			.required("Se requiere el tema para la concertacion")
+		tarea_evaluacion: Yup.string().trim()
+			.required("Se requiere seleccione una evaluaci√≥n")
 	});
 	
 	//console.log(props.asignacion.asg_fecha_inicio)
 	
 	const registerInitialValues = {
-		asg_evaluacion : props.asignacion.asg_evaluacion,
+		tarea_evaluacion : props.asignacion.tarea_evaluacion,
 	};
 	
 	const formik = useFormik({
@@ -86,6 +85,7 @@ export default function AsignacionEvaluarModal( props ) {
 			console.log(values)
 			evaluarAsignacion();
 			formik.resetForm();
+			handleClose();
 		},
 		validationSchema: validationRules
 	});
@@ -106,31 +106,31 @@ export default function AsignacionEvaluarModal( props ) {
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Modificar {props.asignacion.asg_descripcion} 
+					Modificar {props.asignacion.tarea_tipo} 
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 			
 				<form className="form-control" onSubmit={formik.handleSubmit}>
-					<div className="form-group mt-3" id="asg_evaluacion">
-						<label>Seleccione el nivel del complejidad para la asignaciÛn</label>
+					<div className="form-group mt-3" id="tarea_evaluacion">
+						<label>Seleccione la evaluaci√≥n para la tarea</label>
 						<select
 						  type="text"
-						  name="asg_evaluacion"
-						  value={formik.values.asg_evaluacion}
+						  name="tarea_evaluacion"
+						  value={formik.values.tarea_evaluacion}
 						  onChange={formik.handleChange}
 						  onBlur={formik.handleBlur}
 						  className={"form-control mt-1" + 
-										(formik.errors.asg_evaluacion && formik.touched.asg_evaluacion
+										(formik.errors.tarea_evaluacion && formik.touched.tarea_evaluacion
 										? "is-invalid" : "" )
 									}>
 							{RenderOptions(evaluacion_options)} 
 						</select>
-						<div>{(formik.errors.asg_evaluacion) ? <p style={{color: 'red'}}>{formik.errors.asg_evaluacion}</p> : null}</div>
+						<div>{(formik.errors.tarea_evaluacion) ? <p style={{color: 'red'}}>{formik.errors.tarea_evaluacion}</p> : null}</div>
 					</div>	
 					<div className="d-grid gap-2 mt-3">
 						<button type="submit" className="btn btn-success">
-								Guardar datos
+								Guardar
 						</button>					
 					</div>		
 				</form>

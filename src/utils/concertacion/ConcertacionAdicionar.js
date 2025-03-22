@@ -24,7 +24,7 @@ export default function ConcertacionAdicionar ( ) {
 		
 		await axios({
 			method: 'post',
-			url: '/crear_concertacion_tema/',
+			url: '/concertacion/crear_concertacion/',
 			data: {
 				conc_tema : formik.values.conc_tema,
 				conc_descripcion : formik.values.conc_descripcion,
@@ -57,15 +57,15 @@ export default function ConcertacionAdicionar ( ) {
 		conc_tema: Yup.string().trim()
 			.required("Se requiere el tema para la concertacion"),
 		conc_descripcion: Yup.string().trim()
-			.required("Se requiere la descripción para la concertacion"),
+			.required("Se requiere la descripciï¿½n para la concertacion"),
 		conc_valoracion_prof: Yup.string().trim()
-			.required("Se requiere la valoración del profesor para la concertacion"),
+			.required("Se requiere la valoraciï¿½n del profesor para la concertacion"),
 		conc_valoracion_cliente: Yup.string().trim()
-			.required("Se requiere la valoración del cliente para la concertacion"),
+			.required("Se requiere la valoraciï¿½n del cliente para la concertacion"),
 		conc_complejidad: Yup.string().trim()
 			.required("Se requiere el nivel de complejidad para la concertacion"),
 		conc_actores_externos: Yup.string().trim()
-			.required("Se requiere número de actores externos para la concertacion"),
+			.required("Se requiere nï¿½mero de actores externos para la concertacion"),
 		conc_profesor_id: Yup.string().trim()
 			.required("Se requiere el profesor para la concertacion"),
 		conc_cliente_id: Yup.string().trim()
@@ -179,12 +179,12 @@ export default function ConcertacionAdicionar ( ) {
 					  className={"form-control mt-1" + 
 									(formik.errors.conc_tema && formik.touched.conc_tema
 									? "is-invalid" : "" )}
-					  placeholder="Tema de la concertación"
+					  placeholder="Tema de la concertaciï¿½n"
 					/>					
 					<div>{(formik.errors.conc_tema) ? <p style={{color: 'red'}}>{formik.errors.conc_tema}</p> : null}</div>
 				</div>
 				<div className="form-group mt-3" id="conc_descripcion">
-					<label>Introduzca la descripción para la concertacion</label>
+					<label>Introduzca la descripciï¿½n para la concertacion</label>
 					<textarea
 					  rows="2"
 					  name="conc_descripcion"
@@ -194,13 +194,13 @@ export default function ConcertacionAdicionar ( ) {
 					  className={"form-control mt-1" + 
 									(formik.errors.conc_descripcion && formik.touched.conc_descripcion
 									? "is-invalid" : "" )}
-					  placeholder="Descripción para la concertacion"
+					  placeholder="Descripciï¿½n para la concertacion"
 					>	
 					</textarea>
 					<div>{(formik.errors.conc_descripcion) ? <p style={{color: 'red'}}>{formik.errors.conc_descripcion}</p> : null}</div>
 				</div>		
 				<div className="form-group mt-3" id="conc_valoracion_prof">
-					<label>Introduzca la valoración del profesor para la concertacion</label>
+					<label>Introduzca la valoraciï¿½n del profesor para la concertacion</label>
 					<textarea
 					  rows="2"
 					  name="conc_valoracion_prof"
@@ -210,13 +210,13 @@ export default function ConcertacionAdicionar ( ) {
 					  className={"form-control mt-1" + 
 									(formik.errors.conc_valoracion_prof && formik.touched.conc_valoracion_prof
 									? "is-invalid" : "" )}
-					  placeholder="Valoración del profesor para la concertacion"
+					  placeholder="Valoraciï¿½n del profesor para la concertacion"
 					>		
 					</textarea>
 					<div>{(formik.errors.conc_valoracion_prof) ? <p style={{color: 'red'}}>{formik.errors.conc_valoracion_prof}</p> : null}</div>
 				</div>		
 				<div className="form-group mt-3" id="conc_valoracion_cliente">
-					<label>Introduzca valoración del cliente para la concertacion</label>
+					<label>Introduzca valoraciï¿½n del cliente para la concertacion</label>
 					<textarea
 					  rows="2"
 					  name="conc_valoracion_cliente"
@@ -226,7 +226,7 @@ export default function ConcertacionAdicionar ( ) {
 					  className={"form-control mt-1" + 
 									(formik.errors.conc_valoracion_cliente && formik.touched.conc_valoracion_cliente
 									? "is-invalid" : "" )}
-					  placeholder="Valoración del cliente para la concertacion"
+					  placeholder="Valoraciï¿½n del cliente para la concertacion"
 					>	
 					</textarea>
 					<div>{(formik.errors.conc_valoracion_cliente) ? <p style={{color: 'red'}}>{formik.errors.conc_valoracion_cliente}</p> : null}</div>
@@ -248,7 +248,7 @@ export default function ConcertacionAdicionar ( ) {
 					<div>{(formik.errors.conc_complejidad) ? <p style={{color: 'red'}}>{formik.errors.conc_complejidad}</p> : null}</div>
 				</div>		
 				<div className="form-group mt-3" id="conc_actores_externos">
-					<label>Introduzca el número de actores externos para la concertacion</label>
+					<label>Introduzca el nï¿½mero de actores externos para la concertacion</label>
 					<input
 					  type="text"
 					  name="conc_actores_externos"
@@ -258,7 +258,7 @@ export default function ConcertacionAdicionar ( ) {
 					  className={"form-control mt-1" + 
 									(formik.errors.conc_actores_externos && formik.touched.conc_actores_externos
 									? "is-invalid" : "" )}
-					  placeholder="Número de actores externos"
+					  placeholder="Nï¿½mero de actores externos"
 					/>					
 					<div>{(formik.errors.conc_actores_externos) ? <p style={{color: 'red'}}>{formik.errors.conc_actores_externos}</p> : null}</div>
 				</div>
@@ -274,7 +274,7 @@ export default function ConcertacionAdicionar ( ) {
 									(formik.errors.conc_profesor_id && formik.touched.conc_profesor_id
 									? "is-invalid" : "" )
 								}>
-						<option value="" label="Seleccione una opcion">Seleccione una opciçon</option>	
+						<option value="" label="Seleccione una opcion">Seleccione una opciï¿½on</option>	
 						{RenderProfesores()} 
 					</select>
 					<div>{(formik.errors.conc_profesor_id) ? <p style={{color: 'red'}}>{formik.errors.conc_profesor_id}</p> : null}</div>
@@ -291,7 +291,7 @@ export default function ConcertacionAdicionar ( ) {
 									(formik.errors.conc_cliente_id && formik.touched.conc_cliente_id
 									? "is-invalid" : "" )
 								}>
-						<option value="" label="Seleccione una opcion">Seleccione una opción</option>	
+						<option value="" label="Seleccione una opcion">Seleccione una opciï¿½n</option>	
 						{RenderClientes()} 
 					</select>
 					<div>{(formik.errors.conc_cliente_id) ? <p style={{color: 'red'}}>{formik.errors.conc_cliente_id}</p> : null}</div>

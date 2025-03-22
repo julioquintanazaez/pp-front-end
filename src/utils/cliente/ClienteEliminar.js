@@ -16,7 +16,7 @@ const ClienteEliminar = ( props ) => {
 		
 		await axios({
 			method: 'delete',
-			url: "/eliminar_cliente/" + id,			
+			url: "/cliente/eliminar_cliente/" + id,			
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,

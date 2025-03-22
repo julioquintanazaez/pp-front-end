@@ -26,7 +26,7 @@ export default function ConcertacionActoresModificarModal( props ) {
 		
 		await axios({
 			method: 'put',
-			url: "/actualizar_responsables_concertacion/" + props.concertacion.id_conc_tema,
+			url: "/concertacion/actualizar_responsables_concertacion/" + props.concertacion.id_conc_tema,
 			data: {
 				conc_profesor_id : formik.values.conc_profesor_id,  
 				conc_cliente_id : formik.values.conc_cliente_id								
@@ -37,8 +37,8 @@ export default function ConcertacionActoresModificarModal( props ) {
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				setMessages("Actores de la concertacion actualizado"+ Math.random());
-				Swal.fire("Actores de la concertacion actualizado exitosamente", "", "success");
+				setMessages("Actores de la concertaci贸n actualizado"+ Math.random());
+				Swal.fire("Actores de la concertaci贸n actualizada exitosamente", "", "success");
 			}
 		}).catch((error) => {
 			console.error({"message":error.message, "detail":error.response.data.detail});
@@ -54,7 +54,7 @@ export default function ConcertacionActoresModificarModal( props ) {
 		if (props.concertacion.id_conc_tema != null){	
 			setShow(true);  
 		}else{
-			Swal.fire("No se ha seleccionado Concertacion", props.concertacion.id_conc_tema, "error");
+			Swal.fire("No se ha seleccionado concertaci贸n", props.concertacion.id_conc_tema, "error");
 		}
 	}
 	
@@ -64,9 +64,9 @@ export default function ConcertacionActoresModificarModal( props ) {
 	
 	const validationRules = Yup.object().shape({		
 		conc_profesor_id: Yup.string().trim()
-			.required("Se requiere el profesor para la concertacion"),
+			.required("Se requiere el profesor para la concertaci贸n"),
 		conc_cliente_id: Yup.string().trim()
-			.required("Se requiere el cliente para la concertacion")	
+			.required("Se requiere el cliente para la concertaci贸n")	
 	});
 	
 	const registerInitialValues = {
@@ -81,6 +81,7 @@ export default function ConcertacionActoresModificarModal( props ) {
 			console.log(values)
 			modificarActoresConcertacion();
 			formik.resetForm();
+			handleClose();
 		},
 		validationSchema: validationRules
 	});
@@ -94,7 +95,7 @@ export default function ConcertacionActoresModificarModal( props ) {
 		
 		await axios({
 			method: 'get',
-			url: '/leer_profesores/',			
+			url: '/profesor/leer_profesores/',			
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -114,7 +115,7 @@ export default function ConcertacionActoresModificarModal( props ) {
 			profesores.map(item => 
 				<option value={item.id_profesor} label={item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}>
 					{item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}
-				</option>				
+				</option>			
 			) 
 		)
 	};	
@@ -123,7 +124,7 @@ export default function ConcertacionActoresModificarModal( props ) {
 		
 		await axios({
 			method: 'get',
-			url: '/leer_clientes/',			
+			url: '/cliente/leer_clientes/',			
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -151,19 +152,19 @@ export default function ConcertacionActoresModificarModal( props ) {
 	return (
 		<>
 		<button className="btn btn-sm btn-info" onClick={handleShow}>
-			Cambiar 
+			Cambiar actores 
 		</button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Modificar {props.concertacion.conc_tema} 
+					Tema de concertaci贸n: {props.concertacion.conc_tema} 
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 			
 				<form className="form-control" onSubmit={formik.handleSubmit}>					
 					<div className="form-group mt-3" id="conc_profesor_id">
-						<label>Seleccione el profesor encargado para la concertacion</label>
+						<label>Seleccione el profesor encargado para la concertaci贸n</label>
 						<select
 						  type="text"
 						  name="conc_profesor_id"
@@ -174,13 +175,13 @@ export default function ConcertacionActoresModificarModal( props ) {
 										(formik.errors.conc_profesor_id && formik.touched.conc_profesor_id
 										? "is-invalid" : "" )
 									}>
-							<option value="" label="Seleccione una opcion">Seleccione una opci鏾n</option>	
+							<option value="" label="Seleccione una opci贸n">Seleccione una opci贸n</option>	
 							{RenderProfesores()} 
 						</select>
 						<div>{(formik.errors.conc_profesor_id) ? <p style={{color: 'red'}}>{formik.errors.conc_profesor_id}</p> : null}</div>
 					</div>		
 					<div className="form-group mt-3" id="conc_cliente_id">
-						<label>Seleccione el cliente encargado para la concertacion</label>
+						<label>Seleccione el cliente encargado para la concertaci贸n</label>
 						<select
 						  type="text"
 						  name="conc_cliente_id"
@@ -191,14 +192,14 @@ export default function ConcertacionActoresModificarModal( props ) {
 										(formik.errors.conc_cliente_id && formik.touched.conc_cliente_id
 										? "is-invalid" : "" )
 									}>
-							<option value="" label="Seleccione una opcion">Seleccione una opci髇</option>	
+							<option value="" label="Seleccione una opci贸n">Seleccione una opci贸n</option>	
 							{RenderClientes()} 
 						</select>
 						<div>{(formik.errors.conc_cliente_id) ? <p style={{color: 'red'}}>{formik.errors.conc_cliente_id}</p> : null}</div>
 					</div>		
 					<div className="d-grid gap-2 mt-3">
 						<button type="submit" className="btn btn-success">
-								Guardar datos
+								Guardar
 						</button>					
 					</div>		
 				</form>

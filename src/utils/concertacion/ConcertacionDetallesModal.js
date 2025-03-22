@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Context } from './../../context/Context';
+import { Context } from '../../context/Context';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import * as Yup from "yup";
@@ -14,29 +14,29 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 
 
-export default function AsignacionDetalleModal( props ) {
+export default function ConcertacionDetallesModal( props ) {
 	
 	const { token, handleLogout } = useContext(Context);
 	const [show, setShow] = useState(false);
 	const [validated, setValidated] = useState(false);
-	const [prediccion, setPrediccion] = useState({});
+	const [concertacion, setConcertacion] = useState({});
 	
 	
-	const detalleAsignacion = async () => {
+	const detalleConcertacion = async () => {
 		
 		await axios({
 			method: 'get',
-			url: "/predecir_asignacion/" + props.asignacion.id_asignacion,
+			url: "/concertacion/detalle_concertacion/" + props.concertacion.id_conc_tema,
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
 			},
 		}).then(response => {
-			if (response.status === 200) {
+			if (response.status === 201) {
 				console.log(response.data);
-				setPrediccion(response.data);
+				setConcertacion(response.data);
 			}else{
-				setPrediccion({});
+				setConcertacion({});
 				Swal.fire("No existen datos suficientes", "", "success");
 				setShow(false);
 			}
@@ -51,43 +51,28 @@ export default function AsignacionDetalleModal( props ) {
 	}
 	
 	const handleShow = () => {
-		if (props.asignacion.id_asignacion != null){	
+		if (props.concertacion.id_conc_tema != null){	
 			setShow(true);  
-			detalleAsignacion();
+			detalleConcertacion();
 		}else{
-			Swal.fire("No se ha seleccionado Concertacion", props.asignacion.id_asignacion, "error");
+			Swal.fire("No se ha seleccionado ConcertaciÃ³n", props.concertacion.id_conc_tema, "error");
 		}
 	}
 	
-	const RenderOptions = (listValues) => {
-		return (
-			listValues.map(item => 
-				<option value={item.value} label={item.label}>{item.value}</option>
-			) 
-		)
-	};
 	
 	return (
 		<>
-		<button className="btn btn-sm btn-success" onClick={handleShow}>
+		<button className="btn btn-sm btn-info" onClick={handleShow}>
 			Detalles 
 		</button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Detalles {props.asignacion.asg_tema} 
+					Detalles {props.concertacion.conc_tema} 
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-			
-				<h3> Resultado de la prediccion </h3>
-				<h5>Predicción: {
-					(prediccion.prob1 <= 0.5) ?
-						(<span className="badge bg-success">  {prediccion.clase} </span>)
-					:			
-						(<span className="badge bg-danger">  {prediccion.clase} </span>)
-					}
-				</h5>
+                <h3>{concertacion.conc_tema}</h3>			
 			
 			</Modal.Body>
 			<Modal.Footer>		

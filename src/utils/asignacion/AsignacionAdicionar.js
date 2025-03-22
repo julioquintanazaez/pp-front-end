@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useState, useEffect, useContext} from "react";
-import { Context } from './../../context/Context';
+import { Context } from '../../context/Context';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import * as Yup from "yup";
@@ -62,22 +62,22 @@ export default function AsignacionAdicionar ( ) {
 	
 	const validationRules = Yup.object().shape({		
 		asg_descripcion: Yup.string().trim()
-			.required("Se requiere el tema para la asignación"),
+			.required("Se requiere el tema para la asignaciï¿½n"),
 		asg_fecha_inicio: Yup.date()
-			.required("Se requiere la fecha de inicio para la asignación"),
+			.required("Se requiere la fecha de inicio para la asignaciï¿½n"),
 		asg_fecha_fin: Yup.date()
-			.required("Se requiere la fecha de fin para la asignación")
+			.required("Se requiere la fecha de fin para la asignaciï¿½n")
 			.min(Yup.ref("asg_fecha_inicio"), "La fecha de fin debe ser superior a la de inicio"),
 		asg_complejidad_estimada: Yup.string().trim()
-			.required("Se requiere lacomplejidad para la asignación"),
+			.required("Se requiere lacomplejidad para la asignaciï¿½n"),
 		asg_participantes: Yup.number().positive()
-			.required("Se requiere el numro de participantes para el desarrollo de la asignación"),
+			.required("Se requiere el numro de participantes para el desarrollo de la asignaciï¿½n"),
 		asg_tipo_tarea_id: Yup.string().trim()
-			.required("Se requiere el tipo de actividad para la asignación"),
+			.required("Se requiere el tipo de actividad para la asignaciï¿½n"),
 		asg_estudiante_id: Yup.string().trim()
-			.required("Se requiere el estudiante encargado para la asignación"),
+			.required("Se requiere el estudiante encargado para la asignaciï¿½n"),
 		asg_conc_id: Yup.string().trim()
-			.required("Se requiere la concertación madre para la asignación")		
+			.required("Se requiere la concertaciï¿½n madre para la asignaciï¿½n")		
 	});
 	
 	const registerInitialValues = {
@@ -207,7 +207,7 @@ export default function AsignacionAdicionar ( ) {
 		<>
 			<form className="form-control" onSubmit={formik.handleSubmit}>
 				<div className="form-group mt-3" id="asg_estudiante_id">
-					<label>Seleccione el estudiante encargado para la asignación</label>
+					<label>Seleccione el estudiante encargado para la asignaciï¿½n</label>
 					<select
 					  type="text"
 					  name="asg_estudiante_id"
@@ -218,13 +218,13 @@ export default function AsignacionAdicionar ( ) {
 									(formik.errors.asg_estudiante_id && formik.touched.asg_estudiante_id
 									? "is-invalid" : "" )
 								}>
-						<option value="" label="Seleccione una opcion">Seleccione una opción</option>	
+						<option value="" label="Seleccione una opcion">Seleccione una opciï¿½n</option>	
 						{RenderEstudiantes()} 
 					</select>
 					<div>{(formik.errors.asg_estudiante_id) ? <p style={{color: 'red'}}>{formik.errors.asg_estudiante_id}</p> : null}</div>
 				</div>		
 				<div className="form-group mt-3" id="asg_conc_id">
-					<label>Seleccione la concertación para la asignación</label>
+					<label>Seleccione la concertaciï¿½n para la asignaciï¿½n</label>
 					<select
 					  type="text"
 					  name="asg_conc_id"
@@ -235,13 +235,13 @@ export default function AsignacionAdicionar ( ) {
 									(formik.errors.asg_conc_id && formik.touched.asg_conc_id
 									? "is-invalid" : "" )
 								}>
-						<option value="" label="Seleccione una opcion">Seleccione una opción</option>	
+						<option value="" label="Seleccione una opcion">Seleccione una opciï¿½n</option>	
 						{RenderConcertaciones()} 
 					</select>
 					<div>{(formik.errors.asg_conc_id) ? <p style={{color: 'red'}}>{formik.errors.asg_conc_id}</p> : null}</div>
 				</div>	
 				<div className="form-group mt-3" id="asg_tipo_tarea_id">
-					<label>Seleccione el tipo de tarea para la asignación</label>
+					<label>Seleccione el tipo de tarea para la asignaciï¿½n</label>
 					<select
 					  type="text"
 					  name="asg_tipo_tarea_id"
@@ -252,13 +252,13 @@ export default function AsignacionAdicionar ( ) {
 									(formik.errors.asg_tipo_tarea_id && formik.touched.asg_tipo_tarea_id
 									? "is-invalid" : "" )
 								}>
-						<option value="" label="Seleccione una opcion">Seleccione una opciçon</option>	
+						<option value="" label="Seleccione una opcion">Seleccione una opciï¿½on</option>	
 						{RenderTipoTareas()} 
 					</select>
 					<div>{(formik.errors.asg_tipo_tarea_id) ? <p style={{color: 'red'}}>{formik.errors.asg_tipo_tarea_id}</p> : null}</div>
 				</div>	
 				<div className="form-group mt-3" id="asg_tema">
-					<label>Introduzca la descripción para la asignación</label>
+					<label>Introduzca la descripciï¿½n para la asignaciï¿½n</label>
 					<textarea
 					  rows="2"
 					  name="asg_descripcion"
@@ -268,13 +268,13 @@ export default function AsignacionAdicionar ( ) {
 					  className={"form-control mt-1" + 
 									(formik.errors.asg_descripcion && formik.touched.asg_descripcion
 									? "is-invalid" : "" )}
-					  placeholder="Descripción de la asignación"
+					  placeholder="Descripciï¿½n de la asignaciï¿½n"
 					>	
 					</textarea>
 					<div>{(formik.errors.asg_descripcion) ? <p style={{color: 'red'}}>{formik.errors.asg_descripcion}</p> : null}</div>
 				</div>
 				<div className="form-group mt-3" id="asg_fecha_inicio">
-					<label>Introduzca fecha de inicio para la asignación: </label>
+					<label>Introduzca fecha de inicio para la asignaciï¿½n: </label>
 					<DatePicker
 					  dateFormat="dd/MM/yyyy"
 					  id="asg_fecha_inicio"
@@ -285,12 +285,12 @@ export default function AsignacionAdicionar ( ) {
 					  className={"form-control mt-1" + 
 									(formik.errors.asg_fecha_inicio && formik.touched.asg_fecha_inicio
 									? "is-invalid" : "" )}
-					  placeholder="Selecciona una fcha para la asignación"
+					  placeholder="Selecciona una fcha para la asignaciï¿½n"
 					/>					
 					<div>{(formik.errors.asg_fecha_inicio) ? <p style={{color: 'red'}}>{formik.errors.asg_fecha_inicio}</p> : null}</div>
 				</div>		
 				<div className="form-group mt-3" id="asg_fecha_fin">
-					<label>Introduzca fecha de fin para la asignación: </label>
+					<label>Introduzca fecha de fin para la asignaciï¿½n: </label>
 					<DatePicker
 					  dateFormat="dd/MM/yyyy"
 					  id="asg_fecha_fin"
@@ -301,12 +301,12 @@ export default function AsignacionAdicionar ( ) {
 					  className={"form-control mt-1" + 
 									(formik.errors.asg_fecha_fin && formik.touched.asg_fecha_fin
 									? "is-invalid" : "" )}
-					  placeholder="Selecciona una fecha para la asignación"
+					  placeholder="Selecciona una fecha para la asignaciï¿½n"
 					/>							
 					<div>{(formik.errors.asg_fecha_fin) ? <p style={{color: 'red'}}>{formik.errors.asg_fecha_fin}</p> : null}</div>
 				</div>					
 				<div className="form-group mt-3" id="asg_complejidad_estimada">
-					<label>Seleccione el nivel del complejidad para la asignación</label>
+					<label>Seleccione el nivel del complejidad para la asignaciï¿½n</label>
 					<select
 					  type="text"
 					  name="asg_complejidad_estimada"
@@ -322,7 +322,7 @@ export default function AsignacionAdicionar ( ) {
 					<div>{(formik.errors.asg_complejidad_estimada) ? <p style={{color: 'red'}}>{formik.errors.asg_complejidad_estimada}</p> : null}</div>
 				</div>		
 				<div className="form-group mt-3" id="asg_participantes">
-					<label>Introduzca el número de participantes para la concertacion</label>
+					<label>Introduzca el nï¿½mero de participantes para la concertacion</label>
 					<input
 					  type="text"
 					  name="asg_participantes"
@@ -332,7 +332,7 @@ export default function AsignacionAdicionar ( ) {
 					  className={"form-control mt-1" + 
 									(formik.errors.asg_participantes && formik.touched.asg_participantes
 									? "is-invalid" : "" )}
-					  placeholder="Número de participantes"
+					  placeholder="Nï¿½mero de participantes"
 					/>					
 					<div>{(formik.errors.asg_participantes) ? <p style={{color: 'red'}}>{formik.errors.asg_participantes}</p> : null}</div>
 				</div>					

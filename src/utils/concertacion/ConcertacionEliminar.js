@@ -15,7 +15,7 @@ const ConcertacionEliminar = ( props ) => {
 		
 		await axios({
 			method: 'delete',
-			url: "/eliminar_concertacion/" + id,			
+			url: "/concertacion/eliminar_concertacion/" + id,			
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,

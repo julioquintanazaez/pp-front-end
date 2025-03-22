@@ -11,57 +11,72 @@ const EstudianteAsignacion = ( props ) => {
 	const { token, user } = useContext(Context);
 	const { messages, setMessages } = useContext(Context);
 	const { handleLogout } = useContext(Context);
-	const [estudianteasignacion, setEstudianteAsignacion] = useState({});	
+	const [estudiante, setEstudiante] = useState({});	
+	const [tarea, setTarea] = useState({});	
+	const [concertacion, setConcertacion] = useState({});	
 	
+	const formatDate = (date) => {		
+        return date.toISOString().split('T')[0]
+    };		
+
 	useEffect(()=> {
-        fetchEstudianteAsignacion(props.usuario.email);
+        fetchEstudianteAsignacion();
     }, [messages]);	
 	
-	const fetchEstudianteAsignacion = async (email) => {
+	const fetchEstudianteAsignacion = async () => {
 		await axios({
 			method: 'get',
-			url: '/leer_asgignacion_estudiante/' + email,
+			url: '/tarea/leer_tarea_estudiante/',
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				setEstudianteAsignacion(response.data);
-				console.log("Leida la asignaci髇 correctamente para el estudiante desde la base de datos");
+				setEstudiante(response.data.estudiante);
+				setTarea(response.data.tarea);
+				setConcertacion(response.data.concertacion);
+				console.log(estudiante)
+				console.log("La tarea se ley贸 correctamente para el estudiante desde la base de datos");
 			}
 			else{
 				console.log({"Error en response ":response.data});	
 			}
 		}).catch((error) => {
 			console.error({"message":error.message, "detail":error.response.data.detail});
-			Swal.fire("Problemas para leer la asignacion del estudiante desde la base de datos", "", "error");
+			Swal.fire("Problemas para leer la tarea del estudiante desde la base de datos", "", "error");
 			handleLogout();
 		});			  
 	}
 
 	return (
 		<>	
-			{estudianteasignacion != null ? (
-				<div className="estudiante-panel">
-					<h1> Cosas del estudiante </h1>
-					<h4> {estudianteasignacion.est_nombre + " " + estudianteasignacion.est_primer_appellido + " " + estudianteasignacion.est_segundo_appellido}</h4>
-					<br/>
-					<h5>Asignaci髇</h5>
-					<p1>Tema: {estudianteasignacion.asg_descripcion}</p1>
-					<br/>
-					<p1>Tipo de actividad: {estudianteasignacion.tarea_tipo_nombre}</p1>
-					<br/>
-					<p1>Complejidad de la actividad: {estudianteasignacion.asg_complejidad_estimada}</p1>
-					<br/>
-					<br/>
-					<h4>Tutor</h4>
-					<p1>{estudianteasignacion.prf_nombre + " " + estudianteasignacion.prf_primer_appellido + " " + estudianteasignacion.prf_segundo_appellido}</p1>		
-					<br/>	
-					<br/>
-					<h4>Assesor de empresa</h4>
-					<p1>{estudianteasignacion.cli_nombre + " " + estudianteasignacion.cli_primer_appellido + " " + estudianteasignacion.cli_segundo_appellido}</p1>
+			{estudiante != null ? (
+				<>
+				<div className="estudiante-info">
+					<h2> Mi informaci贸n </h2>
+					<h4> {user.nombre + " " + user.primer_appellido + " " + user.segundo_appellido}</h4>
+					<p1>Becado: {estudiante.est_becado == true ? "SI" : "NO"}</p1><br/>
+					<p1>Trabajo: {estudiante.est_trabajo == true ? "SI" : "NO"}</p1><br/>
+					<p1>Teletrabajo: {estudiante.est_trab_remoto == true ? "SI" : "NO"}</p1><br/>
+				</div><br/>
+				<div className="estudiante-tarea">
+					<h2> Mi tarea </h2>
+					<p1>Tema: {tarea.tarea_descripcion}</p1><br/>
+					<p1>Tipo de actividad: {tarea.tarea_tipo}</p1><br/>
+					<p1>Complejidad de la actividad: {tarea.tarea_complejidad_estimada}</p1><br/>
+					<p1>Inicio: {tarea.tarea_fecha_inicio}</p1><br/>
+					<p1>Fin: {tarea.tarea_fecha_fin}</p1><br/>
 				</div>
+				<br/>
+				<div className="estudiante-concertacion">
+					<h2> Mi concertaci贸n </h2>
+					<p1>Tema: {concertacion.conc_tema}</p1><br/>
+					<p1>Descripci贸n: {concertacion.conc_descripcion}</p1><br/>
+					<p1>Complejidad: {concertacion.conc_complejidad}</p1><br/>
+					<p1>Evaluaci贸n: {concertacion.conc_evaluacion}</p1><br/>
+				</div>
+				</>
 				) : (
 				<div className="estudiante-panel">
 					<span className="badge bg-danger">  No existen datos para mostrar </span>

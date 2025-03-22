@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { Outlet, Link } from 'react-router-dom';
 import Navigation from './../components/MainNavbar.js'; 
 
-import ConcertacionAdicionar from './../utils/concertacion/ConcertacionAdicionar.js';
+import ConcertacionAdicionarModal from './../utils/concertacion/ConcertacionAdicionarModal.js';
 import ConcertacionTabla from './../utils/concertacion/ConcertacionTabla.js';
 
 const Concertacion = () => {
@@ -25,14 +25,14 @@ const Concertacion = () => {
 				<div className="row gx-5">
 					<div className="col">
 						<div className="p-3 border bg-light">					
-							< ConcertacionAdicionar />
+							< ConcertacionTabla />
 						</div>
 					</div>
 				</div><br/>
 				<div className="row gx-5">
 					<div className="col">
 						<div className="p-3 border bg-light">					
-							< ConcertacionTabla />
+							< ConcertacionAdicionarModal />
 						</div>
 					</div>
 				</div>

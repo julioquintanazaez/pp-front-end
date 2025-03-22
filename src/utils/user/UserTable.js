@@ -24,14 +24,14 @@ const UserTable = (props) => {
 		
 		await axios({
 			method: 'get',
-			url: '/read_users/',
+			url: '/usuario/leer_usuarios/',
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				console.log({"Response ":response.data});	
+				console.log({"Response ": response.data});	
 				setUsers(response.data);
 				console.log({"Loaded users to Table successfuly ":users});						
 			}
@@ -41,13 +41,12 @@ const UserTable = (props) => {
 		});			  
 	}
 	
-	const deleteUser = async (username) => {		 
-		
-		if (username !== ""){
-			if (username != user.username){
+	const deleteUser = async (usuario) => {		
+		if (usuario !== ""){
+			if (usuario != user.usuario){
 				await axios({
 					method: 'delete',
-					url: "/delete_user/" + username,			
+					url: "/usuario/eliminar_usuario/" + usuario,			
 					headers: {
 						'accept': 'application/json',
 						'Authorization': "Bearer " + token,
@@ -69,14 +68,13 @@ const UserTable = (props) => {
 		}
 	}	
 	
-	const activateUser = async (user_item) => {
-		
-		if (user_item.username != null){
+	const activateUser = async (user_item) => {		
+		if (user_item.usuario != null){
 			await axios({
 				method: 'put',
-				url: "/activate_user/" + user_item.username,
+				url: "/usuario/activar_usuario/" + user_item.usuario,
 				data: {
-						disable: user_item.disable ? false : true						
+					deshabilitado: user_item.deshabilitado ? false : true						
 						},
 				headers: {
 					'accept': 'application/json',
@@ -97,7 +95,7 @@ const UserTable = (props) => {
 	}
 	
 	const buttonClassActivate = async (user_item) => {
-		if (user_item.disable){
+		if (user_item.deshabilitado){
 			return "btn-danger";
 		}
 		return "btn btn-sm btn-success";
@@ -105,16 +103,19 @@ const UserTable = (props) => {
 	
 	const renderTableData = () => {
 		return users?.map((user_item, index) => (
-				<tr className="row-md" key={user_item.username}>
+				<tr className="row-md" key={user_item.usuario}>
 					<th scope="row">{index + 1}</th>
-					<td>{user_item.username}</td>
+					<td>{user_item.usuario}</td>
 					<td>{user_item.nombre}</td>
 					<td>{user_item.primer_appellido}</td>
 					<td>{user_item.segundo_appellido}</td>
 					<td>{user_item.ci}</td>
 					<td>{user_item.email}</td>
 					<td>{user_item.role[0]}</td>
-					<td>{user_item.disable ? "Not Active" : "Active"}</td>
+					<td>{user_item.deshabilitado ? "No Activo" : "Activo"}</td>
+					<td>{user_item.estado_civil}</td>
+					<td>{user_item.genero}</td>
+					<td>{user_item.hijos ? "No" : "Si"}</td>
 					<td> 						
 						<div className="col justify-content-end">						
 							<div className="row">		
@@ -123,7 +124,7 @@ const UserTable = (props) => {
 										<button 
 											type="button" 
 											className="btn btn-sm btn-danger ml-2 mr-2" 							
-											onClick={(e) => deleteUser(user_item.username)}> 
+											onClick={(e) => deleteUser(user_item.usuario)}> 
 												< BiBox />
 										</button>
 									</div>
@@ -140,12 +141,12 @@ const UserTable = (props) => {
 								</div>	
 								<div className="col">	
 									<div className="d-grid gap-3">
-										< ResetUserPasswordModal selecteduser={user_item}/>		
+										< UpdateUserModal selecteduser={user_item}/>
 									</div>
 								</div>	
 								<div className="col">	
 									<div className="d-grid gap-3">
-										< UpdateUserModal selecteduser={user_item}/>		
+										< ResetUserPasswordModal selecteduser={user_item}/>	
 									</div>
 								</div>	
 								
@@ -170,7 +171,10 @@ const UserTable = (props) => {
 						<th scope="col">Correo</th>	
 						<th scope="col">Role</th>
 						<th scope="col">Activo</th>
-						<th scope="col">Acciones</th>
+						<th scope="col">Estado cívil</th>
+						<th scope="col">Género</th>
+						<th scope="col">Hijos</th>
+						<th scope="col">Acciones</th>						
 					</tr>
 				</thead>
 				<tbody className="table-group-divider">						

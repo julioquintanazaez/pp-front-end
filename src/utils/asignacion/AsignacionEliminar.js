@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import React, {useState, useEffect, useContext} from 'react';
-import { Context } from './../../context/Context';
+import { Context } from '../../context/Context';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
@@ -15,16 +15,16 @@ const AsignacionEliminar = ( props ) => {
 		
 		await axios({
 			method: 'delete',
-			url: "/eliminar_asgignacion_tarea/" + id,			
+			url: "/tarea/eliminar_tarea/" + id,			
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
 			},
 		}).then(response => {
 			if (response.status === 201) {				
-				setMessages("Asignacion eliminado satisfactoriamente" + Math.random());
-				Swal.fire("Asignacion eliminado satisfactoriament", "", "success");
-				console.log("Asignacion eliminado satisfactoriamente");	
+				setMessages("Tarea eliminada satisfactoriamente" + Math.random());
+				Swal.fire("Tarea eliminada satisfactoriament", "", "success");
+				console.log("Tarea eliminada satisfactoriamente");	
 			}
 		}).catch((error) => {
 			console.error({"message":error.message, "detail":error.response.data.detail});
@@ -34,10 +34,10 @@ const AsignacionEliminar = ( props ) => {
 	
 	const handleEliminarSubmit = (event) => {
 		event.preventDefault();
-		if (props.asignacion.id_asignacion != null){
-			eliminarAsignacion(props.asignacion.id_asignacion);
+		if (props.asignacion.id_tarea != null){
+			eliminarAsignacion(props.asignacion.id_tarea);
 		}else{
-			Swal.fire("Seleccione un asignacion", "", "error");
+			Swal.fire("Seleccione una tarea", "", "error");
 		}
 	}
 	

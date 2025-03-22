@@ -24,14 +24,14 @@ export default function EntidadDestinoAdicionar ( ) {
 		
 		await axios({
 			method: 'post',
-			url: '/crear_entidad_destino/',
+			url: '/centro/crear_centropracticas/',
 			data: {
-				dest_nombre: formik.values.dest_nombre,
-				dest_siglas: formik.values.dest_siglas,
-				dest_nivel_tecnologico: formik.values.dest_nivel_tecnologico,
-				dest_transporte: formik.values.dest_transporte,
-				dest_trab_remoto: formik.values.dest_trab_remoto,
-				dest_experiencia: formik.values.dest_experiencia
+				centro_nombre: formik.values.centro_nombre,
+				centro_siglas: formik.values.centro_siglas,
+				centro_tec: formik.values.centro_tec,
+				centro_transp: formik.values.centro_transp,
+				centro_experiencia: formik.values.centro_experiencia,
+				centro_teletrab: formik.values.centro_teletrab
 			},
 			headers: {
 				'accept': 'application/json',
@@ -39,8 +39,8 @@ export default function EntidadDestinoAdicionar ( ) {
 			},
 		}).then(response => {
 			if (response.status === 201) {				
-				setMessages("Entidad creado"+ Math.random());
-				Swal.fire("Entidad Destino creada exitosamente", "", "success");
+				setMessages("Centro laboral"+ Math.random());
+				Swal.fire("Centro laboral creada exitosamente", "", "success");
 			}
 		}).catch((error) => {
 			console.error({"message":error.message, "detail":error.response.data.detail});
@@ -52,34 +52,34 @@ export default function EntidadDestinoAdicionar ( ) {
 	const isNameOnly = (value) => /[^A-Za-z]$/.test(value) 
 	
 	const validationRules = Yup.object().shape({
-		dest_nombre: Yup.string().trim()
-			.required("Se requiere el nombre de la entidad"),
+		centro_nombre: Yup.string().trim()
+			.required("Se requiere el nombre del centro"),
 			//.test("Solo letras", "Introduzca letras", isNameOnly),
-		dest_siglas: Yup.string().trim()	
-			.min(2, "Las siglas deben contener m醩 de 3 letras")
+		centro_siglas: Yup.string().trim()	
+			.min(2, "Las siglas deben contener m谩s de 3 letras")
 			.max(25, "Las siglas no exceder las 25 letras")
-			.required("Se requiere introduzca las siglas de la de la entidad"),
-			//.test("Solo letras may鷖culas y n鷐eros", "Introduzca letras may鷖culas y num閞icos", siglasOnly),
-		dest_nivel_tecnologico: Yup.string().trim()	
-			.required("Se requiere seleccione una opci髇"),
-		dest_transporte: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione una opci髇")
-			.required("Se requiere marque una opci髇"),
-		dest_trab_remoto: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione una opci髇")
-			.required("Se requiere marque una opci髇"),	
-		dest_experiencia: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione una opci髇")
-			.required("Se requiere marque una opci髇"),	
+			.required("Se requiere introduzca las siglas del centro"),
+			//.test("Solo letras may锟絪culas y n锟絤eros", "Introduzca letras may锟絪culas y num锟絩icos", siglasOnly),
+		centro_tec: Yup.string().trim()	
+			.required("Se requiere seleccione una opci贸n"),
+		centro_transp: Yup.boolean()
+			.oneOf([true, false], "Por favor seleccione una opci贸n")
+			.required("Se requiere marque una opci贸n"),
+		centro_experiencia: Yup.boolean()
+			.oneOf([true, false], "Por favor seleccione una opci贸n")
+			.required("Se requiere marque una opci贸n"),	
+		centro_teletrab: Yup.boolean()
+			.oneOf([true, false], "Por favor seleccione una opci贸n")
+			.required("Se requiere marque una opci贸n"),	
 	});
 	
 	const registerInitialValues = {
-		dest_nombre: "",
-		dest_siglas: "",
-		dest_nivel_tecnologico: nivel_tecno_options[0]["value"],
-		dest_transporte: false,
-		dest_trab_remoto: false,
-		dest_experiencia: false		
+		centro_nombre: "",
+		centro_siglas: "",
+		centro_tec: nivel_tecno_options[0]["value"],
+		centro_transp: false,
+		centro_experiencia: false,
+		centro_teletrab: false		
 	};
 	
 	const formik = useFormik({
@@ -104,113 +104,113 @@ export default function EntidadDestinoAdicionar ( ) {
 	return (
 		<>
 			<form className="form-control" onSubmit={formik.handleSubmit}>
-				<div className="form-group mt-3" id="dest_nombre">
-					<label>Introduzca el nombre de la entidad Destino</label>
+				<div className="form-group mt-3" id="centro_nombre">
+					<label>Introduzca el nombre del centro </label>
 					<input
 					  type="text"
-					  name="dest_nombre"
-					  value={formik.values.dest_nombre}
+					  name="centro_nombre"
+					  value={formik.values.centro_nombre}
 					  onChange={formik.handleChange}
 					  onBlur={formik.handleBlur}
 					  className={"form-control mt-1" + 
-									(formik.errors.dest_nombre && formik.touched.dest_nombre
+									(formik.errors.centro_nombre && formik.touched.centro_nombre
 									? "is-invalid" : "" )}
-					  placeholder="Nombre de entidad (ej. Universidad de Ciego de 羦ila M醲imo G髆ez B醗z)"
+					  placeholder="Nombre de entidad (ej. Universidad de Ciego de 脕vila M谩ximo G贸mez B谩ez)"
 					/>					
-					<div>{(formik.errors.dest_nombre) ? <p style={{color: 'red'}}>{formik.errors.dest_nombre}</p> : null}</div>
+					<div>{(formik.errors.centro_nombre) ? <p style={{color: 'red'}}>{formik.errors.centro_nombre}</p> : null}</div>
 				</div>
-				<div className="form-group mt-3">
-					<label>Introduzca las siglas para la entidad Destino</label>
+				<div className="form-group mt-3" id="centro_siglas">
+					<label>Introduzca las siglas para en centro de pr谩cticas</label>
 					<input
 					  type="text"
-					  name="dest_siglas"
-					  value={formik.values.dest_siglas}
+					  name="centro_siglas"
+					  value={formik.values.centro_siglas}
 					  onChange={formik.handleChange}
 					  onBlur={formik.handleBlur}
 					  className={"form-control mt-1" + 
-									(formik.errors.dest_siglas && formik.touched.dest_siglas
+									(formik.errors.centro_siglas && formik.touched.centro_siglas
 									? "is-invalid" : "" )}
-					  placeholder="Siglas para la entidad destino (ej.UNICA)"
+					  placeholder="Siglas para el centro (ej.UNICA)"
 					/>					
-					<div>{(formik.errors.dest_siglas) ? <p style={{color: 'red'}}>{formik.errors.dest_siglas}</p> : null}</div>
+					<div>{(formik.errors.centro_siglas) ? <p style={{color: 'red'}}>{formik.errors.centro_siglas}</p> : null}</div>
 				</div>				
-				<div className="form-group mt-3">
-					<label>Seleccione el nivel de tecnolog韆 de la entidad</label>
+				<div className="form-group mt-3" id="centro_tec">
+					<label>Seleccione el nivel de tecnolog铆a de la entidad</label>
 					<select
 					  type="text"
-					  name="dest_nivel_tecnologico"
-					  value={formik.values.dest_nivel_tecnologico}
+					  name="centro_tec"
+					  value={formik.values.centro_tec}
 					  onChange={formik.handleChange}
 					  onBlur={formik.handleBlur}
 					  className={"form-control mt-1" + 
-									(formik.errors.dest_nivel_tecnologico && formik.touched.dest_nivel_tecnologico
+									(formik.errors.centro_tec && formik.touched.centro_tec
 									? "is-invalid" : "" )
 								}					  
 					>
 						{RenderOptions(nivel_tecno_options)} 
 					</select>
-					<div>{(formik.errors.dest_nivel_tecnologico) ? <p style={{color: 'red'}}>{formik.errors.dest_nivel_tecnologico}</p> : null}</div>
+					<div>{(formik.errors.centro_tec) ? <p style={{color: 'red'}}>{formik.errors.centro_tec}</p> : null}</div>
 				</div>				
-				<div className="form-group mt-3">			
-					<label>Marque la opci髇 correcta para el transporte en la entidad</label>
+				<div className="form-group mt-3" id="centro_transp">			
+					<label>Marque la opci贸n correcta para el transporte</label>
 					<br/>
 					<label>Tiene transporte (Si): </label>
 					<input
 					  type="radio"
-					  name="dest_transporte"
+					  name="centro_transp"
 					  value={true}
-					  onChange={formik.getFieldProps("dest_transporte").onChange}	  
+					  onChange={formik.getFieldProps("centro_transp").onChange}	  
 					/>	
 					<br/>
 					<label>Tiene transporte (No): </label>
 					<input
 					  type="radio"
-					  name="dest_transporte"
+					  name="centro_transp"
 					  value={false}
-					  onChange={formik.getFieldProps("dest_transporte").onChange}	  
+					  onChange={formik.getFieldProps("centro_transp").onChange}	  
 					/>			
 				</div>			
-				<div className="form-group mt-3">			
-					<label>Marque la opci髇 correcta para la posibilidad de trabajo remoto en la entidad</label>
+				<div className="form-group mt-3" id="centro_experiencia">			
+					<label>Marque la opci贸n correcta para la posibilidad de trabajo remoto</label>
 					<br/>
 					<label>Puede trabajar remoto (Si): </label>
 					<input
 					  type="radio"
-					  name="dest_trab_remoto"
+					  name="centro_experiencia"
 					  value={true}
-					  onChange={formik.getFieldProps("dest_trab_remoto").onChange}	  
+					  onChange={formik.getFieldProps("centro_experiencia").onChange}	  
 					/>	
 					<br/>
 					<label>Puede trabajar remoto (No): </label>
 					<input
 					  type="radio"
-					  name="dest_trab_remoto"
+					  name="centro_experiencia"
 					  value={false}
-					  onChange={formik.getFieldProps("dest_trab_remoto").onChange}	  
+					  onChange={formik.getFieldProps("centro_experiencia").onChange}	  
 					/>			
 				</div>		
-				<div className="form-group mt-3">			
-					<label>Marque la opci髇 correcta para la experiencia en la entidad</label>
+				<div className="form-group mt-3" id="centro_teletrab">			
+					<label>Marque la opci贸n correcta para la experiencia</label>
 					<br/>
 					<label>Tiene experiencia (Si): </label>
 					<input
 					  type="radio"
-					  name="dest_experiencia"
+					  name="centro_teletrab"
 					  value={true}
-					  onChange={formik.getFieldProps("dest_experiencia").onChange}  
+					  onChange={formik.getFieldProps("centro_teletrab").onChange}  
 					/>	
 					<br/>
 					<label>No tiene experiencia (No): </label>
 					<input
 					  type="radio"
-					  name="dest_experiencia"
+					  name="centro_teletrab"
 					  value={false}
-					  onChange={formik.getFieldProps("dest_experiencia").onChange}	  
+					  onChange={formik.getFieldProps("centro_teletrab").onChange}	  
 					/>			
 				</div>		
 				<div className="d-grid gap-2 mt-3">
 					<button type="submit" className="btn btn-success">
-							Guardar datos
+							Guardar
 					</button>					
 				</div>		
 			</form>

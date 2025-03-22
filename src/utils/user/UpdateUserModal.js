@@ -28,19 +28,33 @@ export default function UpdateUserModal( props ) {
 				{ value: "estudiante-usuario", label: "estudiante" },
 				{ value: "usuario", label: "usuario" }
 			];	
-			
-	const actualizarUsuario = async (username) => {
+
+	const genero = [
+				{ value: "M", label: "M" },
+				{ value: "F", label: "F" }
+			];	
+
+	const estado_civil_opt = [
+				{ value: "Soltero", label: "Soltero" },
+				{ value: "Casado", label: "Casado" },
+				{ value: "Divorciado", label: "Divorciado" }
+			];	
+						
+	const actualizarUsuario = async (usuario) => {
 		
 		await axios({
 			method: 'put',
-			url: "/update_user/" + username,
+			url: "/usuario/actualizar_usuario/" + usuario,
 			data: {
 					nombre: formik.values.nombre,
 					primer_appellido: formik.values.primer_appellido,
 					segundo_appellido: formik.values.segundo_appellido,
 					ci: formik.values.ci,
 					email: formik.values.email,				
-					role: formik.values.role.split("-"),	
+					role: formik.values.role.split("-"),
+					genero: formik.values.genero,
+					hijos: formik.values.hijos,
+					estado_civil: formik.values.estado_civil		
 					},
 			headers: {
 				'accept': 'application/json',
@@ -63,7 +77,7 @@ export default function UpdateUserModal( props ) {
 	}
 	
 	const handleShow = () => {
-		if (props.selecteduser.username != null){		
+		if (props.selecteduser.usuario != null){		
 			setShow(true);  
 		}else{
 			Swal.fire("Por favor seleccione un usuario", "", "error");
@@ -78,11 +92,18 @@ export default function UpdateUserModal( props ) {
 		segundo_appellido: Yup.string().trim()
 			.required("Se requiere el 2do apellido para el usuario"),
 		ci: Yup.string().trim()
-			.required("Se requiere n鷐ero de identidad del usuario"),
+			.required("Se requiere n锟絤ero de identidad del usuario"),
 		email: Yup.string().trim()
 			.required("Se requiere el correo para el usuario"),
 		role: Yup.string().trim()
-			.required("Se requiere el role para el usuario")					
+			.required("Se requiere el role para el usuario"),
+		genero: Yup.string().trim()
+			.required("Se requiere el 1er apellido para el usuario"),	
+		hijos: Yup.boolean()
+			.oneOf([true, false], "Por favor seleccione ona opci贸n")
+			.required("Se requiere marque una opci贸n"),		
+		estado_civil: Yup.string().trim()
+			.required("El estado c铆vil para el usuario"),						
 	});
 	
 	const registerInitialValues = {
@@ -91,7 +112,10 @@ export default function UpdateUserModal( props ) {
 		segundo_appellido: props.selecteduser.segundo_appellido,
 		ci: props.selecteduser.ci,
 		email: props.selecteduser.email,
-		role: props.selecteduser.role.toString().replace(",", "-") //"usuario"
+		role: props.selecteduser.role.toString().replace(",", "-"),
+		genero : props.selecteduser.genero,
+		estado_civil : props.selecteduser.estado_civil,  
+		hijos : props.selecteduser.hijos,	
 	};
 
 	const formik = useFormik({
@@ -99,8 +123,9 @@ export default function UpdateUserModal( props ) {
 		onSubmit: (values) => {
 			console.log("Actualizando usuario...")
 			console.log(values)
-			actualizarUsuario(props.selecteduser.username);
+			actualizarUsuario(props.selecteduser.usuario);
 			formik.resetForm();
+			handleClose();
 		},
 		validationSchema: validationRules
 	});
@@ -173,7 +198,7 @@ export default function UpdateUserModal( props ) {
 						<div>{(formik.errors.segundo_appellido) ? <p style={{color: 'red'}}>{formik.errors.segundo_appellido}</p> : null}</div>
 					</div>		
 					<div className="form-group mt-3" id="ci">
-						<label>Introduzca el n鷐ero de identidad del usuario</label>
+						<label>Introduzca el n煤mero de identidad del usuario</label>
 						<input
 						  type="text"
 						  name="ci"
@@ -188,7 +213,7 @@ export default function UpdateUserModal( props ) {
 						<div>{(formik.errors.ci) ? <p style={{color: 'red'}}>{formik.errors.ci}</p> : null}</div>
 					</div>	
 					<div className="form-group mt-3" id="email">
-						<label>Introduzca el correo(@) electr髇ico del usuario</label>
+						<label>Introduzca el correo(@) electr贸nico del usuario</label>
 						<input
 						  type="text"
 						  name="email"
@@ -203,7 +228,7 @@ export default function UpdateUserModal( props ) {
 						<div>{(formik.errors.email) ? <p style={{color: 'red'}}>{formik.errors.email}</p> : null}</div>
 					</div>
 					<div className="form-group mt-3" id="role">
-						<label>Seleccione el role a desempe馻r para el usuario del sistema</label>
+						<label>Seleccione el role a desempe帽ar para el usuario del sistema</label>
 						<select
 						  type="text"
 						  name="role"
@@ -218,6 +243,57 @@ export default function UpdateUserModal( props ) {
 						</select>
 						<div>{(formik.errors.role) ? <p style={{color: 'red'}}>{formik.errors.role}</p> : null}</div>
 					</div>	
+					<div className="form-group mt-3" id="genero">
+						<label>Seleccione el g茅nero para el profesor</label>
+						<select
+						type="text"
+						name="genero"
+						value={formik.values.genero}
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						className={"form-control mt-1" + 
+										(formik.errors.genero && formik.touched.genero
+										? "is-invalid" : "" )
+									}>
+							{RenderOptions(genero)} 
+						</select>
+						<div>{(formik.errors.prf_genero) ? <p style={{color: 'red'}}>{formik.errors.prf_genero}</p> : null}</div>
+					</div>	
+					<div className="form-group mt-3" id="estado_civil">
+						<label>Seleccione el estado c铆vil para el profesor</label>
+						<select
+						type="text"
+						name="estado_civil"
+						value={formik.values.estado_civil}
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						className={"form-control mt-1" + 
+										(formik.errors.estado_civil && formik.touched.estado_civil
+										? "is-invalid" : "" )
+									}>
+							{RenderOptions(estado_civil_opt)} 
+						</select>
+						<div>{(formik.errors.estado_civil) ? <p style={{color: 'red'}}>{formik.errors.estado_civil}</p> : null}</div>
+					</div>					
+					<div className="form-group mt-3" id="hijos">			
+						<label>Marque la opci贸n correcta para hijos del profesor</label>
+						<br/>
+						<label>Tiene hijos (Si): </label>
+						<input
+						type="radio"
+						name="hijos"
+						value={true}
+						onChange={formik.getFieldProps("hijos").onChange}		  
+						/>	
+						<br/>
+						<label>No tiene hijos (No): </label>
+						<input
+						type="radio"
+						name="hijos"
+						value={false}
+						onChange={formik.getFieldProps("hijos").onChange}	  
+						/>			
+					</div>			
 					<div className="d-grid gap-2 mt-3">
 						<button type="submit" className="btn btn-success">
 								Modificar datos

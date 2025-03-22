@@ -21,35 +21,40 @@ export default function RegisterUserModal( ) {
 	const usuario = ["usuario"];
 	
 	const roles_de_usuario = [
-				{ value: "admin-profesor-cliente-estudiante-usuario", label: "admin" },
-				{ value: "profesor-usuario", label: "profesor" },
-				{ value: "cliente-usuario", label: "cliente" },
-				{ value: "estudiante-usuario", label: "estudiante" },
-				{ value: "usuario", label: "usuario" }
+				{ value: "admin-profesor-cliente-estudiante", label: "admin" },
+				{ value: "profesor", label: "profesor" },
+				{ value: "cliente", label: "cliente" },
+				{ value: "estudiante", label: "estudiante" },
 			];	
 			
-	const roles_de_usuario1 = [
-				{ value: admin, label: "admin" },
-				{ value: profesor, label: "profesor" },
-				{ value: cliente, label: "cliente" },
-				{ value: estudiante, label: "estudiante" },
-				{ value: usuario, label: "usuario" }
+	const genero = [
+				{ value: "M", label: "M" },
+				{ value: "F", label: "F" }
+			];	
+
+	const estado_civil_opt = [
+				{ value: "Soltero", label: "Soltero" },
+				{ value: "Casado", label: "Casado" },
+				{ value: "Divorciado", label: "Divorciado" }
 			];	
 			
 	const registrarUsuario = async () => {
 		
 		axios({
 			method: 'post',
-			url: '/create_user/',
+			url: '/usuario/crear_usuario/',
 			data: {
-				username: formik.values.username,
+				usuario: formik.values.usuario,
 				nombre: formik.values.nombre,
 				primer_appellido: formik.values.primer_appellido,
 				segundo_appellido: formik.values.segundo_appellido,
 				ci: formik.values.ci,
 				email: formik.values.email,				
-				role: formik.values.role.split("-"),
-				hashed_password: formik.values.hashed_password				
+				role: formik.values.role.split("-"),				
+				hashed_password: formik.values.hashed_password,
+				genero: formik.values.genero,
+				hijos: formik.values.hijos,
+				estado_civil: formik.values.estado_civil			
 			},
 			headers: {
 				'accept': 'application/json',
@@ -69,7 +74,7 @@ export default function RegisterUserModal( ) {
 	const req_rol = Yup.string().trim().required("Se requiere el role para el usuario");	
 	
 	const validationRules = Yup.object().shape({	
-		username: Yup.string().trim()
+		usuario: Yup.string().trim()
 			.required("Se requiere el usuario para sistema"),
 		nombre: Yup.string().trim()
 			.required("Se requiere el nombre para el usuario"),
@@ -78,7 +83,7 @@ export default function RegisterUserModal( ) {
 		segundo_appellido: Yup.string().trim()
 			.required("Se requiere el 2do apellido para el usuario"),
 		ci: Yup.string().trim()
-			.required("Se requiere n˙mero de identidad del usuario"),
+			.required("Se requiere n√∫mero de identidad del usuario"),
 		email: Yup.string().email()
 			.required("Se requiere el correo para el usuario"),
 		role: Yup.string().trim()
@@ -86,28 +91,40 @@ export default function RegisterUserModal( ) {
 		hashed_password: Yup.string()
 			.min(5, "Password debe contener al menos 3 caracteres")
 			.required("Se requiere el password").matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*[\]{}()?"\\,><':;|_~`=+-])[a-zA-Z\d!@#$%^&*[\]{}()?"\\,><':;|_~`=+-]{12,99}$/,
-					'Debe contener al menos 5 caracteres, 1 may˙scula, 1 min˙scila, 1 caracter especial, y 1 n˙mero'),					
+					'Debe contener al menos 5 caracteres, 1 may√°scula, 1 min√≠scila, 1 caracter especial, y 1 n√∫mero'),	
+		genero: Yup.string().trim()
+			.required("Se requiere el 1er apellido para el usuario"),	
+		hijos: Yup.boolean()
+			.oneOf([true, false], "Por favor seleccione ona opci√≥n")
+			.required("Se requiere marque una opci√≥n"),		
+		estado_civil: Yup.string().trim()
+			.required("El estado c√≠vil para el usuario"),				
 	});
 	
 	const registerInitialValues = {
-		username: "",
+		usuario: "",
 		nombre: "",
 		primer_appellido: "",
 		segundo_appellido: "",
 		ci: "",
 		email: "",
 		role: "usuario",
-		hashed_password: ""		
+		hashed_password: "",
+		genero : genero[0]["value"],
+		estado_civil : estado_civil_opt[0]["value"],  
+		hijos : false,	
 	};
 	
 	
 	const formik = useFormik({
 		initialValues: registerInitialValues,
 		onSubmit: (values) => {
-			console.log("Guardando usuario...")
-			console.log(values)
+			console.log("Guardando usuario...");
+			console.log(values);
 			registrarUsuario();
 			formik.resetForm();
+			console.log("Usuario guardado...");
+			handleClose();
 		},
 		validationSchema: validationRules
 	});
@@ -126,7 +143,7 @@ export default function RegisterUserModal( ) {
 
 	return (
 		<>
-		<Button className="nextButton btn-sm" onClick={handleShow}>
+		<Button className="btn btn-sm btn-success" onClick={handleShow}>
 			Registrar
 		</Button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
@@ -138,20 +155,20 @@ export default function RegisterUserModal( ) {
 			<Modal.Body>				
 				
 				<form className="form-control" onSubmit={formik.handleSubmit}>
-					<div className="form-group mt-3" id="username">
-						<label>Introduzca el nombre de usuario para el sistema</label>
+					<div className="form-group mt-3" id="usuario">
+						<label>Introduzca el usuario para el sistema</label>
 						<input
 						  type="text"
-						  name="username"
-						  value={formik.values.username}
+						  name="usuario"
+						  value={formik.values.usuario}
 						  onChange={formik.handleChange}
 						  onBlur={formik.handleBlur}
 						  className={"form-control mt-1" + 
-										(formik.errors.username && formik.touched.username
+										(formik.errors.usuario && formik.touched.usuario
 										? "is-invalid" : "" )}
 						  placeholder="Nombre de usuario del sistema (ej. juanm87)"
 						/>					
-						<div>{(formik.errors.username) ? <p style={{color: 'red'}}>{formik.errors.username}</p> : null}</div>
+						<div>{(formik.errors.usuario) ? <p style={{color: 'red'}}>{formik.errors.usuario}</p> : null}</div>
 					</div>
 					<div className="form-group mt-3" id="nombre">
 						<label>Introduzca el nombre de usuario</label>
@@ -199,7 +216,7 @@ export default function RegisterUserModal( ) {
 						<div>{(formik.errors.segundo_appellido) ? <p style={{color: 'red'}}>{formik.errors.segundo_appellido}</p> : null}</div>
 					</div>		
 					<div className="form-group mt-3" id="ci">
-						<label>Introduzca el n˙mero de identidad del usuario</label>
+						<label>Introduzca el n√∫mero de identidad del usuario</label>
 						<input
 						  type="text"
 						  name="ci"
@@ -214,7 +231,7 @@ export default function RegisterUserModal( ) {
 						<div>{(formik.errors.ci) ? <p style={{color: 'red'}}>{formik.errors.ci}</p> : null}</div>
 					</div>	
 					<div className="form-group mt-3" id="email">
-						<label>Introduzca el correo(@) electrÛnico del usuario</label>
+						<label>Introduzca el correo(@) electr√©nico del usuario</label>
 						<input
 						  type="text"
 						  name="email"
@@ -229,7 +246,7 @@ export default function RegisterUserModal( ) {
 						<div>{(formik.errors.email) ? <p style={{color: 'red'}}>{formik.errors.email}</p> : null}</div>
 					</div>
 					<div className="form-group mt-3" id="role">
-						<label>Seleccione el role a desempeÒar para el usuario del sistema</label>
+						<label>Seleccione el role a desempe√±ar para el usuario del sistema</label>
 						<select
 						  type="text"
 						  name="role"
@@ -243,9 +260,60 @@ export default function RegisterUserModal( ) {
 							{RenderOptions(roles_de_usuario)} 
 						</select>
 						<div>{(formik.errors.role) ? <p style={{color: 'red'}}>{formik.errors.role}</p> : null}</div>
+					</div>	
+					<div className="form-group mt-3" id="genero">
+						<label>Seleccione el g√©nero para el profesor</label>
+						<select
+						type="text"
+						name="genero"
+						value={formik.values.genero}
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						className={"form-control mt-1" + 
+										(formik.errors.genero && formik.touched.genero
+										? "is-invalid" : "" )
+									}>
+							{RenderOptions(genero)} 
+						</select>
+						<div>{(formik.errors.prf_genero) ? <p style={{color: 'red'}}>{formik.errors.prf_genero}</p> : null}</div>
+					</div>	
+					<div className="form-group mt-3" id="estado_civil">
+						<label>Seleccione el estado c√≠vil para el profesor</label>
+						<select
+						type="text"
+						name="estado_civil"
+						value={formik.values.estado_civil}
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						className={"form-control mt-1" + 
+										(formik.errors.estado_civil && formik.touched.estado_civil
+										? "is-invalid" : "" )
+									}>
+							{RenderOptions(estado_civil_opt)} 
+						</select>
+						<div>{(formik.errors.estado_civil) ? <p style={{color: 'red'}}>{formik.errors.estado_civil}</p> : null}</div>
+					</div>					
+					<div className="form-group mt-3" id="hijos">			
+						<label>Marque la opci√≥n correcta para hijos del profesor</label>
+						<br/>
+						<label>Tiene hijos (Si): </label>
+						<input
+						type="radio"
+						name="hijos"
+						value={true}
+						onChange={formik.getFieldProps("hijos").onChange}		  
+						/>	
+						<br/>
+						<label>No tiene hijos (No): </label>
+						<input
+						type="radio"
+						name="hijos"
+						value={false}
+						onChange={formik.getFieldProps("hijos").onChange}	  
+						/>			
 					</div>			
 					<div className="form-group mt-3" id="hashed_password">
-						<label>Introduzca una contraseÒa para el usuario</label>
+						<label>Introduzca una contrase√±a para el usuario</label>
 						<input
 						  type="password"
 						  name="hashed_password"
@@ -255,13 +323,13 @@ export default function RegisterUserModal( ) {
 						  className={"form-control mt-1" + 
 										(formik.errors.hashed_password && formik.touched.hashed_password
 										? "is-invalid" : "" )}
-						  placeholder="ContraseÒa del usuario"
+						  placeholder="Contrase√±a del usuario"
 						/>					
 						<div>{(formik.errors.hashed_password) ? <p style={{color: 'red'}}>{formik.errors.hashed_password}</p> : null}</div>
 					</div>		
 					<div className="d-grid gap-2 mt-3">
 						<button type="submit" className="btn btn-success">
-								Guardad
+								Guardar
 						</button>					
 					</div>		
 				</form>				

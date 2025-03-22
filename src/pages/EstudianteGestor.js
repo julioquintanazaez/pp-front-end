@@ -6,7 +6,6 @@ import Navigation from './../components/MainNavbar.js';
 import axios from 'axios'; 
 
 import EstudianteAsignacion from './../utils/estudiante/EstudianteAsignacion.js';
-import ActividadesEstudianteTabla from './../utils/actividades/ActividadesEstudianteTabla.js';
 
 
 const EstudianteGestor = () => {
@@ -26,18 +25,11 @@ const EstudianteGestor = () => {
 				<div className="row gx-5">
 					<div className="col">
 						<div className="p-3 border bg-light">					
-							< EstudianteAsignacion usuario={user} />
+							< EstudianteAsignacion />
 						</div>
 					</div>
 				</div>
-				<br/>
-				<div className="row gx-5">
-					<div className="col">
-						<div className="p-3 border bg-light">					
-							< ActividadesEstudianteTabla />
-						</div>
-					</div>
-				</div>
+				<br/>				
 			</div>
 		</div>	
 	);

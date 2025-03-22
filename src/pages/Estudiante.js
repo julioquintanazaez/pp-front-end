@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { Outlet, Link } from 'react-router-dom';
 import Navigation from './../components/MainNavbar.js'; 
 
-import EstudianteAdicionar from './../utils/estudiante/EstudianteAdicionar.js';
+import EstudianteAdicionarModal from './../utils/estudiante/EstudianteAdicionarModal.js';
 import EstudianteTabla from './../utils/estudiante/EstudianteTabla.js';
 
 const Estudiante = () => {
@@ -25,14 +25,14 @@ const Estudiante = () => {
 				<div className="row gx-5">
 					<div className="col">
 						<div className="p-3 border bg-light">					
-							< EstudianteAdicionar />
+							< EstudianteTabla />
 						</div>
 					</div>
 				</div><br/>
 				<div className="row gx-5">
 					<div className="col">
-						<div className="p-3 border bg-light">					
-							< EstudianteTabla />
+						<div className="p-3 border bg-light">								
+							< EstudianteAdicionarModal />
 						</div>
 					</div>
 				</div>

@@ -24,7 +24,7 @@ const EntidadDestinoTabla = (props) => {
 	const fetchEntidadesDestino = async () => {
 		await axios({
 			method: 'get',
-			url: '/leer_entidades_destino/',
+			url: '/centro/leer_centropracticas/',
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -32,7 +32,7 @@ const EntidadDestinoTabla = (props) => {
 		}).then(response => {
 			if (response.status === 201) {
 				setEntidades(response.data);			
-				console.log("Se leyeron correctamente las entidades destino desde la base de datos");
+				console.log("Se leyeron correctamente las entidades desde la base de datos");
 			}
 			else{
 				console.log({"Error en response ":response.data});	
@@ -46,14 +46,14 @@ const EntidadDestinoTabla = (props) => {
 	
 	const renderTableData = () => {
 		return entidades?.map((entidad, index) => (
-				<tr className="row-md" key={entidad.id_entidad_destino}>
+				<tr className="row-md" key={entidad.id_centro}>
 					<th scope="row">{index + 1}</th>					
-					<td>{entidad.dest_nombre}</td>
-					<td>{entidad.dest_siglas}</td>
-					<td>{entidad.dest_nivel_tecnologico}</td>
-					<td>{entidad.dest_transporte == true ? "SI" : "NO"}</td>
-					<td>{entidad.dest_trab_remoto == true ? "SI" : "NO"}</td>
-					<td>{entidad.dest_experiencia == true ? "SI" : "NO"}</td>					
+					<td>{entidad.centro_nombre}</td>
+					<td>{entidad.centro_siglas}</td>
+					<td>{entidad.centro_tec}</td>
+					<td>{entidad.centro_transp == true ? "SI" : "NO"}</td>
+					<td>{entidad.centro_experiencia == true ? "SI" : "NO"}</td>
+					<td>{entidad.centro_teletrab == true ? "SI" : "NO"}</td>					
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">

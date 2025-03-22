@@ -15,7 +15,7 @@ const ConcertacionActivar = ( props ) => {
 		
 		await axios({
 			method: 'put',
-			url: "/activar_concertacion/" + id,	
+			url: "/concertacion/activar_concertacion/" + id,	
 			data: {
 				conc_activa : props.concertacion.conc_activa ? false : true
 			},

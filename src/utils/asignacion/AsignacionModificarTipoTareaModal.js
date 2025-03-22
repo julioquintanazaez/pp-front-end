@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Context } from './../../context/Context';
+import { Context } from '../../context/Context';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import * as Yup from "yup";
@@ -54,7 +54,7 @@ export default function AsignacionModificarTipoTareaModal( props ) {
 		if (props.asignacion.id_asignacion != null){	
 			setShow(true);  
 		}else{
-			Swal.fire("No se ha seleccionado la Asignación de tema", props.asignacion.id_asignacion, "error");
+			Swal.fire("No se ha seleccionado la Asignaciï¿½n de tema", props.asignacion.id_asignacion, "error");
 		}
 	}
 	
@@ -64,7 +64,7 @@ export default function AsignacionModificarTipoTareaModal( props ) {
 	
 	const validationRules = Yup.object().shape({		
 		asg_tipo_tarea_id: Yup.string().trim()
-			.required("Se requiere número de actores externos para la concertacion")
+			.required("Se requiere nï¿½mero de actores externos para la concertacion")
 	});
 	
 	//console.log(props.asignacion.asg_fecha_inicio)
@@ -140,7 +140,7 @@ export default function AsignacionModificarTipoTareaModal( props ) {
 			
 				<form className="form-control" onSubmit={formik.handleSubmit}>
 					<div className="form-group mt-3" id="asg_tipo_tarea_id">
-						<label>Seleccione el tipo de tarea para la asignación</label>
+						<label>Seleccione el tipo de tarea para la asignaciï¿½n</label>
 						<select
 						  type="text"
 						  name="asg_tipo_tarea_id"
@@ -151,7 +151,7 @@ export default function AsignacionModificarTipoTareaModal( props ) {
 										(formik.errors.asg_tipo_tarea_id && formik.touched.asg_tipo_tarea_id
 										? "is-invalid" : "" )
 									}>
-							<option value="" label="Seleccione una opcion">Seleccione una opciçon</option>	
+							<option value="" label="Seleccione una opcion">Seleccione una opciï¿½on</option>	
 							{RenderTipoTareas()} 
 						</select>
 						<div>{(formik.errors.asg_tipo_tarea_id) ? <p style={{color: 'red'}}>{formik.errors.asg_tipo_tarea_id}</p> : null}</div>

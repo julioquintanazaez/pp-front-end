@@ -67,7 +67,7 @@ export default function ProfesorAdicionar ( ) {
 				prf_categoria_cientifica : formik.values.prf_categoria_cientifica,  
 				prf_experiencia_practicas : formik.values.prf_experiencia_practicas, 
 				prf_numero_est_atendidos : formik.values.prf_numero_est_atendidos,  
-				prf_entidad_id : formik.values.prf_entidad_id,
+				prf_universidad_id : formik.values.prf_universidad_id,
 				user_profesor_id : formik.values.user_profesor_id
 			},
 			headers: {
@@ -90,36 +90,36 @@ export default function ProfesorAdicionar ( ) {
 	
 	const validationRules = Yup.object().shape({		
 		prf_genero: Yup.string().trim()
-			.required("Se requiere el género del profesor"),
+			.required("Se requiere el gï¿½nero del profesor"),
 		prf_estado_civil: Yup.string().trim()
 			.required("Se requiere el estado civil del profesor"),
 		prf_numero_empleos: Yup.number().positive()
 			.min(1)
-			.required("Se requiere el número de empleos del profesor"),
+			.required("Se requiere el nï¿½mero de empleos del profesor"),
 		prf_hijos: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione ona opción")
-			.required("Se requiere marque una opción"),	
+			.oneOf([true, false], "Por favor seleccione ona opciï¿½n")
+			.required("Se requiere marque una opciï¿½n"),	
 		prf_pos_tecnica_trabajo: Yup.string().trim()
-			.required("Se requiere la posibilidad técnica del trabajo del profesor"),
+			.required("Se requiere la posibilidad tï¿½cnica del trabajo del profesor"),
 		prf_pos_tecnica_hogar: Yup.string().trim()
-			.required("Se requiere la posibilidad técnica del hogar del profesor"),
+			.required("Se requiere la posibilidad tï¿½cnica del hogar del profesor"),
 		prf_cargo: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione ona opción")
-			.required("Se requiere marque una opción"),	
+			.oneOf([true, false], "Por favor seleccione ona opciï¿½n")
+			.required("Se requiere marque una opciï¿½n"),	
 		prf_trab_remoto: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione ona opción")
-			.required("Se requiere marque una opción"),	
+			.oneOf([true, false], "Por favor seleccione ona opciï¿½n")
+			.required("Se requiere marque una opciï¿½n"),	
 		prf_categoria_docente: Yup.string().trim()
-			.required("Se requiere la caegoría docente del profesor"),
+			.required("Se requiere la caegorï¿½a docente del profesor"),
 		prf_categoria_cientifica: Yup.string().trim()
-			.required("Se requiere la caegoría científica del profesor"),
+			.required("Se requiere la caegorï¿½a cientï¿½fica del profesor"),
 		prf_experiencia_practicas: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione ona opción")
-			.required("Se requiere marque una opción"),
+			.oneOf([true, false], "Por favor seleccione ona opciï¿½n")
+			.required("Se requiere marque una opciï¿½n"),
 		prf_numero_est_atendidos: Yup.number().positive()
 			.min(1)
-			.required("Se requiere el número de estudiantes atendidos por el profesor"),
-		prf_entidad_id: Yup.string().trim()
+			.required("Se requiere el nï¿½mero de estudiantes atendidos por el profesor"),
+		prf_universidad_id: Yup.string().trim()
 			.required("Se requiere el centro de pertenencia del profesor"),
 		user_profesor_id: Yup.string().trim()
 			.required("Se requiere seleccione un profesor")	
@@ -138,7 +138,7 @@ export default function ProfesorAdicionar ( ) {
 		prf_categoria_cientifica : categoria_cient_opt[0]["value"],  
 		prf_experiencia_practicas : false, 
 		prf_numero_est_atendidos : 1,  
-		prf_entidad_id : "",
+		prf_universidad_id : "",
 		user_profesor_id: ""
 	};
 	
@@ -227,7 +227,7 @@ export default function ProfesorAdicionar ( ) {
 		<>
 			<form className="form-control" onSubmit={formik.handleSubmit}>
 				<div className="form-group mt-3" id="user_profesor_id">
-					<label>Seleccione un profesor para trabajar en las prácticas laborales</label>
+					<label>Seleccione un profesor para trabajar en las prï¿½cticas laborales</label>
 					<select
 					  type="text"
 					  name="user_profesor_id"
@@ -242,9 +242,26 @@ export default function ProfesorAdicionar ( ) {
 						{RenderUsuarios()}					
 					</select>
 					<div>{(formik.errors.user_profesor_id) ? <p style={{color: 'red'}}>{formik.errors.user_profesor_id}</p> : null}</div>
+				</div>	
+				<div className="form-group mt-3" id="prf_universidad_id">
+					<label>Seleccione la entidad de origen del profesor</label>
+					<select
+					  type="text"
+					  name="prf_universidad_id"
+					  value={formik.values.prf_universidad_id}
+					  onChange={formik.handleChange}
+					  onBlur={formik.handleBlur}
+					  className={"form-control mt-1" + 
+									(formik.errors.prf_universidad_id && formik.touched.prf_universidad_id
+									? "is-invalid" : "" )
+								}>
+						<option value="" label="Seleccione una opcion">Seleccione una opcion</option>	
+						{ RenderEntidadOrigen(entidadescontexto) } 
+					</select>
+					<div>{(formik.errors.prf_universidad_id) ? <p style={{color: 'red'}}>{formik.errors.prf_universidad_id}</p> : null}</div>
 				</div>		
 				<div className="form-group mt-3" id="prf_genero">
-					<label>Seleccione el género para el profesor</label>
+					<label>Seleccione el gï¿½nero para el profesor</label>
 					<select
 					  type="text"
 					  name="prf_genero"
@@ -276,7 +293,7 @@ export default function ProfesorAdicionar ( ) {
 					<div>{(formik.errors.prf_estado_civil) ? <p style={{color: 'red'}}>{formik.errors.prf_estado_civil}</p> : null}</div>
 				</div>	
 				<div className="form-group mt-3" id="prf_numero_empleos">
-					<label>Introduzca el número de empleos del profesor</label>
+					<label>Introduzca el nï¿½mero de empleos del profesor</label>
 					<input
 					  type="text"
 					  name="prf_numero_empleos"
@@ -286,12 +303,12 @@ export default function ProfesorAdicionar ( ) {
 					  className={"form-control mt-1" + 
 									(formik.errors.prf_numero_empleos && formik.touched.prf_numero_empleos
 									? "is-invalid" : "" )}
-					  placeholder="Número de empleos del profesor"
+					  placeholder="Nï¿½mero de empleos del profesor"
 					/>					
 					<div>{(formik.errors.prf_numero_empleos) ? <p style={{color: 'red'}}>{formik.errors.prf_numero_empleos}</p> : null}</div>
 				</div>
 				<div className="form-group mt-3" id="prf_hijos">			
-					<label>Marque la opción correcta para hijos del profesor</label>
+					<label>Marque la opciï¿½n correcta para hijos del profesor</label>
 					<br/>
 					<label>Tiene hijos (Si): </label>
 					<input
@@ -310,7 +327,7 @@ export default function ProfesorAdicionar ( ) {
 					/>			
 				</div>	
 				<div className="form-group mt-3" id="prf_pos_tecnica_trabajo">
-					<label>Seleccione el nivel tecnológico para el trabajo del profesor</label>
+					<label>Seleccione el nivel tecnolï¿½gico para el trabajo del profesor</label>
 					<select
 					  type="text"
 					  name="prf_pos_tecnica_trabajo"
@@ -326,7 +343,7 @@ export default function ProfesorAdicionar ( ) {
 					<div>{(formik.errors.prf_pos_tecnica_trabajo) ? <p style={{color: 'red'}}>{formik.errors.prf_pos_tecnica_trabajo}</p> : null}</div>
 				</div>		
 				<div className="form-group mt-3" id="prf_pos_tecnica_hogar">
-					<label>Seleccione el nivel tecnológico para el hogar del profesor</label>
+					<label>Seleccione el nivel tecnolï¿½gico para el hogar del profesor</label>
 					<select
 					  type="text"
 					  name="prf_pos_tecnica_hogar"
@@ -342,7 +359,7 @@ export default function ProfesorAdicionar ( ) {
 					<div>{(formik.errors.prf_pos_tecnica_hogar) ? <p style={{color: 'red'}}>{formik.errors.prf_pos_tecnica_hogar}</p> : null}</div>
 				</div>	
 				<div className="form-group mt-3" id="prf_cargo">			
-					<label>Marque la opción correcta para la ocupación de cargo del profesor</label>
+					<label>Marque la opciï¿½n correcta para la ocupaciï¿½n de cargo del profesor</label>
 					<br/>
 					<label>Ocupa cargo (Si): </label>
 					<input
@@ -361,7 +378,7 @@ export default function ProfesorAdicionar ( ) {
 					/>			
 				</div>
 				<div className="form-group mt-3" id="prf_trab_remoto">			
-					<label>Marque la opción correcta para la posibilidad de trabajo remoto del profesor</label>
+					<label>Marque la opciï¿½n correcta para la posibilidad de trabajo remoto del profesor</label>
 					<br/>
 					<label>Puede trabajar remoto (Si): </label>
 					<input
@@ -380,7 +397,7 @@ export default function ProfesorAdicionar ( ) {
 					/>			
 				</div>		
 				<div className="form-group mt-3" id="prf_categoria_docente">
-					<label>Seleccione la categoría docente del profesor</label>
+					<label>Seleccione la categorï¿½a docente del profesor</label>
 					<select
 					  type="text"
 					  name="prf_categoria_docente"
@@ -396,7 +413,7 @@ export default function ProfesorAdicionar ( ) {
 					<div>{(formik.errors.prf_categoria_docente) ? <p style={{color: 'red'}}>{formik.errors.prf_categoria_docente}</p> : null}</div>
 				</div>					
 				<div className="form-group mt-3" id="prf_categoria_cientifica">
-					<label>Seleccione la categoría científica del profesor</label>
+					<label>Seleccione la categorï¿½a cientï¿½fica del profesor</label>
 					<select
 					  type="text"
 					  name="prf_categoria_cientifica"
@@ -412,7 +429,7 @@ export default function ProfesorAdicionar ( ) {
 					<div>{(formik.errors.prf_categoria_cientifica) ? <p style={{color: 'red'}}>{formik.errors.prf_categoria_cientifica}</p> : null}</div>
 				</div>
 				<div className="form-group mt-3" id="prf_experiencia_practicas">			
-					<label>Marque la opción correcta para la experiencia en prácticas profesionales del profesor</label>
+					<label>Marque la opciï¿½n correcta para la experiencia en prï¿½cticas profesionales del profesor</label>
 					<br/>
 					<label>Ha participado (Si): </label>
 					<input
@@ -431,7 +448,7 @@ export default function ProfesorAdicionar ( ) {
 					/>			
 				</div>					
 				<div className="form-group mt-3" id="prf_numero_est_atendidos">
-					<label>Introduzca el número de estudiantes atendidos por el profesor</label>
+					<label>Introduzca el nï¿½mero de estudiantes atendidos por el profesor</label>
 					<input
 					  type="text"
 					  name="prf_numero_est_atendidos"
@@ -441,27 +458,10 @@ export default function ProfesorAdicionar ( ) {
 					  className={"form-control mt-1" + 
 									(formik.errors.prf_numero_est_atendidos && formik.touched.prf_numero_est_atendidos
 									? "is-invalid" : "" )}
-					  placeholder="Número de estudiantes (valor entero, ej. 2)"
+					  placeholder="Nï¿½mero de estudiantes (valor entero, ej. 2)"
 					/>					
 					<div>{(formik.errors.prf_numero_est_atendidos) ? <p style={{color: 'red'}}>{formik.errors.prf_numero_est_atendidos}</p> : null}</div>
-				</div>					
-				<div className="form-group mt-3" id="prf_entidad_id">
-					<label>Seleccione la entidad de origen del profesor</label>
-					<select
-					  type="text"
-					  name="prf_entidad_id"
-					  value={formik.values.prf_entidad_id}
-					  onChange={formik.handleChange}
-					  onBlur={formik.handleBlur}
-					  className={"form-control mt-1" + 
-									(formik.errors.prf_entidad_id && formik.touched.prf_entidad_id
-									? "is-invalid" : "" )
-								}>
-						<option value="" label="Seleccione una opcion">Seleccione una opcion</option>	
-						{ RenderEntidadOrigen(entidadescontexto) } 
-					</select>
-					<div>{(formik.errors.prf_entidad_id) ? <p style={{color: 'red'}}>{formik.errors.prf_entidad_id}</p> : null}</div>
-				</div>				
+				</div>									
 				<div className="d-grid gap-2 mt-3">
 					<button type="submit" className="btn btn-success">
 							Guardar datos

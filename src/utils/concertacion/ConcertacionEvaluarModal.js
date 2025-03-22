@@ -29,7 +29,7 @@ export default function ConcertacionEvaluarModal( props ) {
 		
 		await axios({
 			method: 'put',
-			url: "/evaluar_concertacion/" + props.concertacion.id_conc_tema,
+			url: "/concertacion/evaluar_concertacion/" + props.concertacion.id_conc_tema,
 			data: {
 				conc_evaluacion : formik.values.conc_evaluacion	
 			},
@@ -39,8 +39,8 @@ export default function ConcertacionEvaluarModal( props ) {
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				setMessages("Concertacion evaluando"+ Math.random());
-				Swal.fire("Concertacion evaluada exitosamente", "", "success");
+				setMessages("Concertaci贸n evaluando"+ Math.random());
+				Swal.fire("Concertaci贸n evaluada exitosamente", "", "success");
 			}
 		}).catch((error) => {
 			console.error({"message":error.message, "detail":error.response.data.detail});
@@ -56,7 +56,7 @@ export default function ConcertacionEvaluarModal( props ) {
 		if (props.concertacion.id_conc_tema != null){	
 			setShow(true);  
 		}else{
-			Swal.fire("No se ha seleccionado Concertacion", props.concertacion.id_conc_tema, "error");
+			Swal.fire("No se ha seleccionado Concertaci贸n", props.concertacion.id_conc_tema, "error");
 		}
 	}
 	
@@ -66,6 +66,7 @@ export default function ConcertacionEvaluarModal( props ) {
 	
 	const validationRules = Yup.object().shape({		
 		conc_evaluacion: Yup.string().trim()
+			.required("Se requiere seleccione un valor para la concertaci贸n"),
 	});
 	
 	const registerInitialValues = {
@@ -99,14 +100,14 @@ export default function ConcertacionEvaluarModal( props ) {
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Modificar {props.concertacion.conc_tema} 
+					Tema: {props.concertacion.conc_tema} 
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 			
 				<form className="form-control" onSubmit={formik.handleSubmit}>
 					<div className="form-group mt-3" id="conc_evaluacion">
-						<label>Introduzca la evaluaci髇 para la concertacion</label>
+						<label>Introduzca la evaluaci贸n para la concertacion</label>
 						<select
 						  type="text"
 						  name="conc_evaluacion"
@@ -123,7 +124,7 @@ export default function ConcertacionEvaluarModal( props ) {
 					</div>
 					<div className="d-grid gap-2 mt-3">
 						<button type="submit" className="btn btn-success">
-								Guardar datos
+								Guardar
 						</button>					
 					</div>		
 				</form>

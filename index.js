@@ -7,8 +7,8 @@ import { ContextProvider, Context } from './src/context/Context';
 import axios from 'axios';
 import App from './src/App.js';
 
-axios.defaults.baseURL =  "http://localhost:8000"; 
-//axios.defaults.baseURL =  "https://pp-back-end.onrender.com"; 
+//axios.defaults.baseURL =  "http://127.0.0.1:8000"; 
+axios.defaults.baseURL =  "https://pp-back-end.onrender.com";  
 
 const container = document.getElementById("root");
 const root = ReactDOM.createRoot(container);

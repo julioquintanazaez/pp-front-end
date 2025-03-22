@@ -10,11 +10,13 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
 
-export default function ClienteModificarModal( props ) {
+export default function ClienteModificarModal( ) {
 	
-	const { token, setMessages, handleLogout } = useContext(Context);
+	const { token, setMessages, messages, handleLogout } = useContext(Context);
 	const [show, setShow] = useState(false);
 	const [validated, setValidated] = useState(false);
+    const [centrospracticas, setCentrosPracticas] = useState([]);
+    const [usuariosclientes, setUsuariosClientes] = useState([]);
 	
 	//Options configurations
 	const nivel_tecno_options = [
@@ -23,7 +25,7 @@ export default function ClienteModificarModal( props ) {
 								{ value: "Media", label: "Media" },
 								{ value: "Alta", label: "Alta" }
 							];	
-							
+		
 	const categoria_doc_opt = [
 								{ value: "Instructor", label: "Instructor" },
 								{ value: "Auxiliar", label: "Auxiliar" },
@@ -39,11 +41,11 @@ export default function ClienteModificarModal( props ) {
 								{ value: "Doctor", label: "Doctor" }
 							];	
 							
-	const modificarCliente = async () => {
+	const adicionarCliente = async () => {
 		
 		await axios({
-			method: 'put',
-			url: "/cliente/actualizar_cliente/" + props.cliente.id_cliente,
+			method: 'post',
+			url: "/cliente/crear_cliente/",
 			data: {
 				cli_numero_empleos : formik.values.cli_numero_empleos,
 				cli_pos_tecnica_trabajo : formik.values.cli_pos_tecnica_trabajo,
@@ -53,7 +55,9 @@ export default function ClienteModificarModal( props ) {
 				cli_categoria_docente : formik.values.cli_categoria_docente, 
 				cli_categoria_cientifica : formik.values.cli_categoria_cientifica,  
 				cli_experiencia_practicas : formik.values.cli_experiencia_practicas, 
-				cli_numero_est_atendidos : formik.values.cli_numero_est_atendidos			
+				cli_numero_est_atendidos : formik.values.cli_numero_est_atendidos,
+                cli_centro_id : formik.values.cli_centro_id,	
+				user_cliente_id : formik.values.user_cliente_id	
 			},
 			headers: {
 				'accept': 'application/json',
@@ -61,8 +65,8 @@ export default function ClienteModificarModal( props ) {
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				setMessages("Cliente actualizado"+ Math.random());
-				Swal.fire("Cliente actualizado exitosamente", "", "success");
+				setMessages("Cliente creado"+ Math.random());
+				Swal.fire("Cliente creado exitosamente", "", "success");
 			}
 		}).catch((error) => {
 			console.error({"message":error.message, "detail":error.response.data.detail});
@@ -75,11 +79,7 @@ export default function ClienteModificarModal( props ) {
 	}
 	
 	const handleShow = () => {
-		if (props.cliente.id_cliente != null){	
-			setShow(true);  
-		}else{
-			Swal.fire("No se ha seleccionado Cliente", props.cliente.id_cliente, "error");
-		}
+		setShow(true);  
 	}
 	
 	const digitsOnly = (value) => /^\d+$/.test(value) //--:/^[0-9]d+$/
@@ -109,27 +109,34 @@ export default function ClienteModificarModal( props ) {
 			.required("Se requiere la experiencia en prácticas profesionales del cliente"),
 		cli_numero_est_atendidos: Yup.string().trim()
 			.required("Se requiere el número de estudiantes atendidos por el cliente"),
+        cli_centro_id: Yup.string().trim()
+            .required("Se requiere el centro de pertenencia del cliente"),
+        user_cliente_id: Yup.string().trim()
+            .required("Se requiere seleccione un cliente")
 	});
 	
 	const registerInitialValues = {
-		cli_numero_empleos : props.cliente.cli_numero_empleos,
-		cli_pos_tecnica_trabajo : props.cliente.cli_pos_tecnica_trabajo,
-		cli_pos_tecnica_hogar : props.cliente.cli_pos_tecnica_hogar,
-		cli_cargo : props.cliente.cli_cargo,
-		cli_trab_remoto : props.cliente.cli_trab_remoto,
-		cli_categoria_docente : props.cliente.cli_categoria_docente, 
-		cli_categoria_cientifica : props.cliente.cli_categoria_cientifica,  
-		cli_experiencia_practicas : props.cliente.cli_experiencia_practicas, 
-		cli_numero_est_atendidos : props.cliente.cli_numero_est_atendidos
+		cli_numero_empleos : 1,
+		cli_pos_tecnica_trabajo : nivel_tecno_options[0]["value"],
+		cli_pos_tecnica_hogar : nivel_tecno_options[0]["value"],
+		cli_cargo : false,
+		cli_trab_remoto : false,
+		cli_categoria_docente : categoria_doc_opt[0]["value"], 
+		cli_categoria_cientifica : categoria_cient_opt[0]["value"],  
+		cli_experiencia_practicas : false, 
+		cli_numero_est_atendidos : 1,  
+        cli_centro_id : "",
+		user_cliente_id: ""
 	};
 	
 	const formik = useFormik({
 		initialValues: registerInitialValues,
 		onSubmit: (values) => {
-			console.log("Save data...")
+			console.log("Guardando datos...")
 			console.log(values)
-			modificarCliente();
+			adicionarCliente();
 			formik.resetForm();
+			handleClose();
 		},
 		validationSchema: validationRules
 	});
@@ -141,21 +148,116 @@ export default function ClienteModificarModal( props ) {
 			) 
 		)
 	};
+
+    useEffect(()=> {
+        leerCentrosPracticas();
+    }, []);	
+	
+	const leerCentrosPracticas = async () => {
+		await axios({
+			method: 'get',
+			url: '/centro/leer_centropracticas/',			
+			headers: {
+				'accept': 'application/json',
+				'Authorization': "Bearer " + token,
+			},
+		}).then(response => {
+			if (response.status === 201) {	
+				setCentrosPracticas(response.data);
+			}
+		}).catch((error) => {
+			console.error({"message":error.message, "detail":error.response.data.detail});
+			handleLogout();
+		});				  
+	}
+	
+	const RenderCentrosPracticas = (entidadescontexto) => {
+		return (			
+			centrospracticas.map(item => 
+				<option value={item.id_centro} label={item.centro_siglas}>{item.centro_siglas}</option>				
+			) 
+		)
+	};	
+	
+	useEffect(()=> {
+		leerUsuariosClientes();
+    }, [messages]);	
+	
+	const leerUsuariosClientes = async () => {
+		await axios({
+			method: 'get',
+			url: '/usuario/obtener_usuarios/cliente',
+			headers: {
+				'accept': 'application/json',
+				'Authorization': "Bearer " + token,
+			},
+		}).then(response => {
+			if (response.status === 201) {				
+				setUsuariosClientes(response.data);				
+			}
+		}).catch((error) => {
+			console.error({"message":error.message, "detail":error.response.data.detail});
+		});				  
+	}
+	
+	const RenderUsuariosClientes = () => {
+		return (			
+			usuariosclientes.map(item => 
+				<option value={item.id} label={item.nombre + " " + item.primer_appellido}>
+					{item.nombre + " " + item.primer_appellido}
+				</option>	
+			) 
+		)
+	};	
 	
 	return (
 		<>
-		<button className="btn btn-sm btn-warning" onClick={handleShow}>
-			< BiBox /> 
+		<button className="btn btn-sm btn-success" onClick={handleShow}>
+			Adicionar 
 		</button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Modificar {props.cliente.cli_nombre} {props.cliente.cli_primer_appellido} {props.cliente.cli_segundo_appellido}
+					Adicionar 
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 			
 				<form className="form-control" onSubmit={formik.handleSubmit}>
+                    <div className="form-group mt-3" id="user_cliente_id">
+                        <label>Seleccione un usuario para trabajar en las prácticas laborales</label>
+                        <select
+                        type="text"
+                        name="user_cliente_id"
+                        value={formik.values.user_cliente_id}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={"form-control mt-1" + 
+                                        (formik.errors.user_cliente_id && formik.touched.user_cliente_id
+                                        ? "is-invalid" : "" )
+                                    }>
+                            {RenderUsuariosClientes()}
+                        <option value="" label="Seleccione un cliente">Seleccione una opcion</option>	
+                        </select>
+                        <div>{(formik.errors.user_cliente_id) ? <p style={{color: 'red'}}>{formik.errors.user_cliente_id}</p> : null}</div>
+                    </div>	
+                    <div className="form-group mt-3" id="cli_centro_id">
+                        <label>Seleccione el centro de prácticas</label>
+                        <select
+                        type="text"
+                        name="cli_centro_id"
+                        value={formik.values.cli_centro_id}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={"form-control mt-1" + 
+                                        (formik.errors.cli_centro_id && formik.touched.cli_centro_id
+                                        ? "is-invalid" : "" )
+                                    }>
+                            <option value="" label="Seleccione una opcion">Seleccione una opcion</option>	
+                            { RenderCentrosPracticas(centrospracticas) } 
+                        </select>
+                        <div>{(formik.errors.cli_centro_id) ? <p style={{color: 'red'}}>{formik.errors.cli_centro_id}</p> : null}</div>
+                    </div>		
 					<div className="form-group mt-3" id="cli_numero_empleos">
 						<label>Introduzca el número de empleos del cliente</label>
 						<input
@@ -167,7 +269,7 @@ export default function ClienteModificarModal( props ) {
 						  className={"form-control mt-1" + 
 										(formik.errors.cli_numero_empleos && formik.touched.cli_numero_empleos
 										? "is-invalid" : "" )}
-						  placeholder="Número de empleos del cliente"
+						  placeholder="N�mero de empleos del cliente"
 						/>					
 						<div>{(formik.errors.cli_numero_empleos) ? <p style={{color: 'red'}}>{formik.errors.cli_numero_empleos}</p> : null}</div>
 					</div>
@@ -303,17 +405,16 @@ export default function ClienteModificarModal( props ) {
 						  className={"form-control mt-1" + 
 										(formik.errors.cli_numero_est_atendidos && formik.touched.cli_numero_est_atendidos
 										? "is-invalid" : "" )}
-						  placeholder="Número de estudiantes (valor entero, ej. 2)"
+						  placeholder="N�mero de estudiantes (valor entero, ej. 2)"
 						/>					
 						<div>{(formik.errors.cli_numero_est_atendidos) ? <p style={{color: 'red'}}>{formik.errors.cli_numero_est_atendidos}</p> : null}</div>
 					</div>					
 					<div className="d-grid gap-2 mt-3">
 					<button type="submit" className="btn btn-success">
-							Modificar
+							Guardar
 					</button>					
 				</div>		
 				</form>
-			
 			</Modal.Body>
 			<Modal.Footer>		
 				<Button className="btn-sm" variant="secondary" onClick={handleClose}>

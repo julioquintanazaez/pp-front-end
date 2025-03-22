@@ -24,7 +24,7 @@ const EntidadOrigenTabla = (props) => {
 	const fetchEntidadesOrigen = async () => {
 		await axios({
 			method: 'get',
-			url: '/leer_entidades_origen/',
+			url: '/universidad/leer_universidades/',
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -48,11 +48,11 @@ const EntidadOrigenTabla = (props) => {
 		return entidades?.map((entidad, index) => (
 				<tr className="row-md" key={entidad.id_entidad_origen}>
 					<th scope="row">{index + 1}</th>					
-					<td>{entidad.org_nombre}</td>
-					<td>{entidad.org_siglas}</td>
-					<td>{entidad.org_nivel_tecnologico}</td>
-					<td>{entidad.org_transporte == true ? "SI" : "NO"}</td>
-					<td>{entidad.org_trab_remoto == true ? "SI" : "NO"}</td>	
+					<td>{entidad.universidad_nombre}</td>
+					<td>{entidad.universidad_siglas}</td>
+					<td>{entidad.universidad_tec}</td>
+					<td>{entidad.universidad_transp == true ? "SI" : "NO"}</td>
+					<td>{entidad.universidad_teletrab == true ? "SI" : "NO"}</td>	
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
@@ -83,7 +83,7 @@ const EntidadOrigenTabla = (props) => {
 						<th scope="col">#</th>	
 						<th scope="col">Nombre</th>	
 						<th scope="col">Siglas</th>	
-						<th scope="col">Nivel tecnologico</th>
+						<th scope="col">Nivel tecnológico</th>
 						<th scope="col">Transporte</th>
 						<th scope="col">Teletrabajo</th>
 						<th scope="col">Actualizar</th>

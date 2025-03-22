@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
+
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -14,7 +15,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 
 
-export default function EntidadOrigenModificarModal( props ) {
+export default function EntidadOrigenAdicionarModal( ) {
 	
 	const { token, setMessages, handleLogout } = useContext(Context);
 	const [show, setShow] = useState(false);
@@ -28,31 +29,30 @@ export default function EntidadOrigenModificarModal( props ) {
 								{ value: "Alta", label: "Alta" }
 							];	
 							
-	const modificarEntidad = async () => {
+	const adicionarEntidad = async () => {
 		
 		await axios({
-			method: 'put',
-			url: "/universidad/actualizar_universidad/" + props.entidad.id_universidad,
+			method: 'post',
+			url: '/universidad/crear_universidad/',
 			data: {
 				universidad_nombre: formik.values.universidad_nombre,
 				universidad_siglas: formik.values.universidad_siglas,
 				universidad_tec: formik.values.universidad_tec,
 				universidad_transp: formik.values.universidad_transp,
-				universidad_teletrab: formik.values.universidad_teletrab								
+				universidad_teletrab: formik.values.universidad_teletrab				
 			},
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
 			},
 		}).then(response => {
-			if (response.status === 201) {
-				setMessages("Universidad actualizada"+ Math.random());
-				Swal.fire("Universidad actualizada exitosamente", "", "success");
+			if (response.status === 201) {				
+				setMessages("Universidad creada"+ Math.random());
+				Swal.fire("Universidad creada exitosamente", "", "success");
 			}
 		}).catch((error) => {
 			console.error({"message":error.message, "detail":error.response.data.detail});
-			handleLogout();
-		});				  
+		});					  
 	}
   
 	const handleClose = () => {
@@ -60,11 +60,7 @@ export default function EntidadOrigenModificarModal( props ) {
 	}
 	
 	const handleShow = () => {
-		if (props.entidad.id_universidad != null){	
-			setShow(true);  
-		}else{
-			Swal.fire("No se ha seleccionado Universidad", "", "error");
-		}
+        setShow(true);  		
 	}
 	
 	const digitsOnly = (value) => /^\d+$/.test(value) //--:/^[0-9]d+$/
@@ -72,51 +68,51 @@ export default function EntidadOrigenModificarModal( props ) {
 	const isNameOnly = (value) => /[^A-Za-z]$/.test(value) 
 	
 	const validationRules = Yup.object().shape({
-		universidad_nombre: Yup.string().trim()
-			.required("Se requiere el nombre de la entidad"),
-			//.test("Solo letras", "Introduzca letras", isNameOnly),
-		universidad_siglas: Yup.string().trim()	
-			.min(2, "Las siglas deben contener más de 3 letras")
-			.max(25, "Las siglas no exceder las 25 letras")
-			.required("Se requiere introduzca las siglas de la de la entidad"),
-			//.test("Solo letras may�sculas y n�meros", "Introduzca letras mayúsculas y num�ricos", siglasOnly),
-		universidad_tec: Yup.string().trim()	
-			.required("Se requiere seleccione una opción"),
-		universidad_transp: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione ona opción")
-			.required("Se requiere marque una opción"),
-		universidad_teletrab: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione ona opción")
-			.required("Se requiere marque una opción"),	
-	});
+        universidad_nombre: Yup.string().trim()
+            .required("Se requiere el nombre de la entidad"),
+            //.test("Solo letras", "Introduzca letras", isNameOnly),
+        universidad_siglas: Yup.string().trim()	
+            .min(2, "Las siglas deben contener m�s de 3 letras")
+            .max(25, "Las siglas no exceder las 25 letras")
+            .required("Se requiere introduzca las siglas de la de la entidad"),
+            //.test("Solo letras mayúsculas y números", "Introduzca letras mayúsculas y numúricos", siglasOnly),
+        universidad_tec: Yup.string().trim()	
+            .required("Se requiere seleccione una opción"),
+        universidad_transp: Yup.boolean()
+            .oneOf([true, false], "Por favor seleccione ona opción")
+            .required("Se requiere marque una opción"),
+        universidad_teletrab: Yup.boolean()
+            .oneOf([true, false], "Por favor seleccione ona opción")
+            .required("Se requiere marque una opción"),	
+    });
 	
 	const registerInitialValues = {
-		universidad_nombre: props.entidad.universidad_nombre,
-		universidad_siglas: props.entidad.universidad_siglas,
-		universidad_tec: props.entidad.universidad_tec,
-		universidad_transp: props.entidad.universidad_transp,
-		universidad_teletrab: props.entidad.universidad_teletrab		
-	};
-	
-	const formik = useFormik({
-		initialValues: registerInitialValues,
-		onSubmit: (values) => {
-			console.log("Save data...")
-			console.log(values)
-			modificarEntidad();
-			formik.resetForm();
+        universidad_nombre: "",
+        universidad_siglas: "",
+        universidad_tec: nivel_tecno_options[0]["value"],
+        universidad_transp: false,
+        universidad_teletrab: false		
+    };
+    
+    const formik = useFormik({
+        initialValues: registerInitialValues,
+        onSubmit: (values) => {
+            console.log("Save data...")
+            console.log(values)
+            adicionarEntidad();
+            formik.resetForm();
 			handleClose();
-		},
-		validationSchema: validationRules
-	});
-	
-	const RenderOptions = (listValues) => {
-		return (
-			listValues.map(item => 
-				<option value={item.value} label={item.label}>{item.value}</option>
-			) 
-		)
-	};
+        },
+        validationSchema: validationRules
+    });
+    
+    const RenderOptions = (listValues) => {
+        return (
+            listValues.map(item => 
+                <option value={item.value} label={item.label}>{item.value}</option>
+            ) 
+        )
+    };
 	
 	const handleRadioTransporte = e => formik.values.radioButtonValue = e.target.value
 	
@@ -124,13 +120,13 @@ export default function EntidadOrigenModificarModal( props ) {
 		
 	return (
 		<>
-		<button className="btn btn-sm btn-warning" onClick={handleShow}>
-			Modificar 
+		<button className="btn btn-sm btn-success" onClick={handleShow}>
+			Nueva universidad 
 		</button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Modificar {props.entidad.universidad_siglas}
+					Adicionar 
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
@@ -167,7 +163,7 @@ export default function EntidadOrigenModificarModal( props ) {
 						<div>{(formik.errors.universidad_siglas) ? <p style={{color: 'red'}}>{formik.errors.universidad_siglas}</p> : null}</div>
 					</div>				
 					<div className="form-group mt-3" id="universidad_tec">
-						<label>Seleccione el nivel tecnológico de la entidad</label>
+						<label>Seleccione el nivel tecnológico de la universidad</label>
 						<select
 						  type="text"
 						  name="universidad_tec"

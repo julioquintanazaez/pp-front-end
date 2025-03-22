@@ -15,16 +15,16 @@ const EntidadOrigenEliminar = ( props ) => {
 		
 		await axios({
 			method: 'delete',
-			url: "/eliminar_entidad_origen/" + id,			
+			url: "/universidad/eliminar_universidad/" + id,			
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
 			},
 		}).then(response => {
 			if (response.status === 201) {				
-				setMessages("Entidad origen eliminada satisfactoriamente" + Math.random());
-				Swal.fire("Entidad origen eliminada satisfactoriament", "", "success");
-				console.log("Entidad origen eliminada satisfactoriamente");	
+				setMessages("Universidad eliminada satisfactoriamente" + Math.random());
+				Swal.fire("Universidad eliminada satisfactoriament", "", "success");
+				console.log("Universidad eliminada satisfactoriamente");	
 			}
 		}).catch((error) => {
 			console.error({"message":error.message, "detail":error.response.data.detail});
@@ -34,10 +34,10 @@ const EntidadOrigenEliminar = ( props ) => {
 	
 	const handleEliminarSubmit = (event) => {
 		event.preventDefault();
-		if (props.entidad.id_entidad_origen != null){
-			eliminarEntidad(props.entidad.id_entidad_origen);
+		if (props.entidad.id_universidad != null){
+			eliminarEntidad(props.entidad.id_universidad);
 		}else{
-			Swal.fire("Seleccione una entidad", "", "error");
+			Swal.fire("Seleccione una universidad", "", "error");
 		}
 	}
 	

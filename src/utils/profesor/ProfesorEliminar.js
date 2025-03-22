@@ -16,7 +16,7 @@ const ProfesorEliminar = ( props ) => {
 		
 		await axios({
 			method: 'delete',
-			url: "/eliminar_profesor/" + id,			
+			url: "/profesor/eliminar_profesor/" + id,			
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,

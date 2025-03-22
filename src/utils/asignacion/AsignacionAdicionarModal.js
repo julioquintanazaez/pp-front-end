@@ -16,11 +16,12 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 
 
-export default function AsignacionModificarModal( props ) {
+export default function AsignacionAdicionarModal(  ) {
 	
-	const { token, setMessages, handleLogout } = useContext(Context);
+	const { token, setMessages, messages, handleLogout } = useContext(Context);
 	const [show, setShow] = useState(false);
 	const [validated, setValidated] = useState(false);
+    const [concertaciones, setConcertaciones] = useState([]);
 	
 	//Options configurations
 	const complejidad_options = [
@@ -29,7 +30,7 @@ export default function AsignacionModificarModal( props ) {
 								{ value: "Alta", label: "Alta" }
 							];	
 
-	const tipos_de_tarea = [
+    const tipos_de_tarea = [
 								{ value: "Desarrollo", label: "Desarrollo" },
 								{ value: "Investigacion", label: "Investigación" },
 								{ value: "Documentacion", label: "Documentación" },
@@ -37,22 +38,23 @@ export default function AsignacionModificarModal( props ) {
                                 { value: "Revision", label: "Revisión" }
 							];	
 	
-	const formatDate = (date) => {		
-		return date.toISOString().split('T')[0]
-	};	
+    const formatDate = (date) => {		
+        return date.toISOString().split('T')[0]
+    };		
 
-	const modificarAsignacion = async () => {
-		
+	const adicionarAsignacion = async () => {
+		console.log("Entro a endpoint")
 		await axios({
-			method: 'put',
-			url: "/tarea/actualizar_tarea/" + props.asignacion.id_tarea,
+			method: 'post',
+			url: "/tarea/crear_tarea/",
 			data: {
-				tarea_tipo : formik.values.tarea_tipo,
+                tarea_tipo : formik.values.tarea_tipo,
                 tarea_descripcion : formik.values.tarea_descripcion,
 				tarea_fecha_inicio : formatDate(formik.values.tarea_fecha_inicio),
 				tarea_fecha_fin : formatDate(formik.values.tarea_fecha_fin),
 				tarea_complejidad_estimada : formik.values.tarea_complejidad_estimada,
-				tarea_participantes : formik.values.tarea_participantes,
+				tarea_participantes : formik.values.tarea_participantes,	
+			    concertacion_tarea_id : formik.values.concertacion_tarea_id,			
 			},
 			headers: {
 				'accept': 'application/json',
@@ -60,12 +62,13 @@ export default function AsignacionModificarModal( props ) {
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				setMessages("Tarea actualizada"+ Math.random());
-				Swal.fire("Tarea actualizada exitosamente", "", "success");
-			}
+				setMessages("Asignacion actualizado"+ Math.random());
+				Swal.fire("Tarea creada exitosamente", "", "success");
+			} 
 		}).catch((error) => {
-			console.error({"message":error.message, "detail":error.response.data.detail});
-			handleLogout();
+			console.log({"message":error.message, "detail":error.response.data.detail});
+			//handleLogout();
+            Swal.fire(error.response.data.detail, "", "error");
 		});				  
 	}
   
@@ -74,11 +77,7 @@ export default function AsignacionModificarModal( props ) {
 	}
 	
 	const handleShow = () => {
-		if (props.asignacion.id_tarea != null){	
-			setShow(true);  
-		}else{
-			Swal.fire("No se ha seleccionado una Tarea", props.asignacion.id_tarea, "error");
-		}
+        setShow(true);  
 	}
 	
 	const digitsOnly = (value) => /^\d+$/.test(value) //--:/^[0-9]d+$/
@@ -88,37 +87,39 @@ export default function AsignacionModificarModal( props ) {
 	const validationRules = Yup.object().shape({		
 		tarea_descripcion: Yup.string().trim()
 			.required("Se requiere el tema para la tarea"),
-		tarea_fecha_inicio: Yup.date()
+        tarea_fecha_inicio: Yup.date()
 			.required("Se requiere la valoración para la tarea"),
-		tarea_fecha_fin: Yup.date()
+        tarea_fecha_fin: Yup.date()
 			.required("Se requiere la valoración del profesor para la tarea")
 			.min(Yup.ref("tarea_fecha_inicio"), "La fecha de fin debe ser superior a la de inicio"),
-		tarea_complejidad_estimada: Yup.string().trim()
+        tarea_complejidad_estimada: Yup.string().trim()
 			.required("Se requiere la valoración del cliente para la tarea"),
-		tarea_tipo: Yup.string().trim()
+        tarea_tipo: Yup.string().trim()
 			.required("Se requiere el tipo de tarea"),
-		tarea_participantes: Yup.number()
+        tarea_participantes: Yup.number()
 			.required("Se requiere el nivel de complejidad para la tarea"),
+		concertacion_tarea_id: Yup.string().trim()
+            .required("Se requiere la concertación para la tarea")		
 	});
 	
-	//console.log(props.asignacion.asg_fecha_inicio)
-	
 	const registerInitialValues = {
-		tarea_tipo : props.asignacion.tarea_descripcion,
-		tarea_descripcion : props.asignacion.tarea_descripcion,
-		tarea_fecha_inicio : Date.parse(props.asignacion.tarea_fecha_inicio.toString()), 
-		tarea_fecha_fin : new Date(), //Date.parse(props.asignacion.tarea_fecha_fin.toString()), 
-		tarea_complejidad_estimada : props.asignacion.tarea_complejidad_estimada,
-		tarea_participantes : props.asignacion.tarea_participantes
+		tarea_descripcion : "",
+		tarea_fecha_inicio : new Date(),
+		tarea_fecha_fin : new Date(),
+		tarea_complejidad_estimada : complejidad_options[0]["value"],
+		tarea_participantes : 1,
+		tarea_tipo : tipos_de_tarea[0]["value"],
+		concertacion_tarea_id : ""		
 	};
 	
 	const formik = useFormik({
 		initialValues: registerInitialValues,
 		onSubmit: (values) => {
-			console.log("Modificando datos...")
+			console.log("Guardando data...")
 			console.log(values)
-			modificarAsignacion();
+			adicionarAsignacion();
 			formik.resetForm();
+			handleClose();
 		},
 		validationSchema: validationRules
 	});
@@ -130,21 +131,71 @@ export default function AsignacionModificarModal( props ) {
 			) 
 		)
 	};
+
+    useEffect(()=> {
+		leerConcertaciones();
+    }, [messages]);	
+	
+	const leerConcertaciones = async () => {
+		
+		await axios({
+			method: 'get',
+			url: '/concertacion/leer_concertaciones/',			
+			headers: {
+				'accept': 'application/json',
+				'Authorization': "Bearer " + token,
+			},
+		}).then(response => {
+			if (response.status === 201) {	
+				setConcertaciones(response.data);
+			}
+		}).catch((error) => {
+			console.error({"message":error.message, "detail":error.response.data.detail});
+			handleLogout();
+		});				  
+	};
+	
+	const RenderConcertaciones = () => {
+		return (			
+			concertaciones.map(item => 
+				<option value={item.id_conc_tema} label={item.conc_tema}>
+					{item.conc_tema} 
+				</option>				
+			) 
+		)
+	};	
 			
 	return (
 		<>
-		<button className="btn btn-sm btn-warning" onClick={handleShow}>
-			Modificar 
+		<button className="btn btn-sm btn-success" onClick={handleShow}>
+			Adicionar 
 		</button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Modificar {props.asignacion.tarea_descripcion} 
+					Adicionar 
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 			
-			<form className="form-control" onSubmit={formik.handleSubmit}>
+				<form className="form-control" onSubmit={formik.handleSubmit}>
+                    <div className="form-group mt-3" id="concertacion_tarea_id">
+                        <label>Seleccione la concertación para la tarea</label>
+                        <select
+                        type="text"
+                        name="concertacion_tarea_id"
+                        value={formik.values.concertacion_tarea_id}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={"form-control mt-1" + 
+                                        (formik.errors.concertacion_tarea_id && formik.touched.concertacion_tarea_id
+                                        ? "is-invalid" : "" )
+                                    }>
+                            <option value="" label="Seleccione una opcion">Seleccione una opción</option>	
+                            {RenderConcertaciones()} 
+                        </select>
+                        <div>{(formik.errors.concertacion_tarea_id) ? <p style={{color: 'red'}}>{formik.errors.concertacion_tarea_id}</p> : null}</div>
+                    </div>	
 					<div className="form-group mt-3" id="tarea_descripcion">
 						<label>Introduzca la descripción para la tarea</label>
 						<textarea
@@ -242,7 +293,7 @@ export default function AsignacionModificarModal( props ) {
 					</div>
 					<div className="d-grid gap-2 mt-3">
 						<button type="submit" className="btn btn-success">
-								Modificar
+								Guardar
 						</button>					
 					</div>		
 				</form>

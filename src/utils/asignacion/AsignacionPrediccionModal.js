@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Context } from './../../context/Context';
+import { Context } from '../../context/Context';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import * as Yup from "yup";
@@ -14,7 +14,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 
 
-export default function ConcertacionDetalleModal( props ) {
+export default function AsignacionPrediccionModal( props ) {
 	
 	const { token, handleLogout } = useContext(Context);
 	const [show, setShow] = useState(false);
@@ -22,17 +22,17 @@ export default function ConcertacionDetalleModal( props ) {
 	const [prediccion, setPrediccion] = useState({});
 	
 	
-	const detalleConcertacion = async () => {
+	const prediccionAsignacion = async () => {
 		
 		await axios({
 			method: 'get',
-			url: "/predecir_concertacion/" + props.concertacion.id_conc_tema,
+			url: "/tarea/prediccion_tarea/" + props.asignacion.id_tarea,
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
 			},
 		}).then(response => {
-			if (response.status === 200) {
+			if (response.status === 201) {
 				console.log(response.data);
 				setPrediccion(response.data);
 			}else{
@@ -51,11 +51,11 @@ export default function ConcertacionDetalleModal( props ) {
 	}
 	
 	const handleShow = () => {
-		if (props.concertacion.id_conc_tema != null){	
+		if (props.asignacion.id_tarea != null){	
 			setShow(true);  
-			detalleConcertacion();
+			prediccionAsignacion();
 		}else{
-			Swal.fire("No se ha seleccionado Concertacion", props.concertacion.id_conc_tema, "error");
+			Swal.fire("No se ha seleccionado tarea", "", "error");
 		}
 	}
 	
@@ -70,18 +70,18 @@ export default function ConcertacionDetalleModal( props ) {
 	return (
 		<>
 		<button className="btn btn-sm btn-success" onClick={handleShow}>
-			Detalles 
+			Predicci贸n 
 		</button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Detalles {props.concertacion.conc_tema} 
+					Predicci贸n {props.asignacion.tarea_descripcion} 
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 			
-				<h3> Resultado de la prediccion </h3>
-				<h5>Predicci髇: {
+				<h3> Resultado de la predicci贸n </h3>
+				<h5>Predicci贸n: {
 					(prediccion.prob1 <= 0.5) ?
 						(<span className="badge bg-success">  {prediccion.clase} </span>)
 					:			

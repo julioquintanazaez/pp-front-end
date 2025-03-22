@@ -4,10 +4,7 @@ import { Context } from './../context/Context';
 //Component
 import Navigation from './../components/MainNavbar.js';
 import UserTable from './../utils/user/UserTable.js';
-import UserResetPass from './../utils/user/UserResetPass.js';
 import RegisterUserModal from './../utils/user/RegisterUserModal.js';
-import ResetUserPasswordModal from './../utils/user/ResetUserPasswordModal.js';
-import UpdateUserModal from './../utils/user/UpdateUserModal.js';
 
 
 const Admin = () => {

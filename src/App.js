@@ -12,10 +12,7 @@ import Profesor from './pages/Profesor.js';
 import Cliente from './pages/Cliente.js';
 import Estudiante from './pages/Estudiante.js';
 import Concertacion from './pages/Concertacion.js';
-import TipoTarea from './pages/TipoTarea.js';
 import Asignacion from './pages/Asignacion.js';
-import Actividades from './pages/Actividades.js';
-import ActualizarTarea from './pages/ActualizarTarea.js';
 //Vistas particulares
 import ProfesorGestor from './pages/ProfesorGestor.js';
 import ClienteGestor from './pages/ClienteGestor.js';
@@ -39,16 +36,13 @@ const App = () => {
 						<Route path="/" element={<Home />} />					
 						<Route element={<ProtectedRoute isAllowed={ isLoggedIn && authroles.includes('admin') } />}>
 							<Route path="/admin" element={<Admin />} />
-							<Route path="/entidadorigen" element={<Entidad_Origen />} />	
-							<Route path="/entidaddestino" element={<Entidad_Destino />} />
-							<Route path="/profesor" element={<Profesor />} />	
-							<Route path="/cliente" element={<Cliente />} />	
-							<Route path="/estudiante" element={<Estudiante />} />
+							<Route path="/universidades" element={<Entidad_Origen />} />	
+							<Route path="/centroslaborales" element={<Entidad_Destino />} />
+							<Route path="/profesores" element={<Profesor />} />	
+							<Route path="/clientes" element={<Cliente />} />	
+							<Route path="/estudiantes" element={<Estudiante />} />
 							<Route path="/concertacion" element={<Concertacion />} />
-							<Route path="/tipotarea" element={<TipoTarea />} />
-							<Route path="/asignacion" element={<Asignacion />} />
-							<Route path="/actividades" element={<Actividades />} />	
-							<Route path="/actualizartarea" element={<ActualizarTarea />} />	
+							<Route path="/asignaciontarea" element={<Asignacion />} />
 						</Route>		
 						<Route element={<ProtectedRoute isAllowed={ isLoggedIn && authroles.includes('profesor')} />}>					
 							<Route path="/profesorgestor" element={<ProfesorGestor />} />	

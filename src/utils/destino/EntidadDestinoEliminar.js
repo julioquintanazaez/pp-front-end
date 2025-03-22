@@ -15,16 +15,16 @@ const EntidadDestinoEliminar = ( props ) => {
 		
 		await axios({
 			method: 'delete',
-			url: "/eliminar_entidad_destino/" + id,			
+			url: "/centro/eliminar_centropracticas/" + id,			
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
 			},
 		}).then(response => {
 			if (response.status === 201) {				
-				setMessages("Entidad Destino eliminada satisfactoriamente" + Math.random());
-				Swal.fire("Entidad Destino eliminada satisfactoriament", "", "success");
-				console.log("Entidad Destino eliminada satisfactoriamente");	
+				setMessages("Centro de prácticas eliminada satisfactoriamente" + Math.random());
+				Swal.fire("Centro de prácticas eliminada satisfactoriament", "", "success");
+				console.log("Centro de prácticas eliminada satisfactoriamente");	
 			}
 		}).catch((error) => {
 			console.error({"message":error.message, "detail":error.response.data.detail});
@@ -34,8 +34,8 @@ const EntidadDestinoEliminar = ( props ) => {
 	
 	const handleEliminarSubmit = (event) => {
 		event.preventDefault();
-		if (props.entidad.id_entidad_destino != null){
-			eliminarEntidad(props.entidad.id_entidad_destino);
+		if (props.entidad.id_centro != null){
+			eliminarEntidad(props.entidad.id_centro);
 		}else{
 			Swal.fire("Seleccione una entidad destino", "", "error");
 		}

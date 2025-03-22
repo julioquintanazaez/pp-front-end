@@ -26,7 +26,7 @@ export default function ClienteTabla ( props ) {
 	const fetchClientes = async () => {
 		await axios({
 			method: 'get',
-			url: '/leer_clientes/',
+			url: '/cliente/leer_clientes/',
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -49,23 +49,16 @@ export default function ClienteTabla ( props ) {
 	const renderTableData = () => {
 		return clientes?.map((cliente, index) => (
 				<tr className="row-md" key={cliente.id_cliente}>
-					<th scope="row">{index + 1}</th>					
-					<td>{cliente.nombre} {cliente.primer_appellido} {cliente.segundo_appellido}</td>
-					<td>{cliente.email}</td>					
+					<th scope="row">{index + 1}</th>		
+					<td>{cliente.nombre + " " + cliente.primer_appellido + " " + cliente.segundo_appellido }</td>	
 					<td>{cliente.cli_categoria_docente}</td>
 					<td>{cliente.cli_categoria_cientifica}</td>
+					<td>{cliente.cli_pos_tecnica_hogar}</td>
+					<td>{cliente.cli_pos_tecnica_trabajo}</td>	
 					<td>{cliente.cli_experiencia_practicas == true ? "SI" : "NO"}</td>
+					<td>{cliente.cli_trab_remoto == true ? "SI" : "NO"}</td>
+					<td>{cliente.cli_cargo == true ? "SI" : "NO"}</td>	
 					<td>{cliente.cli_numero_est_atendidos}</td>
-					<td>{cliente.dest_siglas}</td>
-					<td> 
-						<div className="row justify-content-center">	
-							<div className="col">
-								<div className="d-grid gap-2">
-									Detalles
-								</div>
-							</div>								
-						</div>							
-					</td>
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
@@ -95,13 +88,14 @@ export default function ClienteTabla ( props ) {
 					<tr>
 						<th scope="col">#</th>	
 						<th scope="col">Nombre</th>	
-						<th scope="col">Correo</th>										
-						<th scope="col">Categoría Docente</th>	
-						<th scope="col">Categoría Científica</th>	
-						<th scope="col">Expriencia en Prácticas Profesionales</th>	
+						<th scope="col">CategorÃ­a Docente</th>	
+						<th scope="col">CategorÃ­a CientÃ­fica</th>	
+						<th scope="col">Tec. Hogar</th>
+						<th scope="col">Tec. Trabajo</th>
+						<th scope="col">Expriencia</th>	
+						<th scope="col">Cargo</th>
+						<th scope="col">Teletrabajo</th>
 						<th scope="col"># Estudiantes</th>	
-						<th scope="col">Entidad</th>
-						<th scope="col">Detalles</th>
 						<th scope="col">Modificar</th>
 						<th scope="col">Eliminar</th>
 					</tr>

@@ -24,7 +24,7 @@ const ProfesorGestor = () => {
 				<div className="row gx-5">
 					<div className="col">
 						<div className="p-3 border bg-light">	
-							<h1>Concertaciones</h1>
+							<h1>Mis concertaciones</h1>
 							< ProfesorTablaGestor />
 						</div>
 					</div>
@@ -33,8 +33,8 @@ const ProfesorGestor = () => {
 				<div className="row gx-5">
 					<div className="col">
 						<div className="p-3 border bg-light">
-							<h1>Asignaciones en curso</h1>
-							< ProfesorTablaAsignaciones usuario={user} />
+							<h1>Mis tareas</h1>
+							< ProfesorTablaAsignaciones />
 						</div>
 					</div>
 				</div>

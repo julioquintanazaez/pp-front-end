@@ -20,18 +20,7 @@ export default function ClienteAdicionar ( ) {
 								{ value: "Media", label: "Media" },
 								{ value: "Alta", label: "Alta" }
 							];	
-							
-	const genero = [
-					{ value: "M", label: "M" },
-					{ value: "F", label: "F" }
-				];	
 	
-	const estado_civil_opt = [
-								{ value: "Soltero", label: "Soltero" },
-								{ value: "Casado", label: "Casado" },
-								{ value: "Divorciado", label: "Divorciado" }
-							];	
-		
 	const categoria_doc_opt = [
 								{ value: "Instructor", label: "Instructor" },
 								{ value: "Auxiliar", label: "Auxiliar" },
@@ -40,7 +29,7 @@ export default function ClienteAdicionar ( ) {
 							];	
 							
 	const categoria_cient_opt = [
-								{ value: "Tecnico", label: "Tecnico" },
+								{ value: "Tecnico", label: "TÃ©cnico" },
 								{ value: "Ingeniero", label: "Ingeniero" },
 								{ value: "Licenciado", label: "Licenciado" },
 								{ value: "Master", label: "Master" },
@@ -88,35 +77,35 @@ export default function ClienteAdicionar ( ) {
 	
 	const validationRules = Yup.object().shape({		
 		cli_genero: Yup.string().trim()
-			.required("Se requiere el género del cliente"),
+			.required("Se requiere el gï¿½nero del cliente"),
 		cli_estado_civil: Yup.string().trim()
 			.required("Se requiere el estado civil del cliente"),
 		cli_numero_empleos: Yup.number().positive()
 			.min(1)
-			.required("Se requiere el número de empleos del cliente"),
+			.required("Se requiere el nï¿½mero de empleos del cliente"),
 		cli_hijos: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione ona opción")
-			.required("Se requiere el número de hijos del cliente"),
+			.oneOf([true, false], "Por favor seleccione ona opciï¿½n")
+			.required("Se requiere el nï¿½mero de hijos del cliente"),
 		cli_pos_tecnica_trabajo: Yup.string().trim()
-			.required("Se requiere la posibilidad técnica del trabajo del cliente"),
+			.required("Se requiere la posibilidad tï¿½cnica del trabajo del cliente"),
 		cli_pos_tecnica_hogar: Yup.string().trim()
-			.required("Se requiere la posibilidad técnica del hogar del cliente"),
+			.required("Se requiere la posibilidad tï¿½cnica del hogar del cliente"),
 		cli_cargo: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione ona opción")
-			.required("Se requiere marque una opción"),	
+			.oneOf([true, false], "Por favor seleccione ona opciï¿½n")
+			.required("Se requiere marque una opciï¿½n"),	
 		cli_trab_remoto: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione ona opción")
-			.required("Se requiere marque una opción"),	
+			.oneOf([true, false], "Por favor seleccione ona opciï¿½n")
+			.required("Se requiere marque una opciï¿½n"),	
 		cli_categoria_docente: Yup.string().trim()
-			.required("Se requiere la caegoría docente del cliente"),
+			.required("Se requiere la caegorï¿½a docente del cliente"),
 		cli_categoria_cientifica: Yup.string().trim()
-			.required("Se requiere la caegoría científica del cliente"),
+			.required("Se requiere la caegorï¿½a cientï¿½fica del cliente"),
 		cli_experiencia_practicas: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione ona opción")
-			.required("Se requiere marque una opción"),	
+			.oneOf([true, false], "Por favor seleccione ona opciï¿½n")
+			.required("Se requiere marque una opciï¿½n"),	
 		cli_numero_est_atendidos: Yup.number().positive()
 			.min(1)
-			.required("Se requiere el número de estudiantes atendidos por el cliente"),
+			.required("Se requiere el nï¿½mero de estudiantes atendidos por el cliente"),
 		cli_entidad_id: Yup.string().trim()
 			.required("Se requiere el centro de pertenencia del cliente"),
 		user_cliente_id: Yup.string().trim()
@@ -226,7 +215,7 @@ export default function ClienteAdicionar ( ) {
 		<>
 			<form className="form-control" onSubmit={formik.handleSubmit}>
 				<div className="form-group mt-3" id="user_cliente_id">
-					<label>Seleccione un cliente para trabajar en las prácticas laborales</label>
+					<label>Seleccione un cliente para trabajar en las prï¿½cticas laborales</label>
 					<select
 					  type="text"
 					  name="user_cliente_id"
@@ -243,7 +232,7 @@ export default function ClienteAdicionar ( ) {
 					<div>{(formik.errors.user_cliente_id) ? <p style={{color: 'red'}}>{formik.errors.user_cliente_id}</p> : null}</div>
 				</div>		
 				<div className="form-group mt-3" id="cli_genero">
-					<label>Seleccione el género para el cliente</label>
+					<label>Seleccione el gï¿½nero para el cliente</label>
 					<select
 					  type="text"
 					  name="cli_genero"
@@ -275,7 +264,7 @@ export default function ClienteAdicionar ( ) {
 					<div>{(formik.errors.cli_estado_civil) ? <p style={{color: 'red'}}>{formik.errors.cli_estado_civil}</p> : null}</div>
 				</div>	
 				<div className="form-group mt-3" id="cli_numero_empleos">
-					<label>Introduzca el número de empleos del cliente</label>
+					<label>Introduzca el nï¿½mero de empleos del cliente</label>
 					<input
 					  type="text"
 					  name="cli_numero_empleos"
@@ -285,12 +274,12 @@ export default function ClienteAdicionar ( ) {
 					  className={"form-control mt-1" + 
 									(formik.errors.cli_numero_empleos && formik.touched.cli_numero_empleos
 									? "is-invalid" : "" )}
-					  placeholder="Número de empleos del cliente"
+					  placeholder="Nï¿½mero de empleos del cliente"
 					/>					
 					<div>{(formik.errors.cli_numero_empleos) ? <p style={{color: 'red'}}>{formik.errors.cli_numero_empleos}</p> : null}</div>
 				</div>
 				<div className="form-group mt-3" id="cli_hijos">			
-					<label>Marque la opción correcta para hijos del cliente</label>
+					<label>Marque la opciï¿½n correcta para hijos del cliente</label>
 					<br/>
 					<label>Tiene hijos (Si): </label>
 					<input
@@ -309,7 +298,7 @@ export default function ClienteAdicionar ( ) {
 					/>			
 				</div>	
 				<div className="form-group mt-3" id="cli_pos_tecnica_trabajo">
-					<label>Seleccione el nivel tecnológico para el trabajo del cliente</label>
+					<label>Seleccione el nivel tecnolï¿½gico para el trabajo del cliente</label>
 					<select
 					  type="text"
 					  name="cli_pos_tecnica_trabajo"
@@ -325,7 +314,7 @@ export default function ClienteAdicionar ( ) {
 					<div>{(formik.errors.cli_pos_tecnica_trabajo) ? <p style={{color: 'red'}}>{formik.errors.cli_pos_tecnica_trabajo}</p> : null}</div>
 				</div>		
 				<div className="form-group mt-3" id="cli_pos_tecnica_hogar">
-					<label>Seleccione el nivel tecnológico para el hogar del cliente</label>
+					<label>Seleccione el nivel tecnolï¿½gico para el hogar del cliente</label>
 					<select
 					  type="text"
 					  name="cli_pos_tecnica_hogar"
@@ -341,7 +330,7 @@ export default function ClienteAdicionar ( ) {
 					<div>{(formik.errors.cli_pos_tecnica_hogar) ? <p style={{color: 'red'}}>{formik.errors.cli_pos_tecnica_hogar}</p> : null}</div>
 				</div>	
 				<div className="form-group mt-3" id="cli_cargo">			
-					<label>Marque la opción correcta para la ocupación de cargo del cliente</label>
+					<label>Marque la opciï¿½n correcta para la ocupaciï¿½n de cargo del cliente</label>
 					<br/>
 					<label>Ocupa cargo (Si): </label>
 					<input
@@ -360,7 +349,7 @@ export default function ClienteAdicionar ( ) {
 					/>			
 				</div>
 				<div className="form-group mt-3" id="cli_trab_remoto">			
-					<label>Marque la opción correcta para la posibilidad de trabajo remoto del cliente</label>
+					<label>Marque la opciï¿½n correcta para la posibilidad de trabajo remoto del cliente</label>
 					<br/>
 					<label>Puede trabajar remoto (Si): </label>
 					<input
@@ -379,7 +368,7 @@ export default function ClienteAdicionar ( ) {
 					/>			
 				</div>		
 				<div className="form-group mt-3" id="cli_categoria_docente">
-					<label>Seleccione la categoría docente del cliente</label>
+					<label>Seleccione la categorï¿½a docente del cliente</label>
 					<select
 					  type="text"
 					  name="cli_categoria_docente"
@@ -395,7 +384,7 @@ export default function ClienteAdicionar ( ) {
 					<div>{(formik.errors.cli_categoria_docente) ? <p style={{color: 'red'}}>{formik.errors.cli_categoria_docente}</p> : null}</div>
 				</div>					
 				<div className="form-group mt-3" id="cli_categoria_cientifica">
-					<label>Seleccione la categoría científica del cliente</label>
+					<label>Seleccione la categorï¿½a cientï¿½fica del cliente</label>
 					<select
 					  type="text"
 					  name="cli_categoria_cientifica"
@@ -411,7 +400,7 @@ export default function ClienteAdicionar ( ) {
 					<div>{(formik.errors.cli_categoria_cientifica) ? <p style={{color: 'red'}}>{formik.errors.cli_categoria_cientifica}</p> : null}</div>
 				</div>
 				<div className="form-group mt-3" id="cli_experiencia_practicas">			
-					<label>Marque la opción correcta para la experiencia en prácticas profesionales del cliente</label>
+					<label>Marque la opciï¿½n correcta para la experiencia en prï¿½cticas profesionales del cliente</label>
 					<br/>
 					<label>Ha participado (Si): </label>
 					<input
@@ -430,7 +419,7 @@ export default function ClienteAdicionar ( ) {
 					/>			
 				</div>					
 				<div className="form-group mt-3" id="cli_numero_est_atendidos">
-					<label>Introduzca el número de estudiantes atendidos por el cliente</label>
+					<label>Introduzca el nï¿½mero de estudiantes atendidos por el cliente</label>
 					<input
 					  type="text"
 					  name="cli_numero_est_atendidos"
@@ -440,7 +429,7 @@ export default function ClienteAdicionar ( ) {
 					  className={"form-control mt-1" + 
 									(formik.errors.cli_numero_est_atendidos && formik.touched.cli_numero_est_atendidos
 									? "is-invalid" : "" )}
-					  placeholder="Número de estudiantes (valor entero, ej. 2)"
+					  placeholder="Nï¿½mero de estudiantes (valor entero, ej. 2)"
 					/>					
 					<div>{(formik.errors.cli_numero_est_atendidos) ? <p style={{color: 'red'}}>{formik.errors.cli_numero_est_atendidos}</p> : null}</div>
 				</div>					

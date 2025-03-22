@@ -1,19 +1,16 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import React, {useState, useEffect, useContext} from 'react';
-import { Context } from './../../context/Context';
+import { Context } from '../../context/Context.js';
 import axios from 'axios';
 import moment from "moment";
 import Swal from 'sweetalert2';
 import { Table } from 'react-bootstrap';
 
-import AsignacionEliminar from './../asignacion/AsignacionEliminar.js';
-import AsignacionModificarModal from './../asignacion/AsignacionModificarModal.js';
-import AsignacionEvaluarModal from './../asignacion/AsignacionEvaluarModal.js';
-import AsignacionModificarTipoTareaModal from './../asignacion/AsignacionModificarTipoTareaModal.js';
-import AsignacionModificarActoresModal from './../asignacion/AsignacionModificarActoresModal.js';
-import AsignacionActivar from './../asignacion/AsignacionActivar.js';
-import AsignacionDetalleModal from './../asignacion/AsignacionDetalleModal.js';
+import AsignacionEliminar from './AsignacionEliminar.js';
+import AsignacionModificarModal from './AsignacionModificarModal.js';
+import AsignacionEvaluarModal from './AsignacionEvaluarModal.js';
+import AsignacionPrediccionModal from './AsignacionPrediccionModal.js';
 
 
 const AsignacionTabla = (props) => {
@@ -30,7 +27,7 @@ const AsignacionTabla = (props) => {
 	const fetchAsignaciones = async () => {
 		await axios({
 			method: 'get',
-			url: '/leer_asgignaciones_tareas/',
+			url: '/tarea/leer_tareas/',
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -52,35 +49,16 @@ const AsignacionTabla = (props) => {
 	
 	const renderTableData = () => {
 		return asignaciones?.map((asignacion, index) => (
-				<tr className="row-md" key={asignacion.id_asignacion}>
-					<th scope="row">{index + 1}</th>					
-					<td>{asignacion.asg_descripcion}</td>
-					<td>{asignacion.asg_complejidad_estimada}</td>	
-					<td>{asignacion.tarea_tipo_nombre}</td>
-					<td>{asignacion.conc_tema}</td>
-					<td>{asignacion.est_nombre} {asignacion.est_primer_appellido}</td>
-					<td>{asignacion.prf_nombre} {asignacion.prf_primer_appellido}</td>
-					<td>{asignacion.cli_nombre} {asignacion.cli_primer_appellido}</td>
-					<td>{asignacion.asg_participantes}</td>
-					<td>{asignacion.asg_fecha_inicio != null ? asignacion.asg_fecha_inicio.split('T')[0] : asignacion.asg_fecha_inicio}</td>					
-					<td> 
-						<div className="row justify-content-center">	
-							<div className="col">
-								<div className="d-grid gap-2">
-									< AsignacionDetalleModal asignacion={asignacion} />
-								</div>
-							</div>								
-						</div>							
-					</td>
-					<td> 
-						<div className="row justify-content-center">	
-							<div className="col">
-								<div className="d-grid gap-2">
-									< AsignacionActivar asignacion={asignacion} />
-								</div>
-							</div>								
-						</div>							
-					</td>
+				<tr className="row-md" key={asignacion.id_tarea}>
+					<th scope="row">{index + 1}</th>	
+					<td>{asignacion.tarea_evaluacion}</td>				
+					<td>{asignacion.tarea_descripcion}</td>
+					<td>{asignacion.tarea_complejidad_estimada}</td>	
+					<td>{asignacion.tarea_tipo}</td>
+					<td>{asignacion.tarea_participantes}</td>
+					<td>{asignacion.tarea_activa == true ? "SI" : "NO"}</td>
+					<td>{asignacion.tarea_fecha_inicio != null ? asignacion.tarea_fecha_inicio.split('T')[0] : asignacion.tarea_fecha_inicio}</td>					
+					<td>{asignacion.tarea_fecha_fin != null ? asignacion.tarea_fecha_fin.split('T')[0] : asignacion.tarea_fecha_fin}</td>					
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
@@ -96,14 +74,14 @@ const AsignacionTabla = (props) => {
 								<div className="d-grid gap-2">
 									< AsignacionEliminar asignacion={asignacion} />
 								</div>
-							</div>	
+							</div>								
 						</div>							
-					</td>		
+					</td>
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									< AsignacionModificarTipoTareaModal asignacion={asignacion} />
+									< AsignacionEvaluarModal asignacion={asignacion} />
 								</div>
 							</div>	
 						</div>							
@@ -112,7 +90,7 @@ const AsignacionTabla = (props) => {
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									< AsignacionEvaluarModal asignacion={asignacion} />
+									< AsignacionPrediccionModal asignacion={asignacion} />
 								</div>
 							</div>	
 						</div>							
@@ -127,21 +105,18 @@ const AsignacionTabla = (props) => {
 				<thead className="table-dark">
 					<tr>
 						<th scope="col">#</th>	
-						<th scope="col">DescripciÛn</th>	
+						<th scope="col">Evaluaci√≥n</th>	
+						<th scope="col">Descripci√≥n</th>	
 						<th scope="col">Compljidad</th>	
 						<th scope="col">Tipo de Tarea</th>	
-						<th scope="col">ConcertaciÛn</th>
-						<th scope="col">Estudiante</th>
-						<th scope="col">Profesor</th>	
-						<th scope="col">Cliente</th>	
 						<th scope="col">Participantes</th>	
-						<th scope="col">Fecha de Inicio</th>
-						<th scope="col">Detalles</th>
-						<th scope="col">Estado</th>
+						<th scope="col">Activa</th>	
+						<th scope="col">Inicio</th>
+						<th scope="col">Fin</th>
 						<th scope="col">Modificar</th>
 						<th scope="col">Eliminar</th>
-						<th scope="col">Tipo</th>
 						<th scope="col">Evaluar</th>
+						<th scope="col">Predicci√≥n</th>
 					</tr>
 				</thead>
 				<tbody className="table-group-divider">						

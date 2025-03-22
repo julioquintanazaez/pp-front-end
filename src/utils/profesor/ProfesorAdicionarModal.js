@@ -9,11 +9,13 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { BiBox } from 'react-icons/bi';   
 
-export default function ProfesorModificarModal( props ) {
+export default function ProfesorModificarModal( ) {
 	
-	const { token, setMessages, handleLogout } = useContext(Context);
+	const { token, setMessages, messages, handleLogout } = useContext(Context);
 	const [show, setShow] = useState(false);
 	const [validated, setValidated] = useState(false);
+    const [usuarios, setUsuarios] = useState([]);
+    const [universidades, setUniversidades] = useState([]);
 	
 	//Options configurations
 	const nivel_tecno_options = [
@@ -38,11 +40,11 @@ export default function ProfesorModificarModal( props ) {
 								{ value: "Doctor", label: "Doctor" }
 							];	
 							
-	const modificarProfesor = async () => {
+	const adicionarProfesor = async () => {
 		
 		await axios({
-			method: 'put',
-			url: "/profesor/actualizar_profesor/" + props.profesor.id_profesor,
+			method: 'post',
+			url: "/profesor/crear_profesor/",
 			data: {
 				prf_numero_empleos : formik.values.prf_numero_empleos,
 				prf_pos_tecnica_trabajo : formik.values.prf_pos_tecnica_trabajo,
@@ -52,7 +54,9 @@ export default function ProfesorModificarModal( props ) {
 				prf_categoria_docente : formik.values.prf_categoria_docente, 
 				prf_categoria_cientifica : formik.values.prf_categoria_cientifica,  
 				prf_experiencia_practicas : formik.values.prf_experiencia_practicas, 
-				prf_numero_est_atendidos : formik.values.prf_numero_est_atendidos			
+				prf_numero_est_atendidos : formik.values.prf_numero_est_atendidos,
+                prf_universidad_id : formik.values.prf_universidad_id,
+                user_profesor_id : formik.values.user_profesor_id		
 			},
 			headers: {
 				'accept': 'application/json',
@@ -60,8 +64,8 @@ export default function ProfesorModificarModal( props ) {
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				setMessages("Profesor actualizado"+ Math.random());
-				Swal.fire("Profesor actualizado exitosamente", "", "success");
+				setMessages("Profesor agregado"+ Math.random());
+				Swal.fire("Profesor agregado exitosamente", "", "success");
 			}
 		}).catch((error) => {
 			console.error({"message":error.message, "detail":error.response.data.detail});
@@ -74,11 +78,7 @@ export default function ProfesorModificarModal( props ) {
 	}
 	
 	const handleShow = () => {
-		if (props.profesor.id_profesor != null){	
-			setShow(true);  
-		}else{
-			Swal.fire("No se ha seleccionado Profesor", props.profesor.id_profesor, "error");
-		}
+		setShow(true);  
 	}
 	
 	const digitsOnly = (value) => /^\d+$/.test(value) //--:/^[0-9]d+$/
@@ -88,40 +88,46 @@ export default function ProfesorModificarModal( props ) {
 	const validationRules = Yup.object().shape({		
 		prf_numero_empleos: Yup.number().positive()
 			.min(1)
-			.required("Se requiere el n�mero de empleos del profesor"),
+			.required("Se requiere el número de empleos del profesor"),
 		prf_pos_tecnica_trabajo: Yup.string().trim()
-			.required("Se requiere la posibilidad t�cnica del trabajo del profesor"),
+			.required("Se requiere la posibilidad técnica del trabajo del profesor"),
 		prf_pos_tecnica_hogar: Yup.string().trim()
-			.required("Se requiere la posibilidad t�cnica del hogar del profesor"),
+			.required("Se requiere la posibilidad técnica del hogar del profesor"),
 		prf_cargo: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione ona opci�n")
-			.required("Se requiere marque una opci�n"),	
+			.oneOf([true, false], "Por favor seleccione ona opción")
+			.required("Se requiere marque una opción"),	
 		prf_trab_remoto: Yup.boolean()
-			.oneOf([true, false], "Por favor seleccione ona opci�n")
-			.required("Se requiere marque una opci�n"),	
+			.oneOf([true, false], "Por favor seleccione ona opción")
+			.required("Se requiere marque una opción"),	
 		prf_categoria_docente: Yup.string().trim()
-			.required("Se requiere la caegor�a docente del profesor"),
+			.required("Se requiere la caegoría docente del profesor"),
 		prf_categoria_cientifica: Yup.string().trim()
-			.required("Se requiere la caegor�a cient�fica del profesor"),
+			.required("Se requiere la caegoría científica del profesor"),
 		prf_experiencia_practicas: Yup.string().trim()
-			.required("Se requiere la experiencia en pr�cticas profesionales del profesor"),
+			.required("Se requiere la experiencia en prácticas profesionales del profesor"),
 		prf_experiencia_practicas: Yup.string().trim()
-			.required("Se requiere la experiencia en pr�cticas profesionales del profesor"),
+			.required("Se requiere la experiencia en prácticas profesionales del profesor"),
 		prf_numero_est_atendidos: Yup.number().positive()
 			.min(1)
-			.required("Se requiere el n�mero de estudiantes atendidos por el profesor")
+			.required("Se requiere el número de estudiantes atendidos por el profesor"),
+        prf_universidad_id: Yup.string().trim()
+            .required("Se requiere el centro de pertenencia del profesor"),
+        user_profesor_id: Yup.string().trim()
+            .required("Se requiere seleccione un profesor")	
 	});
 	
 	const registerInitialValues = {
-		prf_numero_empleos : props.profesor.prf_numero_empleos,
-		prf_pos_tecnica_trabajo : props.profesor.prf_pos_tecnica_trabajo,
-		prf_pos_tecnica_hogar : props.profesor.prf_pos_tecnica_hogar,
-		prf_cargo : props.profesor.prf_cargo,
-		prf_trab_remoto : props.profesor.prf_trab_remoto,
-		prf_categoria_docente : props.profesor.prf_categoria_docente, 
-		prf_categoria_cientifica : props.profesor.prf_categoria_cientifica,  
-		prf_experiencia_practicas : props.profesor.prf_experiencia_practicas, 
-		prf_numero_est_atendidos : props.profesor.prf_numero_est_atendidos
+		prf_numero_empleos : 1,
+		prf_pos_tecnica_trabajo : nivel_tecno_options[0]["value"],
+		prf_pos_tecnica_hogar : nivel_tecno_options[0]["value"],
+		prf_cargo : false,
+		prf_trab_remoto : false,
+		prf_categoria_docente : categoria_doc_opt[0]["value"], 
+		prf_categoria_cientifica : categoria_cient_opt[0]["value"],  
+		prf_experiencia_practicas : false, 
+		prf_numero_est_atendidos : 1,  
+        prf_universidad_id : "",
+        user_profesor_id: ""
 	};
 	
 	const formik = useFormik({
@@ -129,8 +135,9 @@ export default function ProfesorModificarModal( props ) {
 		onSubmit: (values) => {
 			console.log("Save data...")
 			console.log(values)
-			modificarProfesor();
+			adicionarProfesor();
 			formik.resetForm();
+			handleClose();
 		},
 		validationSchema: validationRules
 	});
@@ -142,21 +149,116 @@ export default function ProfesorModificarModal( props ) {
 			) 
 		)
 	};	
+
+    useEffect(()=> {
+		leerUsuariosProfesores();
+    }, [messages]);	
+	
+	const leerUsuariosProfesores = async () => {
+		await axios({
+			method: 'get',
+			url: '/usuario/obtener_usuarios/profesor',
+			headers: {
+				'accept': 'application/json',
+				'Authorization': "Bearer " + token,
+			},
+		}).then(response => {
+			if (response.status === 201) {				
+				setUsuarios(response.data);				
+			}
+		}).catch((error) => {
+			console.error({"message":error.message, "detail":error.response.data.detail});
+		});				  
+	}
+	
+	const RenderUsuarios = () => {
+		return (			
+			usuarios.map(item => 
+				<option value={item.id} label={item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}>
+					{item.nombre + " " + item.primer_appellido + " " + item.segundo_appellido}
+				</option>				
+			) 
+		)
+	};	
+
+    useEffect(()=> {
+        leerUniversidades();
+    }, []);	
+	
+	const leerUniversidades = async () => {
+		
+		await axios({
+			method: 'get',
+			url: '/universidad/leer_universidades/',			
+			headers: {
+				'accept': 'application/json',
+				'Authorization': "Bearer " + token,
+			},
+		}).then(response => {
+			if (response.status === 201) {	
+				setUniversidades(response.data);
+			}
+		}).catch((error) => {
+			console.error({"message":error.message, "detail":error.response.data.detail});
+			handleLogout();
+		});				  
+	}
+	
+	const RenderUniversidades = (universidades) => {
+		return (			
+			universidades.map(item => 
+				<option value={item.id_universidad} label={item.universidad_siglas}>{item.universidad_siglas}</option>				
+			) 
+		)
+	};	
 	
 	return (
 		<>
-		<button className="btn btn-sm btn-warning" onClick={handleShow}>
-			< BiBox /> 
+		<button className="btn btn-sm btn-success" onClick={handleShow}>
+			Adicionar 
 		</button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Modificar {props.profesor.prf_nombre}
+					Adicionar 
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-			
 				<form className="form-control" onSubmit={formik.handleSubmit}>
+                    <div className="form-group mt-3" id="user_profesor_id">
+                        <label>Seleccione un usuario para trabajar en las prácticas laborales</label>
+                        <select
+                        type="text"
+                        name="user_profesor_id"
+                        value={formik.values.user_profesor_id}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={"form-control mt-1" + 
+                                        (formik.errors.user_profesor_id && formik.touched.user_profesor_id
+                                        ? "is-invalid" : "" )
+                                    }>
+                            <option value="" label="Seleccione un profesor">Seleccione un usuario de la lista</option>	
+                            {RenderUsuarios()}					
+                        </select>
+                        <div>{(formik.errors.user_profesor_id) ? <p style={{color: 'red'}}>{formik.errors.user_profesor_id}</p> : null}</div>
+                    </div>	
+                    <div className="form-group mt-3" id="prf_universidad_id">
+                        <label>Seleccione la universidad de origen del profesor</label>
+                        <select
+                        type="text"
+                        name="prf_universidad_id"
+                        value={formik.values.prf_universidad_id}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={"form-control mt-1" + 
+                                        (formik.errors.prf_universidad_id && formik.touched.prf_universidad_id
+                                        ? "is-invalid" : "" )
+                                    }>
+                            <option value="" label="Seleccione una opcion">Seleccione una opción</option>	
+                            { RenderUniversidades(universidades) } 
+                        </select>	
+                        <div>{(formik.errors.prf_universidad_id) ? <p style={{color: 'red'}}>{formik.errors.prf_universidad_id}</p> : null}</div>
+                    </div>	
 					<div className="form-group mt-3" id="prf_numero_empleos">
 						<label>Introduzca el número de empleos del profesor</label>
 						<input
@@ -168,7 +270,7 @@ export default function ProfesorModificarModal( props ) {
 						  className={"form-control mt-1" + 
 										(formik.errors.prf_numero_empleos && formik.touched.prf_numero_empleos
 										? "is-invalid" : "" )}
-						  placeholder="N�mero de empleos del profesor"
+						  placeholder="Número de empleos del profesor"
 						/>					
 						<div>{(formik.errors.prf_numero_empleos) ? <p style={{color: 'red'}}>{formik.errors.prf_numero_empleos}</p> : null}</div>
 					</div>
@@ -304,13 +406,13 @@ export default function ProfesorModificarModal( props ) {
 						  className={"form-control mt-1" + 
 										(formik.errors.prf_numero_est_atendidos && formik.touched.prf_numero_est_atendidos
 										? "is-invalid" : "" )}
-						  placeholder="N�mero de estudiantes (valor entero, ej. 2)"
+						  placeholder="Número de estudiantes (valor entero, ej. 2)"
 						/>					
 						<div>{(formik.errors.prf_numero_est_atendidos) ? <p style={{color: 'red'}}>{formik.errors.prf_numero_est_atendidos}</p> : null}</div>
 					</div>
 					<div className="d-grid gap-2 mt-3">
 					<button type="submit" className="btn btn-success">
-							Modificar
+							Guardar
 					</button>					
 				</div>		
 				</form>

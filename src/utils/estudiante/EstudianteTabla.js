@@ -24,7 +24,7 @@ const EstudianteTabla = (props) => {
 	const fetchEstudiantes = async () => {
 		await axios({
 			method: 'get',
-			url: '/leer_estudiantes/',
+			url: '/estudiante/leer_estudiantes/',
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -47,22 +47,14 @@ const EstudianteTabla = (props) => {
 	const renderTableData = () => {
 		return estudiantes?.map((estudiante, index) => (
 				<tr className="row-md" key={estudiante.id_estudiante}>
-					<th scope="row">{index + 1}</th>					
-					<td>{estudiante.nombre} {estudiante.primer_appellido} {estudiante.segundo_appellido}</td>
-					<td>{estudiante.email}</td>					
+					<th scope="row">{index + 1}</th>	
+					<td>{estudiante.est_pos_tecnica_escuela}</td>
+					<td>{estudiante.est_pos_tecnica_hogar}</td>
+					<td>{estudiante.est_trab_remoto == true ? "SI" : "NO"}</td>
 					<td>{estudiante.est_posibilidad_economica}</td>
 					<td>{estudiante.est_trabajo == true ? "SI" : "NO"}</td>
 					<td>{estudiante.est_becado == true ? "SI" : "NO"}</td>
-					<td>{estudiante.org_siglas}</td>
-					<td> 
-						<div className="row justify-content-center">	
-							<div className="col">
-								<div className="d-grid gap-2">
-									Detalles
-								</div>
-							</div>								
-						</div>							
-					</td>
+					<td>{estudiante.est_ocupado == true ? "SI" : "NO"}</td>
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
@@ -91,13 +83,13 @@ const EstudianteTabla = (props) => {
 				<thead className="table-dark">
 					<tr>
 						<th scope="col">#</th>	
-						<th scope="col">Nombre</th>	
-						<th scope="col">Correo</th>										
-						<th scope="col">Acceso económico</th>	
-						<th scope="col">Trabajo</th>	
+						<th scope="col">Tec. Univ</th>	
+						<th scope="col">Tec. Hogar</th>										
+						<th scope="col">Teletrabajo</th>	
+						<th scope="col">EconomÃ­a</th>
+						<th scope="col">Trabaja</th>
 						<th scope="col">Beca</th>
-						<th scope="col">Entidad</th>
-						<th scope="col">Detalles</th>
+						<th scope="col">Ocupado</th>
 						<th scope="col">Modificar</th>
 						<th scope="col">Eliminar</th>
 					</tr>

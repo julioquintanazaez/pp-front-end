@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../context/Context';
 import Navigation from './../components/MainNavbar.js'; 
 
-import ClienteAdicionar from './../utils/cliente/ClienteAdicionar.js';
+import ClienteAdicionarModal from './../utils/cliente/ClienteAdicionarModal.js';
 import ClienteTabla from './../utils/cliente/ClienteTabla.js';
 
 const Cliente = () => {
@@ -22,14 +22,14 @@ const Cliente = () => {
 				<div className="row gx-5">
 					<div className="col">
 						<div className="p-3 border bg-light">					
-							< ClienteAdicionar />
+							< ClienteTabla />
 						</div>
 					</div>
 				</div><br/>
 				<div className="row gx-5">
 					<div className="col">
 						<div className="p-3 border bg-light">					
-							< ClienteTabla />
+							< ClienteAdicionarModal />
 						</div>
 					</div>
 				</div>

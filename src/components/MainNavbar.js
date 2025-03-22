@@ -24,74 +24,68 @@ const Navigation = ( props ) => {
 			<Navbar expand="lg" fixed="top" className="navbar-light" bg="bg-dark" data-bs-theme="dark">
 				<Container>
 					<Navbar.Brand href="/">
-						Pr醕ticas Profesionales
+						Pr谩cticas Profesionales
 					</Navbar.Brand>
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse className="justify-content-end">
 						<Nav className="me-auto" activeKey={window.location.pathname}>							
 							{authroles.includes('admin') && 
-							<NavDropdown title="Gesti髇 de Recursos" id="recursos">	
+							<NavDropdown title="Gesti贸n de Recursos" id="recursos">	
 								<NavDropdown.Item>
-									<LinkContainer to="/entidadorigen">
-										<Nav.Link>Entidad Origen</Nav.Link>
+									<LinkContainer to="/universidades">
+										<Nav.Link>Universidades</Nav.Link>
+									</LinkContainer>
+								</NavDropdown.Item>	
+								<NavDropdown.Item>
+									<LinkContainer to="/centroslaborales">
+										<Nav.Link>Centros laborales</Nav.Link>
+									</LinkContainer>
+								</NavDropdown.Item>	
+								<NavDropdown.Item>
+									<LinkContainer to="/profesores">
+										<Nav.Link>Profesores</Nav.Link>
 									</LinkContainer>
 								</NavDropdown.Item>
 								<NavDropdown.Item>
-									<LinkContainer to="/entidaddestino">
-										<Nav.Link>Entidad Cliente</Nav.Link>
+									<LinkContainer to="/clientes">
+										<Nav.Link>Clientes</Nav.Link>
 									</LinkContainer>
 								</NavDropdown.Item>
 								<NavDropdown.Item>
-									<LinkContainer to="/profesor">
-										<Nav.Link>Profesor</Nav.Link>
-									</LinkContainer>
-								</NavDropdown.Item>
-								<NavDropdown.Item>
-									<LinkContainer to="/cliente">
-										<Nav.Link>Cliente</Nav.Link>
-									</LinkContainer>
-								</NavDropdown.Item>
-								<NavDropdown.Item>
-									<LinkContainer to="/estudiante">
-										<Nav.Link>Estudiante</Nav.Link>
+									<LinkContainer to="/estudiantes">
+										<Nav.Link>Estudiantes</Nav.Link>
 									</LinkContainer>
 								</NavDropdown.Item>
 							</NavDropdown>
 							}
 							{authroles.includes('admin') && 
-							<NavDropdown title="Gesti髇 de Actividades" id="gestion">	
+							<NavDropdown title="Gesti贸n de Actividades" id="gestion">	
 								<NavDropdown.Item>
 									<LinkContainer to="/concertacion">
-										<Nav.Link>Concertaci髇 de Tema</Nav.Link>
+										<Nav.Link>Concertaci贸n de Temas</Nav.Link>
 									</LinkContainer>
-								</NavDropdown.Item>
+								</NavDropdown.Item>	
 								<NavDropdown.Item>
-									<LinkContainer to="/tipotarea">
-										<Nav.Link>Tipo de Tareas</Nav.Link>
-									</LinkContainer>
-								</NavDropdown.Item>
-								<NavDropdown.Item>
-									<LinkContainer to="/asignacion">
-										<Nav.Link>Asignaci髇 de Tareas</Nav.Link>
-									</LinkContainer>
-								</NavDropdown.Item>
-								<NavDropdown.Item>
-									<LinkContainer to="/actividades">
-										<Nav.Link>Actividades de Tareas</Nav.Link>
-									</LinkContainer>
-								</NavDropdown.Item>
-								<NavDropdown.Item>
-									<LinkContainer to="/actualizartarea">
-										<Nav.Link>Actualizaci髇 de Tareas</Nav.Link>
+									<LinkContainer to="/asignaciontarea">
+										<Nav.Link>Asignaci贸n de Tareas</Nav.Link>
 									</LinkContainer>
 								</NavDropdown.Item>
 							</NavDropdown>
 							}
+							{authroles.includes('admin') && 
+							<NavDropdown title="Usuarios" id="adminstrador">									
+								<NavDropdown.Item>
+									<LinkContainer to="/admin">
+										<Nav.Link>Usuarios del sistema</Nav.Link>
+									</LinkContainer>									
+								</NavDropdown.Item>	
+							</NavDropdown >
+							}	
 							{authroles.includes('profesor') && !authroles.includes('admin') &&
 							<NavDropdown title="Profesor" id="profesor">									
 								<NavDropdown.Item>
 									<LinkContainer to="/profesorgestor">
-										<Nav.Link>Cosas profesor</Nav.Link>
+										<Nav.Link>Profesor</Nav.Link>
 									</LinkContainer>									
 								</NavDropdown.Item>	
 							</NavDropdown >								
@@ -100,7 +94,7 @@ const Navigation = ( props ) => {
 							<NavDropdown title="Cliente" id="cliente">									
 								<NavDropdown.Item>
 									<LinkContainer to="/clientegestor">
-										<Nav.Link>Cosas clientes</Nav.Link>
+										<Nav.Link>Clientes</Nav.Link>
 									</LinkContainer>									
 								</NavDropdown.Item>	
 							</NavDropdown >								
@@ -109,20 +103,11 @@ const Navigation = ( props ) => {
 							<NavDropdown title="Estudiante" id="estudiante">									
 								<NavDropdown.Item>
 									<LinkContainer to="/estudiantegestor">
-										<Nav.Link>Cosas estudiante</Nav.Link>
+										<Nav.Link>Estudiante</Nav.Link>
 									</LinkContainer>									
 								</NavDropdown.Item>	
 							</NavDropdown >								
 							}
-							{authroles.includes('admin') && 
-							<NavDropdown title="Panel Administrador" id="adminstrador">									
-								<NavDropdown.Item>
-									<LinkContainer to="/admin">
-										<Nav.Link>Gesti髇 de usuarios</Nav.Link>
-									</LinkContainer>									
-								</NavDropdown.Item>	
-							</NavDropdown >
-							}												
 						</Nav>	
 						<Nav className="justify-content-end">
 						{isLoggedIn && (
